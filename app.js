@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     video.defaultMuted = true;
     video.playsInline = true;
     video.preload = 'auto';
+    video.addEventListener('seeked', () => {
+      isSeeking = false;
+    });
   }
 
   // Prime hardware video decoder pipeline on first user interaction
@@ -47,62 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchstart', primeDecoder, { once: true, passive: true });
   window.addEventListener('click', primeDecoder, { once: true, passive: true });
 
-  // Self-pacing, non-blocking Seek Dispatcher
-  function seekTo(targetSeconds) {
-    if (!video || !isVideoReady || videoDuration <= 0) return;
+  let globalTargetProgress = 0;
+  let lastVideoTimeUpdate = -1;
 
-    // Clamp within valid video timeline [0.001, videoDuration - 0.02]
-    const clampedTarget = Math.max(0.001, Math.min(videoDuration - 0.02, targetSeconds));
-
-    // If browser decoder is currently seeking, queue up the target
-    if (video.seeking || isSeeking) {
-      // Watchdog: If seeked event didn't fire within 250ms, recover automatically
-      if (Date.now() - lastSeekTime > 250) {
-        isSeeking = false;
-      } else {
-        pendingTargetTime = clampedTarget;
-        return;
+  // Single scheduler tick function (called from GSAP or Lenis RAF)
+  function videoScrubTick() {
+    if (video && isVideoReady && videoDuration > 0 && !isSeeking) {
+      const targetSeconds = globalTargetProgress * videoDuration;
+      const clampedTarget = Math.max(0.001, Math.min(videoDuration - 0.02, targetSeconds));
+      
+      // Prevent microscopic seek spam to preserve main thread performance
+      if (Math.abs(lastVideoTimeUpdate - clampedTarget) > 0.03) {
+        try {
+          isSeeking = true;
+          video.currentTime = clampedTarget;
+          lastVideoTimeUpdate = clampedTarget;
+        } catch (err) {
+          isSeeking = false;
+        }
       }
     }
-
-    // Skip seek if already within 1 frame tolerance (~15ms)
-    if (Math.abs(video.currentTime - clampedTarget) < 0.015 && pendingTargetTime === null) {
-      return;
-    }
-
-    isSeeking = true;
-    lastSeekTime = Date.now();
-    pendingTargetTime = null;
-
-    try {
-      video.currentTime = clampedTarget;
-    } catch (err) {
-      isSeeking = false;
-    }
-  }
-
-  // Handle seek completion event: immediately process any queued target
-  if (video) {
-    video.addEventListener('seeked', () => {
-      isSeeking = false;
-      if (pendingTargetTime !== null) {
-        const nextTarget = pendingTargetTime;
-        pendingTargetTime = null;
-        seekTo(nextTarget);
-      }
-    });
-
-    video.addEventListener('error', () => {
-      isSeeking = false;
-    });
   }
 
   // Master update pipeline: Synchronizes video, HUD, and narrative stage cards
   function applyProgress(progress) {
     const clamped = Math.max(0, Math.min(1, progress));
-
-    // 1. Dispatch Video Seek
-    seekTo(clamped * videoDuration);
+    globalTargetProgress = clamped;
 
     // 2. Update HUD Progress Bar
     if (progressBarFill) {
@@ -190,11 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (hasGSAP) {
           gsap.ticker.add((time) => {
             lenis.raf(time * 1000);
+            videoScrubTick();
           });
           gsap.ticker.lagSmoothing(0);
         } else {
           function raf(time) {
             lenis.raf(time);
+            videoScrubTick();
             requestAnimationFrame(raf);
           }
           requestAnimationFrame(raf);
@@ -217,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
           trigger: heroContainer,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: prefersReducedMotion ? false : 0.4, // Responsive, buttery momentum scrubbing
+          scrub: true, // Let Lenis handle the smoothing, no double interpolation
           onUpdate: () => {
             applyProgress(proxy.progress);
           }
@@ -289,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
           currentProgress += diff * 0.18;
           applyProgress(currentProgress);
         }
+        videoScrubTick();
         requestAnimationFrame(fallbackRafLoop);
       }
       requestAnimationFrame(fallbackRafLoop);
