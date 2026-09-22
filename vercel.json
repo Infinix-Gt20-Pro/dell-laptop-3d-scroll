@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "classic-computers",
+  "alias": [
+    "classic-computers-etah.vercel.app"
+  ],
+  "cleanUrls": true
+}
