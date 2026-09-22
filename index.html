@@ -48,12 +48,12 @@
       </nav>
 
       <div class="header-actions">
-        <button id="audio-toggle-btn" class="btn-pill-sm btn-secondary" title="Ambient Sound Experience">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="audio-toggle-btn" class="btn-audio-ghost" aria-label="Toggle ambient audio" title="Ambient Sound Experience" aria-pressed="false">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
           </svg>
-          <span id="audio-label">Sound On</span>
+          <span class="sr-only" id="audio-label">Sound On</span>
         </button>
         <a href="#configurator" class="btn-pill-sm btn-primary header-buy-btn">Buy Now</a>
         <button id="mobile-menu-btn" class="mobile-hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
@@ -115,8 +115,8 @@
         <div class="hud-layer">
           <div class="hud-top">
             <div class="hud-meta">
-              <span class="hud-mono">DELL TECHNOLOGIES // PRECISION LABS</span>
-              <span class="hud-mono" style="color: var(--accent-cyan);">XPS 15 · 9530 ULTRALIGHT EDITION</span>
+              <span class="hud-mono">Dell Technologies · Precision Labs</span>
+              <span class="hud-mono" style="color: var(--accent-cyan);">XPS 15 · 9530 Ultralight Edition</span>
             </div>
             <div class="hud-progress-block">
               <span id="progress-stage-text" class="progress-label">STAGE 01 / 05</span>
@@ -152,7 +152,7 @@
               <span class="dot"></span>
               01 // CRAFTSMANSHIP
             </div>
-            <h1 class="stage-title">PRECISION IN<br>SILENCE.</h1>
+            <h1 class="stage-title">Precision in<br>Silence.</h1>
             <p class="stage-desc">
               Carved from a singular block of aerospace-grade aluminum. Wrapped in an ethereal veil of smoke and engineered with pure structural integrity to eliminate micro-vibrations.
             </p>
@@ -178,7 +178,7 @@
               <span class="dot"></span>
               02 // INFINITYEDGE OLED
             </div>
-            <h2 class="stage-title">LUMINESCENT<br>DEPTH.</h2>
+            <h2 class="stage-title">Luminescent<br>Depth.</h2>
             <p class="stage-desc">
               The unibody hinge smoothly unlatches to reveal a borderless 15.6" 3.5K OLED canvas. 500 nits peak luminance, obsidian black levels, and 100% DCI-P3 color precision.
             </p>
@@ -204,7 +204,7 @@
               <span class="dot"></span>
               03 // SILICON ARCHITECTURE
             </div>
-            <h2 class="stage-title">TRANSLUCENT<br>COMPUTE.</h2>
+            <h2 class="stage-title">Translucent<br>Compute.</h2>
             <p class="stage-desc">
               Push straight through the glass into computational power. Intel® Core™ high-frequency multi-die architecture paired with high-bandwidth memory for realtime creative rendering.
             </p>
@@ -230,7 +230,7 @@
               <span class="dot"></span>
               04 // AEROSPACE PROFILE
             </div>
-            <h2 class="stage-title">MICRON-LEVEL<br>REFINEMENT.</h2>
+            <h2 class="stage-title">Micron-Level<br>Refinement.</h2>
             <p class="stage-desc">
               Double-anodized sidewalls provide a diamond-hard, scratch-resistant surface. Integrated dual Thunderbolt™ 4 ports and full-sized SD v6.0 reader with zero bezel gap.
             </p>
@@ -256,7 +256,7 @@
               <span class="dot"></span>
               05 // NEURAL PULSE
             </div>
-            <h2 class="stage-title">UNLEASHED<br>PERFORMANCE.</h2>
+            <h2 class="stage-title">Unleashed<br>Performance.</h2>
             <p class="stage-desc">
               Electric circuits illuminate the carbon-fiber deck and backlit keyboard. Discrete NVIDIA® GeForce RTX™ 4070 Studio graphics deliver instant AI upscaling and hardware ray tracing.
             </p>
@@ -290,7 +290,7 @@
             <span class="dot"></span>
             RAW POWER // THERMAL EQUILIBRIUM
           </div>
-          <h2>DESKTOP-CALIBER CREATIVE POWER.</h2>
+          <h2>Desktop-Caliber Creative Power.</h2>
           <p>Harness workstation-class computation without thermal throttling. Built for 3D animation, 8K RED RAW grading, and local LLM execution.</p>
         </div>
 
@@ -361,7 +361,7 @@
             <span class="dot"></span>
             HARDWARE INSPECTION
           </div>
-          <h2>THE ARCHITECTURE IN FOCUS.</h2>
+          <h2>The Architecture in Focus.</h2>
           <p>Explore the physical materials, diamond-cut CNC aluminum lid, and tactile carbon-fiber palm rest from every perspective.</p>
         </div>
 
@@ -427,7 +427,7 @@
             <span class="dot"></span>
             EDITIONS & PRICING
           </div>
-          <h2>CONFIGURE YOUR XPS 15.</h2>
+          <h2>Configure Your XPS 15.</h2>
           <p>Choose your configuration tailored for coding, video mastery, or 3D architectural rendering. Complimentary next-day priority dispatch included.</p>
         </div>
 
@@ -449,7 +449,7 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                NVIDIA® RTX™ 4050 (6GB GDDR6)
+                NVIDIA® GeForce RTX™ 4050 Graphics (6GB GDDR6)
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -484,7 +484,7 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                NVIDIA® RTX™ 4060 (8GB GDDR6)
+                NVIDIA® GeForce RTX™ 4060 Graphics (8GB GDDR6)
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -518,7 +518,7 @@
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                NVIDIA® RTX™ 4070 (8GB GDDR6 Studio)
+                NVIDIA® GeForce RTX™ 4070 Graphics (8GB GDDR6 Studio)
               </li>
               <li>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -550,29 +550,29 @@
             <span class="dot"></span>
             EXPANSION ARCHITECTURE
           </div>
-          <h2>STUDIO CONNECTIVITY. NO ADAPTERS NEEDED.</h2>
+          <h2>Studio Connectivity. No Adapters Needed.</h2>
           <p>Full-bandwidth 40Gbps Thunderbolt™ 4 ports and a dedicated full-sized SD card slot built directly into the aluminum sidewalls.</p>
         </div>
 
         <div class="ports-card">
           <div class="port-item">
             <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            <h4>2x Thunderbolt™ 4</h4>
+            <h3>2x Thunderbolt™ 4</h3>
             <p>40 Gbps data transfer, DisplayPort 1.4 video output, and 100W Power Delivery charging on both sides.</p>
           </div>
           <div class="port-item">
             <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <h4>Full-Size SD v6.0</h4>
+            <h3>Full-Size SD v6.0</h3>
             <p>Direct ingest for RED, Sony, and Canon camera media up to 312 MB/s without dangling dongles.</p>
           </div>
           <div class="port-item">
             <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-            <h4>1x USB-C 3.2 Gen 2</h4>
+            <h3>1x USB-C 3.2 Gen 2</h3>
             <p>High-speed 10Gbps accessory connection with full DisplayPort alt-mode compatibility.</p>
           </div>
           <div class="port-item">
             <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-            <h4>3.5mm Headphone Jack</h4>
+            <h3>3.5mm Headphone Jack</h3>
             <p>Audiophile studio jack supporting high-impedance studio monitoring headphones.</p>
           </div>
         </div>
@@ -588,14 +588,14 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <h3>DELL TECHNOLOGIES</h3>
+          <h3>Dell Technologies</h3>
           <p>
             The Dell XPS 15 is engineered in Round Rock, Texas. Built with 100% recycled aluminum packaging, zero plastics in ocean waste, and Energy Star® 8.0 certification.
           </p>
         </div>
 
         <div class="footer-col">
-          <h5>Hardware</h5>
+          <h4>Hardware</h4>
           <ul>
             <li><a href="#hero-scroll-container">Overview</a></li>
             <li><a href="#performance">Specifications</a></li>
@@ -605,7 +605,7 @@
         </div>
 
         <div class="footer-col">
-          <h5>Creator Suite</h5>
+          <h4>Creator Suite</h4>
           <ul>
             <li><a href="#performance">NVIDIA Studio Driver</a></li>
             <li><a href="#performance">Dell PremierColor</a></li>
@@ -615,7 +615,7 @@
         </div>
 
         <div class="footer-col">
-          <h5>Support</h5>
+          <h4>Support</h4>
           <ul>
             <li><a href="#configurator">Dell ProSupport Plus</a></li>
             <li><a href="#configurator">Accidental Damage</a></li>
@@ -627,7 +627,7 @@
 
       <div class="footer-bottom">
         <span>© 2026 Dell Inc. All rights reserved. XPS is a registered trademark of Dell Inc. Intel, Intel Core and the Intel logo are trademarks of Intel Corporation.</span>
-        <button id="back-to-top" class="back-to-top-btn" title="Back to Top">
+        <button id="back-to-top" class="back-to-top-btn" title="Back to Top" aria-label="Back to top">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
         </button>
       </div>
@@ -638,8 +638,8 @@
        Modals: Image Lightbox & Checkout Modal
        ===================================================================== -->
   <!-- Image Lightbox Modal -->
-  <div id="lightbox-modal" class="modal-overlay">
-    <button class="modal-close-btn" id="lightbox-close-btn">&times;</button>
+  <div id="lightbox-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Image inspection lightbox">
+    <button class="modal-close-btn" id="lightbox-close-btn" aria-label="Close image lightbox">&times;</button>
     <div class="lightbox-content">
       <img id="lightbox-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3C/svg%3E" alt="Hardware Inspection" loading="lazy" decoding="async">
       <div class="lightbox-caption" id="lightbox-caption"></div>
@@ -647,22 +647,22 @@
   </div>
 
   <!-- Order Checkout Simulation Modal -->
-  <div id="checkout-modal" class="modal-overlay">
+  <div id="checkout-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-order-title">
     <div class="modal-box">
-      <button class="modal-close-btn" id="checkout-close-btn">&times;</button>
+      <button class="modal-close-btn" id="checkout-close-btn" aria-label="Close order summary modal">&times;</button>
       <div class="eyebrow-badge">
         <span class="dot"></span>
         DELL DIRECT DISPATCH
       </div>
-      <h3 style="font-size: 1.8rem; margin-bottom: 8px;">Order Summary</h3>
-      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">Your custom workstation is assembled to order with 3-year Premium ProSupport.</p>
+      <h3 id="modal-order-title" style="font-size: var(--text-2xl); margin-bottom: 8px;">Order Summary</h3>
+      <p style="color: var(--text-secondary); font-size: var(--text-base); margin-bottom: 24px;">Your custom workstation is assembled to order with 3-year Premium ProSupport.</p>
       
-      <div style="background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-          <strong id="modal-model-title" style="font-size: 1.1rem;">Dell XPS 15 Studio Pro</strong>
-          <strong id="modal-model-price" style="color: var(--accent-cyan); font-size: 1.1rem;">$2,399</strong>
+          <strong id="modal-model-title" style="font-size: var(--text-lg);">Dell XPS 15 Studio Pro</strong>
+          <strong id="modal-model-price" style="color: var(--accent-cyan); font-size: var(--text-lg);">$2,399</strong>
         </div>
-        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        <div style="font-size: var(--text-sm); color: var(--text-muted); line-height: 1.5;">
           • CNC Platinum Silver Chassis with Black Carbon Fiber Deck<br>
           • Factory Calibrated 3.5K OLED 500 nits Display<br>
           • 130W Type-C Fast Charger Included<br>

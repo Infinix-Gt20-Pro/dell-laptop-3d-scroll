@@ -364,17 +364,21 @@ document.addEventListener('DOMContentLoaded', () => {
         lightboxCaption.textContent = galleryTitle.textContent;
       }
       lightboxModal.classList.add('active');
+      lightboxModal.setAttribute('aria-hidden', 'false');
     });
 
+    function closeLightbox() {
+      lightboxModal.classList.remove('active');
+      lightboxModal.setAttribute('aria-hidden', 'true');
+    }
+
     if (lightboxCloseBtn) {
-      lightboxCloseBtn.addEventListener('click', () => {
-        lightboxModal.classList.remove('active');
-      });
+      lightboxCloseBtn.addEventListener('click', closeLightbox);
     }
 
     lightboxModal.addEventListener('click', (e) => {
       if (e.target === lightboxModal) {
-        lightboxModal.classList.remove('active');
+        closeLightbox();
       }
     });
   }
@@ -400,12 +404,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modalModelTitle) modalModelTitle.textContent = `Dell XPS 15 ${model}`;
       if (modalModelPrice) modalModelPrice.textContent = `$${price}`;
 
-      if (checkoutModal) checkoutModal.classList.add('active');
+      if (checkoutModal) {
+        checkoutModal.classList.add('active');
+        checkoutModal.setAttribute('aria-hidden', 'false');
+      }
     });
   });
 
   function closeCheckout() {
-    if (checkoutModal) checkoutModal.classList.remove('active');
+    if (checkoutModal) {
+      checkoutModal.classList.remove('active');
+      checkoutModal.setAttribute('aria-hidden', 'true');
+    }
   }
 
   if (checkoutCloseBtn) checkoutCloseBtn.addEventListener('click', closeCheckout);
@@ -487,6 +497,10 @@ document.addEventListener('DOMContentLoaded', () => {
           masterGain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 1);
         }
         isPlayingAudio = true;
+        if (audioToggleBtn) {
+          audioToggleBtn.classList.add('active');
+          audioToggleBtn.setAttribute('aria-pressed', 'true');
+        }
         if (audioLabel) audioLabel.textContent = 'Mute';
         showToast('Ambient spatial soundscape active.');
       } catch (err) {
@@ -499,6 +513,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => audioCtx.suspend(), 500);
       }
       isPlayingAudio = false;
+      if (audioToggleBtn) {
+        audioToggleBtn.classList.remove('active');
+        audioToggleBtn.setAttribute('aria-pressed', 'false');
+      }
       if (audioLabel) audioLabel.textContent = 'Sound On';
     }
   }
