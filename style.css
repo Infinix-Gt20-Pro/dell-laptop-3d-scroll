@@ -1492,16 +1492,18 @@ h1, h2, h3, h4, h5, h6 {
   }
   .sticky-viewport {
     height: 100dvh;
-    min-height: -webkit-fill-available;
+    max-height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
   }
   #scroll-video {
     object-fit: cover;
-    object-position: center 38%; /* Keeps laptop center stage above bottom narrative card */
+    object-position: center 28%; /* Perfectly showcases the laptop screen and hinge above bottom cards */
   }
 
   /* HUD Overlays on Mobile */
   .hud-layer {
-    padding: calc(64px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+    padding: calc(64px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
   }
   .hud-meta {
     display: none;
@@ -1518,18 +1520,29 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.72rem;
   }
   .hud-bottom {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    position: absolute;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    left: 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 6;
   }
   .scroll-indicator {
-    font-size: 0.7rem;
-    gap: 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    gap: 7px;
+    display: inline-flex;
+    align-items: center;
   }
   .mouse-icon {
-    width: 16px;
-    height: 24px;
+    width: 14px;
+    height: 20px;
+    border-width: 1.5px;
   }
   .mouse-wheel {
     width: 2px;
@@ -1542,13 +1555,13 @@ h1, h2, h3, h4, h5, h6 {
   /* Narrative Stage Cards (Stage 01 - 05) Dedicated Mobile Flow */
   .stage-card {
     position: absolute;
-    bottom: calc(44px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(52px + env(safe-area-inset-bottom)) !important;
     top: auto !important;
-    left: 12px !important;
-    right: 12px !important;
-    max-width: calc(100% - 24px) !important;
+    left: 14px !important;
+    right: 14px !important;
+    max-width: calc(100% - 28px) !important;
     width: auto !important;
-    padding: 16px 16px 18px !important;
+    padding: 16px 16px 16px !important;
     border-radius: 18px !important;
     background: rgba(10, 13, 18, 0.94) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -1569,15 +1582,16 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 8px;
   }
   .stage-title {
-    font-size: clamp(1.35rem, 5.2vw, 1.85rem) !important;
+    font-size: clamp(1.28rem, 5vw, 1.75rem) !important;
     line-height: 1.15 !important;
     margin-bottom: 8px !important;
+    text-wrap: balance;
   }
   .stage-title br {
     display: inline;
   }
   .stage-desc {
-    font-size: 0.84rem !important;
+    font-size: 0.82rem !important;
     line-height: 1.45 !important;
     margin-bottom: 12px !important;
     display: -webkit-box;
@@ -1591,7 +1605,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   .mini-spec-pill {
     padding: 4px 8px;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     border-radius: 6px;
     gap: 4px;
   }
@@ -1606,20 +1620,21 @@ h1, h2, h3, h4, h5, h6 {
   .section-configurator,
   .section-ports {
     padding: 70px 0 50px;
-    scroll-margin-top: 70px;
+    scroll-margin-top: 80px;
   }
   .container {
     padding-left: 16px;
     padding-right: 16px;
   }
   .section-header {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
     text-align: left;
   }
   .section-header h2 {
-    font-size: clamp(1.75rem, 6.8vw, 2.4rem);
+    font-size: clamp(1.48rem, 6.2vw, 2.3rem);
     line-height: 1.15;
     margin-bottom: 12px;
+    text-wrap: balance;
   }
   .section-header p {
     font-size: 0.95rem;
@@ -1807,23 +1822,60 @@ h1, h2, h3, h4, h5, h6 {
     display: none; /* In super-compact headers, Buy Now lives in the mobile hamburger drawer */
   }
   .stage-card {
+    bottom: calc(44px + env(safe-area-inset-bottom)) !important;
     left: 8px !important;
     right: 8px !important;
     max-width: calc(100% - 16px) !important;
-    padding: 14px 12px !important;
+    padding: 12px 12px !important;
   }
   .stage-title {
-    font-size: 1.25rem !important;
+    font-size: 1.15rem !important;
+    line-height: 1.12 !important;
+    margin-bottom: 6px !important;
   }
   .stage-desc {
-    font-size: 0.78rem !important;
+    font-size: 0.76rem !important;
+    line-height: 1.4 !important;
     -webkit-line-clamp: 2;
+    margin-bottom: 8px !important;
+  }
+  .mini-spec-pill {
+    padding: 3px 6px;
+    font-size: 0.65rem;
   }
   .bento-card, .tier-card, .ports-card {
-    padding: 18px 14px;
+    padding: 16px 12px;
   }
   .bento-metric {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+  }
+  .section-header h2 {
+    font-size: 1.35rem !important;
+  }
+}
+
+/* Tablet & iPad Viewports (601px - 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .stage-card {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) translateY(30px) scale(0.96) !important;
+    width: 90% !important;
+    max-width: 520px !important;
+    bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+  }
+  .stage-card.active {
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px !important;
+  }
+  .col-8, .col-4, .col-6 {
+    grid-column: span 1 !important;
+  }
+  .col-12 {
+    grid-column: span 2 !important;
   }
 }
 

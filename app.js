@@ -119,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Pre-activate Stage 1 narrative card immediately on load
+  updateStageCards(0);
+
   // =========================================================================
   // 1. GSAP ScrollTrigger & Adaptive Scrubbing Engine
   // =========================================================================
