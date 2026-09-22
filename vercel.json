@@ -1,8 +1,18 @@
 {
-  "version": 2,
-  "name": "classic-computers",
-  "alias": [
-    "classic-computers-etah.vercel.app"
-  ],
-  "cleanUrls": true
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/assets/video/(.*)",
+      "headers": [
+        {
+          "key": "Accept-Ranges",
+          "value": "bytes"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
 }
