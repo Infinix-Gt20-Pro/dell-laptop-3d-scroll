@@ -505,6 +505,8 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Creator Edition · Factory Sealed',
       manufacturer: 'Dell Technologies',
       status: 'new',
+      grade: 'Brand New (Factory Sealed)',
+      gradePill: 'Brand New',
       price: '$1,899',
       conditionOverall: 'Brand New In Box (Factory Sealed)',
       cosmeticCondition: 'Pristine factory new, zero blemishes',
@@ -514,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% SMART Health (512GB PCIe Gen4 M.2 SSD)',
       performanceTest: 'Factory QC Certified Intel i7-13700H & RTX 4050',
       accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
-      warranty: 'Standard Manufacturer Warranty'
+      warranty: '3-Year Premium ProSupport / Official Manufacturer Warranty'
     },
     {
       id: 'xps-studio',
@@ -522,6 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Studio Pro · Factory Sealed',
       manufacturer: 'Dell Technologies',
       status: 'new',
+      grade: 'Brand New (Factory Sealed)',
+      gradePill: 'Brand New',
       price: '$2,399',
       conditionOverall: 'Brand New In Box (Factory Sealed)',
       cosmeticCondition: 'Pristine factory new, zero blemishes',
@@ -531,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% SMART Health (1TB PCIe Gen4 M.2 SSD)',
       performanceTest: 'Factory QC Certified Intel i9-13900H & RTX 4060',
       accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
-      warranty: 'Standard Manufacturer Warranty'
+      warranty: '3-Year Premium ProSupport / Official Manufacturer Warranty'
     },
     {
       id: 'xps-extreme',
@@ -539,6 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Extreme Performance · Factory Sealed',
       manufacturer: 'Dell Technologies',
       status: 'new',
+      grade: 'Brand New (Factory Sealed)',
+      gradePill: 'Brand New',
       price: '$2,999',
       conditionOverall: 'Brand New In Box (Factory Sealed)',
       cosmeticCondition: 'Pristine factory new, zero blemishes',
@@ -548,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% SMART Health (2TB PCIe Gen4 M.2 SSD)',
       performanceTest: 'Factory QC Certified Intel i9-13900H & RTX 4070',
       accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
-      warranty: 'Standard Manufacturer Warranty'
+      warranty: '3-Year Premium ProSupport / Official Manufacturer Warranty'
     },
     {
       id: 'latitude-5400',
@@ -556,6 +562,8 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Enterprise Workstation · Inspected',
       manufacturer: 'Dell Technologies',
       status: 'refurbished',
+      grade: 'Grade A (Corporate Workstation)',
+      gradePill: 'Grade A',
       price: '₹24,999',
       conditionOverall: 'Inspected Pre-Owned (Grade A)',
       cosmeticCondition: 'Minimal signs of wear, clean aluminum/composite chassis, no structural cracks or dents',
@@ -565,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% S.M.A.R.T. Health Score (512GB Fast NVMe SSD), zero bad sectors, sanitized',
       performanceTest: 'Passed 30-min sustained CPU stress & thermal benchmark loop without throttling',
       accessories: 'Original OEM Dell Power Adapter & Power Cable included',
-      warranty: 'Information available on request'
+      warranty: '3–6 Months Warranty Card Support (Hardware & Diagnostics Guarantee)'
     },
     {
       id: 'precision-5540',
@@ -573,8 +581,10 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Mobile Workstation CAD Edition · ISV Certified',
       manufacturer: 'Dell Technologies',
       status: 'refurbished',
+      grade: 'Grade A+ (Mint Workstation)',
+      gradePill: 'Grade A+',
       price: '₹48,999',
-      conditionOverall: 'Inspected Pre-Owned (Grade A)',
+      conditionOverall: 'Inspected Pre-Owned (Grade A+)',
       cosmeticCondition: 'Minor hairline lid scuffs consistent with light professional use, clean palm rest, zero structural dents',
       batteryCondition: 'Health Tested & Verified >85% original capacity, healthy discharge curve',
       displayCondition: '15.6" UltraSharp FHD 100% sRGB, zero dead pixels, anti-glare finish clean',
@@ -582,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% S.M.A.R.T. Health Score (512GB NVMe SSD), zero bad sectors, sanitized',
       performanceTest: 'Passed sustained multi-core benchmark with NVIDIA Quadro T1000 GPU stress test',
       accessories: 'Original OEM Dell High-Wattage Power Adapter included',
-      warranty: 'Information available on request'
+      warranty: '3–6 Months Warranty Card Support (Hardware & Diagnostics Guarantee)'
     },
     {
       id: 'thinkpad-t480',
@@ -590,6 +600,8 @@ document.addEventListener('DOMContentLoaded', () => {
       edition: 'Business Classic · Dual Battery',
       manufacturer: 'Lenovo',
       status: 'refurbished',
+      grade: 'Grade A (Business Classic)',
+      gradePill: 'Grade A',
       price: '₹22,999',
       conditionOverall: 'Inspected Pre-Owned (Grade A)',
       cosmeticCondition: 'Clean matte composite body, minimal wear on keycaps, zero chassis cracks',
@@ -599,17 +611,37 @@ document.addEventListener('DOMContentLoaded', () => {
       storageHealth: '100% S.M.A.R.T. Health Score (256GB NVMe SSD), zero bad sectors, sanitized',
       performanceTest: 'Passed 30-min multi-core CPU burn-in with dual thermal heatpipe verification',
       accessories: 'Original OEM Lenovo USB-C Fast Charger included',
-      warranty: 'Information available on request'
+      warranty: '3–6 Months Warranty Card Support (Hardware & Diagnostics Guarantee)'
     }
   ];
 
-  // Inventory Category Filter Tabs
+  // Inventory Category & Budget Dual Filtering
   const inventoryTabButtons = document.querySelectorAll('.inventory-tab-btn');
+  const budgetChipButtons = document.querySelectorAll('.budget-chip-btn');
   const inventoryCards = document.querySelectorAll('.inventory-card');
+
+  let currentCategoryFilter = 'all';
+  let currentBudgetFilter = 'all';
+
+  function filterInventory() {
+    inventoryCards.forEach((card) => {
+      const cardCategory = card.getAttribute('data-category');
+      const cardBudget = (card.getAttribute('data-budget') || '').split(/\s+/);
+
+      const matchesCategory = currentCategoryFilter === 'all' || cardCategory === currentCategoryFilter;
+      const matchesBudget = currentBudgetFilter === 'all' || cardBudget.includes(currentBudgetFilter);
+
+      if (matchesCategory && matchesBudget) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
 
   inventoryTabButtons.forEach((tab) => {
     tab.addEventListener('click', () => {
-      const filter = tab.getAttribute('data-filter');
+      currentCategoryFilter = tab.getAttribute('data-filter');
 
       inventoryTabButtons.forEach((btn) => {
         const isSelected = btn === tab;
@@ -617,14 +649,19 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
       });
 
-      inventoryCards.forEach((card) => {
-        const cardCategory = card.getAttribute('data-category');
-        if (filter === 'all' || cardCategory === filter) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
+      filterInventory();
+    });
+  });
+
+  budgetChipButtons.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      currentBudgetFilter = chip.getAttribute('data-budget');
+
+      budgetChipButtons.forEach((btn) => {
+        btn.classList.toggle('active', btn === chip);
       });
+
+      filterInventory();
     });
   });
 
@@ -632,6 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const productDetailModal = document.getElementById('product-detail-modal');
   const detailCloseBtn = document.getElementById('detail-close-btn');
   const detailModalBadge = document.getElementById('detail-modal-badge');
+  const detailModalGrade = document.getElementById('detail-modal-grade');
   const detailModalMfr = document.getElementById('detail-modal-mfr');
   const detailModalTitle = document.getElementById('detail-modal-title');
   const detailModalEdition = document.getElementById('detail-modal-edition');
@@ -667,6 +705,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    if (detailModalGrade) {
+      detailModalGrade.textContent = item.gradePill || 'Grade A';
+      if (item.gradePill === 'Grade A+') {
+        detailModalGrade.className = 'grade-pill-tag grade-pill-aplus';
+      } else if (item.gradePill === 'Grade A') {
+        detailModalGrade.className = 'grade-pill-tag grade-pill-a';
+      } else if (item.gradePill === 'Grade B') {
+        detailModalGrade.className = 'grade-pill-tag grade-pill-b';
+      } else {
+        detailModalGrade.className = 'grade-pill-tag grade-pill-new';
+      }
+    }
+
     if (detailCondOverall) detailCondOverall.textContent = item.conditionOverall;
     if (detailCondCosmetic) detailCondCosmetic.textContent = item.cosmeticCondition;
     if (detailCondBattery) detailCondBattery.textContent = item.batteryCondition;
@@ -677,9 +728,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (detailCondAccessories) detailCondAccessories.textContent = item.accessories;
     if (detailCondWarranty) detailCondWarranty.textContent = item.warranty;
 
-    // Compose WhatsApp inquiry link
+    // Compose WhatsApp inquiry link with exact product and grade
     if (detailWaBtn) {
-      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I would like to inquire about the ${item.name} (${item.edition}) listed on your website.`;
+      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I would like to inquire about the ${item.name} (${item.edition}) - ${item.grade || ''} listed for ${item.price} on your website.`;
       const waUrl = PARTNER_CONFIG.whatsappNumber
         ? `https://wa.me/${PARTNER_CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`
         : `https://wa.me/?text=${encodeURIComponent(waMsg)}`;
@@ -721,7 +772,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = LAPTOP_INVENTORY.find((x) => x.id === productId);
       const itemName = item ? item.name : 'laptop';
       const itemPrice = item ? item.price : '';
-      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I am inquiring about the ${itemName}${itemPrice ? ` (${itemPrice})` : ''} listed on your website.`;
+      const itemGrade = item && item.grade ? ` [${item.grade}]` : '';
+      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I would like to inquire about the ${itemName}${itemGrade} (${itemPrice}) listed on your website.`;
       const waUrl = PARTNER_CONFIG.whatsappNumber
         ? `https://wa.me/${PARTNER_CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`
         : `https://wa.me/?text=${encodeURIComponent(waMsg)}`;

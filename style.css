@@ -2611,7 +2611,488 @@ html.lenis, html.lenis body {
 }
 
 /* ==========================================================================
-   Responsive Adaptations for Inspection & Inventory
+   3-Tier Hardware Grading Transparency Standard (PRD Standard)
+   ========================================================================== */
+.grading-system-card {
+  margin-top: 56px;
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.grading-system-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 36px auto;
+}
+
+.grading-system-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 12px 0 10px 0;
+}
+
+.grading-system-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.grading-tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.grading-tier-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s var(--ease-out), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grading-tier-box:hover {
+  transform: translateY(-4px);
+}
+
+.grade-aplus-box {
+  border-color: rgba(52, 211, 153, 0.25);
+}
+
+.grade-aplus-box:hover {
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: 0 8px 30px rgba(52, 211, 153, 0.12);
+}
+
+.grade-a-box {
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.grade-a-box:hover {
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 8px 30px rgba(56, 189, 248, 0.12);
+}
+
+.grade-b-box {
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.grade-b-box:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.12);
+}
+
+.grading-badge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.grade-tier-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+.grade-pill-aplus {
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: #34d399;
+}
+
+.grade-pill-a {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: var(--accent-cyan);
+}
+
+.grade-pill-b {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #f59e0b;
+}
+
+.grade-pill-new {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.grade-condition-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.grade-specs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.grade-specs-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.grade-specs-list li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #34d399;
+}
+
+.grade-specs-list li strong {
+  color: var(--text-primary);
+}
+
+.grade-warranty-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.grade-shield-icon {
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   Budget & Persona Filter Bar
+   ========================================================================== */
+.budget-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: -24px;
+  margin-bottom: 44px;
+}
+
+.budget-filter-label {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.budget-chips-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.budget-chip-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.budget-chip-btn:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.budget-chip-btn.active {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+}
+
+.grade-pill-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: inline-block;
+}
+
+.card-trust-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.06);
+  border: 1px solid rgba(52, 211, 153, 0.18);
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+/* ==========================================================================
+   Section: Operations Flow — Order Se Delivery Tak
+   ========================================================================== */
+.section-operations {
+  position: relative;
+  padding: 120px 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 10;
+  scroll-margin-top: 90px;
+}
+
+.operations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.operation-step-card {
+  background: rgba(13, 17, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.3s var(--ease-out), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.operation-step-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.operation-step-card.step-featured {
+  background: linear-gradient(135deg, rgba(13, 17, 23, 0.8) 0%, rgba(52, 211, 153, 0.06) 100%);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.operation-step-card.step-featured:hover {
+  border-color: rgba(52, 211, 153, 0.6);
+  box-shadow: 0 10px 30px rgba(52, 211, 153, 0.15);
+}
+
+.step-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.step-num-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  padding: 3px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.06em;
+}
+
+.step-badge-highlight {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
+.step-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.step-icon-highlight {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+.step-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==========================================================================
+   Section: Instagram Live Content & Social Proof
+   ========================================================================== */
+.section-instagram {
+  position: relative;
+  padding: 80px 0 100px 0;
+  background: linear-gradient(to bottom, var(--bg-primary) 0%, #050608 100%);
+  z-index: 10;
+  scroll-margin-top: 90px;
+}
+
+.instagram-banner-box {
+  background: linear-gradient(135deg, rgba(20, 24, 33, 0.8) 0%, rgba(13, 17, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 56px 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.instagram-banner-box::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(225, 48, 108, 0.12) 0%, rgba(131, 58, 180, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+.instagram-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.instagram-banner-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 16px 0 12px 0;
+}
+
+.instagram-banner-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto 36px auto;
+}
+
+.instagram-banner-desc strong {
+  color: var(--accent-cyan);
+}
+
+.instagram-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.ig-highlight-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 18px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ig-highlight-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.ig-highlight-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ig-highlight-text strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.ig-highlight-text span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.instagram-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-ig-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: #fff !important;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(225, 48, 108, 0.3);
+}
+
+.btn-ig-primary:hover {
+  opacity: 0.95;
+  box-shadow: 0 8px 25px rgba(225, 48, 108, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Responsive Adaptations for Inspection, Inventory, Operations & Instagram
    ========================================================================== */
 @media (max-width: 1024px) {
   .refurb-pillars-grid {
@@ -2623,11 +3104,21 @@ html.lenis, html.lenis body {
   .inventory-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .grading-tiers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .operations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .instagram-highlights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .section-inspection,
-  .section-inventory {
+  .section-inventory,
+  .section-operations {
     padding: 80px 0;
   }
   .refurb-explainer-card {
@@ -2642,6 +3133,25 @@ html.lenis, html.lenis body {
   }
   .inventory-grid {
     grid-template-columns: 1fr;
+  }
+  .grading-tiers-grid {
+    grid-template-columns: 1fr;
+  }
+  .operations-grid {
+    grid-template-columns: 1fr;
+  }
+  .instagram-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+  .grading-system-card {
+    padding: 24px 18px;
+  }
+  .instagram-banner-box {
+    padding: 32px 20px;
+  }
+  .budget-filter-bar {
+    flex-direction: column;
+    gap: 8px;
   }
   .modal-box-large {
     padding: 24px 18px;
