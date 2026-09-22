@@ -489,7 +489,250 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 3. Model Configurator & Checkout Flow
+  // 3. Classic Computer Empire Partner & Laptop Inventory System
+  // =========================================================================
+  const PARTNER_CONFIG = {
+    businessName: 'Classic Computer Empire',
+    instagramUrl: 'https://www.instagram.com/classic.computer.empire/',
+    whatsappNumber: '', // Configurable placeholder; strictly no invented numbers
+    whatsappDefaultMsg: 'Hello Classic Computer Empire, I would like to inquire about the laptop inventory listed on your website.'
+  };
+
+  const LAPTOP_INVENTORY = [
+    {
+      id: 'xps-creator',
+      name: 'Dell XPS 15 9530',
+      edition: 'Creator Edition · Factory Sealed',
+      manufacturer: 'Dell Technologies',
+      status: 'new',
+      price: '$1,899',
+      conditionOverall: 'Brand New In Box (Factory Sealed)',
+      cosmeticCondition: 'Pristine factory new, zero blemishes',
+      batteryCondition: '100% Factory capacity (86Whr internal)',
+      displayCondition: '15.6" FHD+ 500 nits, factory calibrated',
+      keyboardInput: 'New backlit chiclet keyboard & precision glass touchpad',
+      storageHealth: '100% SMART Health (512GB PCIe Gen4 M.2 SSD)',
+      performanceTest: 'Factory QC Certified Intel i7-13700H & RTX 4050',
+      accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
+      warranty: 'Standard Manufacturer Warranty'
+    },
+    {
+      id: 'xps-studio',
+      name: 'Dell XPS 15 9530',
+      edition: 'Studio Pro · Factory Sealed',
+      manufacturer: 'Dell Technologies',
+      status: 'new',
+      price: '$2,399',
+      conditionOverall: 'Brand New In Box (Factory Sealed)',
+      cosmeticCondition: 'Pristine factory new, zero blemishes',
+      batteryCondition: '100% Factory capacity (86Whr internal)',
+      displayCondition: '15.6" 3.5K OLED Touch, factory calibrated',
+      keyboardInput: 'New backlit chiclet keyboard & precision glass touchpad',
+      storageHealth: '100% SMART Health (1TB PCIe Gen4 M.2 SSD)',
+      performanceTest: 'Factory QC Certified Intel i9-13900H & RTX 4060',
+      accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
+      warranty: 'Standard Manufacturer Warranty'
+    },
+    {
+      id: 'xps-extreme',
+      name: 'Dell XPS 15 9530',
+      edition: 'Extreme Performance · Factory Sealed',
+      manufacturer: 'Dell Technologies',
+      status: 'new',
+      price: '$2,999',
+      conditionOverall: 'Brand New In Box (Factory Sealed)',
+      cosmeticCondition: 'Pristine factory new, zero blemishes',
+      batteryCondition: '100% Factory capacity (86Whr internal)',
+      displayCondition: '15.6" 3.5K OLED Anti-Reflective, factory calibrated',
+      keyboardInput: 'New backlit chiclet keyboard & precision glass touchpad',
+      storageHealth: '100% SMART Health (2TB PCIe Gen4 M.2 SSD)',
+      performanceTest: 'Factory QC Certified Intel i9-13900H & RTX 4070',
+      accessories: 'Original Dell 130W USB-C charger & cable in sealed box',
+      warranty: 'Standard Manufacturer Warranty'
+    },
+    {
+      id: 'latitude-5400',
+      name: 'Dell Latitude 5400',
+      edition: 'Enterprise Workstation · Inspected',
+      manufacturer: 'Dell Technologies',
+      status: 'refurbished',
+      price: '₹24,999',
+      conditionOverall: 'Inspected Pre-Owned (Grade A)',
+      cosmeticCondition: 'Minimal signs of wear, clean aluminum/composite chassis, no structural cracks or dents',
+      batteryCondition: 'Health Tested & Verified >85% original capacity, healthy charge retention',
+      displayCondition: 'Clean 14.0" FHD panel, zero dead pixels, uniform backlighting, smooth hinge action',
+      keyboardInput: '100% key actuation tested, tactile response verified, precision tracking fully functional',
+      storageHealth: '100% S.M.A.R.T. Health Score (512GB Fast NVMe SSD), zero bad sectors, sanitized',
+      performanceTest: 'Passed 30-min sustained CPU stress & thermal benchmark loop without throttling',
+      accessories: 'Original OEM Dell Power Adapter & Power Cable included',
+      warranty: 'Information available on request'
+    },
+    {
+      id: 'precision-5540',
+      name: 'Dell Precision 5540',
+      edition: 'Mobile Workstation CAD Edition · ISV Certified',
+      manufacturer: 'Dell Technologies',
+      status: 'refurbished',
+      price: '₹48,999',
+      conditionOverall: 'Inspected Pre-Owned (Grade A)',
+      cosmeticCondition: 'Minor hairline lid scuffs consistent with light professional use, clean palm rest, zero structural dents',
+      batteryCondition: 'Health Tested & Verified >85% original capacity, healthy discharge curve',
+      displayCondition: '15.6" UltraSharp FHD 100% sRGB, zero dead pixels, anti-glare finish clean',
+      keyboardInput: 'Backlit keyboard responsive, all shortcuts functional, smooth glass touchpad',
+      storageHealth: '100% S.M.A.R.T. Health Score (512GB NVMe SSD), zero bad sectors, sanitized',
+      performanceTest: 'Passed sustained multi-core benchmark with NVIDIA Quadro T1000 GPU stress test',
+      accessories: 'Original OEM Dell High-Wattage Power Adapter included',
+      warranty: 'Information available on request'
+    },
+    {
+      id: 'thinkpad-t480',
+      name: 'Lenovo ThinkPad T480',
+      edition: 'Business Classic · Dual Battery',
+      manufacturer: 'Lenovo',
+      status: 'refurbished',
+      price: '₹22,999',
+      conditionOverall: 'Inspected Pre-Owned (Grade A)',
+      cosmeticCondition: 'Clean matte composite body, minimal wear on keycaps, zero chassis cracks',
+      batteryCondition: 'Dual internal & external hot-swap batteries tested >85% combined capacity',
+      displayCondition: '14.0" FHD IPS panel, vibrant colors, zero dead pixels, firm stainless steel hinges',
+      keyboardInput: 'Legendary spill-resistant ThinkPad keyboard 100% functional, TrackPoint & touchpad responsive',
+      storageHealth: '100% S.M.A.R.T. Health Score (256GB NVMe SSD), zero bad sectors, sanitized',
+      performanceTest: 'Passed 30-min multi-core CPU burn-in with dual thermal heatpipe verification',
+      accessories: 'Original OEM Lenovo USB-C Fast Charger included',
+      warranty: 'Information available on request'
+    }
+  ];
+
+  // Inventory Category Filter Tabs
+  const inventoryTabButtons = document.querySelectorAll('.inventory-tab-btn');
+  const inventoryCards = document.querySelectorAll('.inventory-card');
+
+  inventoryTabButtons.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const filter = tab.getAttribute('data-filter');
+
+      inventoryTabButtons.forEach((btn) => {
+        const isSelected = btn === tab;
+        btn.classList.toggle('active', isSelected);
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      });
+
+      inventoryCards.forEach((card) => {
+        const cardCategory = card.getAttribute('data-category');
+        if (filter === 'all' || cardCategory === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Product Inspection Detail Modal Elements
+  const productDetailModal = document.getElementById('product-detail-modal');
+  const detailCloseBtn = document.getElementById('detail-close-btn');
+  const detailModalBadge = document.getElementById('detail-modal-badge');
+  const detailModalMfr = document.getElementById('detail-modal-mfr');
+  const detailModalTitle = document.getElementById('detail-modal-title');
+  const detailModalEdition = document.getElementById('detail-modal-edition');
+  const detailModalPrice = document.getElementById('detail-modal-price');
+
+  const detailCondOverall = document.getElementById('detail-cond-overall');
+  const detailCondCosmetic = document.getElementById('detail-cond-cosmetic');
+  const detailCondBattery = document.getElementById('detail-cond-battery');
+  const detailCondDisplay = document.getElementById('detail-cond-display');
+  const detailCondInput = document.getElementById('detail-cond-input');
+  const detailCondStorage = document.getElementById('detail-cond-storage');
+  const detailCondPerf = document.getElementById('detail-cond-perf');
+  const detailCondAccessories = document.getElementById('detail-cond-accessories');
+  const detailCondWarranty = document.getElementById('detail-cond-warranty');
+  const detailWaBtn = document.getElementById('detail-wa-btn');
+
+  function openProductDetail(productId) {
+    const item = LAPTOP_INVENTORY.find((x) => x.id === productId);
+    if (!item || !productDetailModal) return;
+
+    if (detailModalTitle) detailModalTitle.textContent = item.name;
+    if (detailModalEdition) detailModalEdition.textContent = item.edition;
+    if (detailModalPrice) detailModalPrice.textContent = item.price;
+    if (detailModalMfr) detailModalMfr.textContent = item.manufacturer;
+
+    if (detailModalBadge) {
+      if (item.status === 'refurbished') {
+        detailModalBadge.className = 'product-badge badge-refurbished';
+        detailModalBadge.innerHTML = '<span class="badge-dot"></span> REFURBISHED';
+      } else {
+        detailModalBadge.className = 'product-badge badge-new';
+        detailModalBadge.innerHTML = '<span class="badge-dot"></span> NEW';
+      }
+    }
+
+    if (detailCondOverall) detailCondOverall.textContent = item.conditionOverall;
+    if (detailCondCosmetic) detailCondCosmetic.textContent = item.cosmeticCondition;
+    if (detailCondBattery) detailCondBattery.textContent = item.batteryCondition;
+    if (detailCondDisplay) detailCondDisplay.textContent = item.displayCondition;
+    if (detailCondInput) detailCondInput.textContent = item.keyboardInput;
+    if (detailCondStorage) detailCondStorage.textContent = item.storageHealth;
+    if (detailCondPerf) detailCondPerf.textContent = item.performanceTest;
+    if (detailCondAccessories) detailCondAccessories.textContent = item.accessories;
+    if (detailCondWarranty) detailCondWarranty.textContent = item.warranty;
+
+    // Compose WhatsApp inquiry link
+    if (detailWaBtn) {
+      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I would like to inquire about the ${item.name} (${item.edition}) listed on your website.`;
+      const waUrl = PARTNER_CONFIG.whatsappNumber
+        ? `https://wa.me/${PARTNER_CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`
+        : `https://wa.me/?text=${encodeURIComponent(waMsg)}`;
+      detailWaBtn.href = waUrl;
+    }
+
+    productDetailModal.classList.add('active');
+    productDetailModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-is-open');
+  }
+
+  function closeProductDetail() {
+    if (productDetailModal) {
+      productDetailModal.classList.remove('active');
+      productDetailModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-is-open');
+    }
+  }
+
+  if (detailCloseBtn) detailCloseBtn.addEventListener('click', closeProductDetail);
+  if (productDetailModal) {
+    productDetailModal.addEventListener('click', (e) => {
+      if (e.target === productDetailModal) closeProductDetail();
+    });
+  }
+
+  // Trigger buttons: View Specs / Condition Report
+  document.querySelectorAll('.view-specs-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const productId = btn.getAttribute('data-id');
+      openProductDetail(productId);
+    });
+  });
+
+  // Trigger buttons: Direct Ask on WhatsApp
+  document.querySelectorAll('.ask-wa-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const productId = btn.getAttribute('data-id');
+      const item = LAPTOP_INVENTORY.find((x) => x.id === productId);
+      const itemName = item ? item.name : 'laptop';
+      const itemPrice = item ? item.price : '';
+      const waMsg = `Hello ${PARTNER_CONFIG.businessName}, I am inquiring about the ${itemName}${itemPrice ? ` (${itemPrice})` : ''} listed on your website.`;
+      const waUrl = PARTNER_CONFIG.whatsappNumber
+        ? `https://wa.me/${PARTNER_CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`
+        : `https://wa.me/?text=${encodeURIComponent(waMsg)}`;
+
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      showToast(`Connecting to WhatsApp inquiry for ${itemName}...`);
+    });
+  });
+
+  // =========================================================================
+  // 4. Model Configurator & Checkout Flow
   // =========================================================================
   const checkoutModal = document.getElementById('checkout-modal');
   const checkoutCloseBtn = document.getElementById('checkout-close-btn');
@@ -706,8 +949,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const navTrackedSections = [
     { id: 'hero-scroll-container', linkSelector: 'a[href="#hero-scroll-container"]' },
     { id: 'performance', linkSelector: 'a[href="#performance"]' },
+    { id: 'inspection', linkSelector: 'a[href="#inspection"]' },
+    { id: 'inventory', linkSelector: 'a[href="#inventory"]' },
     { id: 'gallery', linkSelector: 'a[href="#gallery"]' },
-    { id: 'configurator', linkSelector: 'a[href="#configurator"]' },
     { id: 'ports', linkSelector: 'a[href="#ports"]' }
   ];
 
@@ -737,6 +981,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // Scroll listener for nav active indicators
+  window.addEventListener('scroll', updateActiveNavLink, { passive: true });
 
   // Initial call
   updateActiveNavLink();
