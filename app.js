@@ -106,13 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Update HUD Progress Bar
     if (progressBarFill) {
-      progressBarFill.style.width = `${(clamped * 100).toFixed(1)}%`;
+      progressBarFill.style.transform = `scaleX(${clamped})`;
     }
 
     // 3. Update Narrative Stage Overlays
     updateStageCards(clamped);
   }
 
+  let currentStage = -1;
   // Synchronized narrative stage cards (01 to 05)
   function updateStageCards(progress) {
     let activeStage = 1;
@@ -127,6 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       activeStage = 5;
     }
+
+    if (currentStage === activeStage) return;
+    currentStage = activeStage;
 
     if (progressStageText) {
       progressStageText.textContent = `STAGE 0${activeStage} / 05`;
