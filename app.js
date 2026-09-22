@@ -1,11 +1,15 @@
 /**
  * Dell XPS 15 — 3D Scroll Cinematic Experience
- * High-Performance Hardware-Accelerated Video Scrubbing Engine
+ * High-Performance Hardware-Accelerated Video Scrubbing & Motion Engine
+ * Standards: ThreeUI / Three.js-Level Motion Quality, Fluidity & Responsiveness
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const video = document.getElementById('scroll-video');
+  const videoCanvasWrap = document.querySelector('.video-canvas-wrap');
+  const cinematicVignette = document.querySelector('.cinematic-vignette');
+  const hudLayer = document.querySelector('.hud-layer');
   const heroContainer = document.getElementById('hero-scroll-container');
   const progressBarFill = document.getElementById('progress-bar-fill');
   const progressStageText = document.getElementById('progress-stage-text');
@@ -15,23 +19,40 @@ document.addEventListener('DOMContentLoaded', () => {
   let videoDuration = 10.0;
   let isVideoReady = false;
   let isSeeking = false;
-  let pendingTargetTime = null;
-  let lastSeekTime = 0;
+  let queuedTargetTime = null;
+  let lastCommittedTime = -1;
   let decoderPrimed = false;
   let isEngineInitialized = false;
 
-  // Configure video element for low-latency scrubbing
+  // Motion Interpolation State
+  let targetProgress = 0;
+  let smoothProgress = 0;
+  let currentStage = -1;
+
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Configure video element for ultra-low-latency scrubbing
   if (video) {
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
     video.preload = 'auto';
+
     video.addEventListener('seeked', () => {
       isSeeking = false;
+      if (queuedTargetTime !== null) {
+        const nextTime = queuedTargetTime;
+        queuedTargetTime = null;
+        dispatchVideoSeek(nextTime);
+      }
+    });
+
+    video.addEventListener('error', (err) => {
+      console.warn('Video element state event:', err);
     });
   }
 
-  // Prime hardware video decoder pipeline on first user interaction
+  // Prime hardware video decoder pipeline on first user interaction or idle
   function primeDecoder() {
     if (decoderPrimed || !video) return;
     decoderPrimed = true;
@@ -50,24 +71,66 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchstart', primeDecoder, { once: true, passive: true });
   window.addEventListener('click', primeDecoder, { once: true, passive: true });
 
-  let globalTargetProgress = 0;
-  let lastVideoTimeUpdate = -1;
+  // Low-latency hardware seek dispatcher with ordered non-blocking queue
+  function dispatchVideoSeek(targetSeconds) {
+    if (!video || !isVideoReady || videoDuration <= 0) return;
 
-  // Single scheduler tick function (called from GSAP or Lenis RAF)
+    if (isSeeking) {
+      queuedTargetTime = targetSeconds;
+      return;
+    }
+
+    // Deadband threshold: avoid redundant micro-seeks under ~1 video frame (~0.016s)
+    if (Math.abs(lastCommittedTime - targetSeconds) < 0.016) {
+      return;
+    }
+
+    isSeeking = true;
+    lastCommittedTime = targetSeconds;
+
+    if (typeof video.fastSeek === 'function') {
+      try {
+        video.fastSeek(targetSeconds);
+      } catch (err) {
+        video.currentTime = targetSeconds;
+      }
+    } else {
+      video.currentTime = targetSeconds;
+    }
+  }
+
+  // Single scheduler tick function (called from GSAP / Lenis RAF loop)
   function videoScrubTick() {
-    if (video && isVideoReady && videoDuration > 0 && !isSeeking) {
-      const targetSeconds = globalTargetProgress * videoDuration;
-      const clampedTarget = Math.max(0.001, Math.min(videoDuration - 0.02, targetSeconds));
-      
-      // Prevent microscopic seek spam to preserve main thread performance
-      if (Math.abs(lastVideoTimeUpdate - clampedTarget) > 0.03) {
-        try {
-          isSeeking = true;
-          video.currentTime = clampedTarget;
-          lastVideoTimeUpdate = clampedTarget;
-        } catch (err) {
-          isSeeking = false;
-        }
+    if (!video || !isVideoReady || videoDuration <= 0) return;
+
+    // Smooth exponential lerp interpolation towards target scroll progress
+    const lerpRate = prefersReducedMotion ? 1.0 : 0.22;
+    smoothProgress += (targetProgress - smoothProgress) * lerpRate;
+
+    // Convert progress to exact clamped seconds
+    const targetSeconds = Math.max(0.001, Math.min(videoDuration - 0.02, smoothProgress * videoDuration));
+    dispatchVideoSeek(targetSeconds);
+
+    // Subtle optical parallax and camera zoom layers (ThreeUI depth aesthetic)
+    if (!prefersReducedMotion && window.innerWidth > 768) {
+      if (videoCanvasWrap) {
+        const subtleZoom = 1 + smoothProgress * 0.035;
+        const subtleY = smoothProgress * -16;
+        videoCanvasWrap.style.transform = `translate3d(0, ${subtleY.toFixed(2)}px, 0) scale(${subtleZoom.toFixed(4)})`;
+      }
+      if (cinematicVignette) {
+        const vignetteY = smoothProgress * 14;
+        cinematicVignette.style.transform = `translate3d(0, ${vignetteY.toFixed(2)}px, 0)`;
+      }
+    }
+
+    // Graceful HUD dissolve when transitioning out of hero pinned section
+    if (hudLayer) {
+      if (smoothProgress > 0.93) {
+        const fadeOut = Math.max(0, (1 - smoothProgress) / 0.07);
+        hudLayer.style.opacity = fadeOut.toFixed(3);
+      } else {
+        hudLayer.style.opacity = '1';
       }
     }
   }
@@ -75,19 +138,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // Master update pipeline: Synchronizes video, HUD, and narrative stage cards
   function applyProgress(progress) {
     const clamped = Math.max(0, Math.min(1, progress));
-    globalTargetProgress = clamped;
+    targetProgress = clamped;
 
-    // 2. Update HUD Progress Bar
+    // 1. Update HUD Progress Bar
     if (progressBarFill) {
       progressBarFill.style.transform = `scaleX(${clamped})`;
     }
 
-    // 3. Update Narrative Stage Overlays
+    // 2. Update Narrative Stage Overlays with Continuous Choreography
     updateStageCards(clamped);
   }
 
-  let currentStage = -1;
-  // Synchronized narrative stage cards (01 to 05)
+  // Synchronized narrative stage cards (01 to 05) with fluid timing
   function updateStageCards(progress) {
     let activeStage = 1;
     if (progress < 0.20) {
@@ -123,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateStageCards(0);
 
   // =========================================================================
-  // 1. GSAP ScrollTrigger & Adaptive Scrubbing Engine
+  // 1. GSAP ScrollTrigger & Momentum Smooth Scroll Engine
   // =========================================================================
   function initScrollEngine() {
     if (isEngineInitialized) return;
@@ -141,26 +203,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
-    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let lenis = null;
 
     // Initialize Lenis Momentum Smooth Scroll Engine (Wheel-Only, Pure Native Touch)
     if (typeof Lenis !== 'undefined') {
       try {
         lenis = new Lenis({
-          duration: prefersReducedMotion ? 0.01 : 0.95,
+          duration: prefersReducedMotion ? 0.01 : 1.15,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           orientation: 'vertical',
           smoothWheel: !prefersReducedMotion,
           wheelMultiplier: 0.95,
           touchMultiplier: 1.0,
-          smoothTouch: false, // Strict native touch on mobile/touchscreens
+          smoothTouch: false, // Strict native touch on mobile/touchscreens for 120Hz responsiveness
           syncTouch: false,
         });
         window._lenisInstance = lenis;
 
         lenis.on('scroll', () => {
           if (hasGSAP) ScrollTrigger.update();
+          updateActiveNavLink();
         });
 
         if (hasGSAP) {
@@ -248,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (heroContainer) {
       // Fallback RAF Lerp Engine
       let currentProgress = 0;
-      let targetProgress = 0;
+      let targetProgressVal = 0;
 
       function calcProgress() {
         const rect = heroContainer.getBoundingClientRect();
@@ -258,11 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       window.addEventListener('scroll', () => {
-        targetProgress = calcProgress();
+        targetProgressVal = calcProgress();
+        updateActiveNavLink();
       }, { passive: true });
 
       function fallbackRafLoop() {
-        const diff = targetProgress - currentProgress;
+        const diff = targetProgressVal - currentProgress;
         if (Math.abs(diff) > 0.001) {
           currentProgress += diff * 0.18;
           applyProgress(currentProgress);
@@ -297,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 350);
 
   // =========================================================================
-  // 2. Multi-Angle Interactive Product Gallery
+  // 2. Multi-Angle Interactive Product Gallery (Zero-Flicker Crossfade)
   // =========================================================================
   const galleryActiveImg = document.getElementById('gallery-active-img');
   const galleryTitle = document.getElementById('gallery-title');
@@ -306,8 +369,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const galleryThumbs = document.querySelectorAll('.gallery-thumb');
   const galleryTabBtns = document.querySelectorAll('.gallery-tab-btn');
 
+  // Preload all 6 high-resolution perspective images during idle
+  const allGalleryImages = [
+    'assets/images/dell-angled-open.jpg',
+    'assets/images/dell-lid-perspective.jpg',
+    'assets/images/dell-display-closeup.jpg',
+    'assets/images/dell-lid-topdown.jpg',
+    'assets/images/dell-front-open.jpg',
+    'assets/images/dell-deck-vertical.jpg'
+  ];
+
+  function preloadGalleryImages() {
+    allGalleryImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(preloadGalleryImages);
+  } else {
+    setTimeout(preloadGalleryImages, 1000);
+  }
+
+  let isGalleryTransitioning = false;
+
   galleryThumbs.forEach((thumb) => {
     thumb.addEventListener('click', () => {
+      if (thumb.classList.contains('active')) return;
+
       galleryThumbs.forEach((t) => t.classList.remove('active'));
       thumb.classList.add('active');
 
@@ -317,11 +407,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const desc = thumb.getAttribute('data-desc') || '';
 
       if (galleryActiveImg) {
-        galleryActiveImg.style.opacity = '0';
-        setTimeout(() => {
+        // Smooth optical refocusing transition with subtle scale
+        galleryActiveImg.style.transition = 'opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+        galleryActiveImg.style.opacity = '0.35';
+        galleryActiveImg.style.transform = 'scale(1.035)';
+
+        const newImg = new Image();
+        newImg.src = imgSrc;
+        const commitImageSwap = () => {
           galleryActiveImg.src = imgSrc;
           galleryActiveImg.style.opacity = '1';
-        }, 150);
+          galleryActiveImg.style.transform = 'scale(1.0)';
+        };
+
+        if (newImg.complete) {
+          setTimeout(commitImageSwap, 80);
+        } else {
+          newImg.onload = commitImageSwap;
+        }
       }
 
       if (galleryTitle) galleryTitle.textContent = title;
@@ -365,11 +468,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       lightboxModal.classList.add('active');
       lightboxModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-is-open');
     });
 
     function closeLightbox() {
       lightboxModal.classList.remove('active');
       lightboxModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-is-open');
     }
 
     if (lightboxCloseBtn) {
@@ -407,6 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (checkoutModal) {
         checkoutModal.classList.add('active');
         checkoutModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-is-open');
       }
     });
   });
@@ -415,6 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutModal) {
       checkoutModal.classList.remove('active');
       checkoutModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-is-open');
     }
   }
 
@@ -449,7 +556,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
       if (window._lenisInstance) {
-        window._lenisInstance.scrollTo(0, { duration: 1.0 });
+        window._lenisInstance.scrollTo(0, { 
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -526,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 6. Smooth In-Page Anchor Navigation & Mobile Drawer
+  // 6. Smooth In-Page Anchor Navigation & Active State Tracking
   // =========================================================================
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileNavDrawer = document.getElementById('mobile-nav-drawer');
@@ -579,7 +689,11 @@ document.addEventListener('DOMContentLoaded', () => {
         closeMobileNav();
         const offsetValue = window.innerWidth <= 768 ? -70 : -90;
         if (window._lenisInstance) {
-          window._lenisInstance.scrollTo(targetEl, { offset: offsetValue, duration: 0.9 });
+          window._lenisInstance.scrollTo(targetEl, { 
+            offset: offsetValue, 
+            duration: 1.15,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+          });
         } else {
           const top = targetEl.getBoundingClientRect().top + window.pageYOffset + offsetValue;
           window.scrollTo({ top, behavior: 'smooth' });
@@ -587,5 +701,43 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-});
 
+  // Dynamic active navigation indicator tracking
+  const navTrackedSections = [
+    { id: 'hero-scroll-container', linkSelector: 'a[href="#hero-scroll-container"]' },
+    { id: 'performance', linkSelector: 'a[href="#performance"]' },
+    { id: 'gallery', linkSelector: 'a[href="#gallery"]' },
+    { id: 'configurator', linkSelector: 'a[href="#configurator"]' },
+    { id: 'ports', linkSelector: 'a[href="#ports"]' }
+  ];
+
+  function updateActiveNavLink() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let currentActiveId = 'hero-scroll-container';
+
+    for (let i = navTrackedSections.length - 1; i >= 0; i--) {
+      const sec = document.getElementById(navTrackedSections[i].id);
+      if (sec) {
+        const top = sec.offsetTop - 140;
+        if (scrollY >= top) {
+          currentActiveId = navTrackedSections[i].id;
+          break;
+        }
+      }
+    }
+
+    navTrackedSections.forEach((item) => {
+      const links = document.querySelectorAll(item.linkSelector);
+      links.forEach((link) => {
+        if (item.id === currentActiveId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+  }
+
+  // Initial call
+  updateActiveNavLink();
+});

@@ -232,16 +232,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-links a {
+  position: relative;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 500;
   transition: color var(--duration-fast);
   letter-spacing: 0.02em;
+  padding: 4px 0;
 }
 
-.nav-links a:hover {
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-cyan);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
   color: var(--text-primary);
+}
+
+.nav-links a.active::after {
+  transform: scaleX(1);
 }
 
 .header-actions {
@@ -257,12 +278,16 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--duration-fast);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   border: none;
   font-family: inherit;
+  will-change: transform;
 }
 
 .btn-primary {
@@ -272,8 +297,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary:hover {
   background: var(--accent-cyan);
-  box-shadow: 0 0 20px var(--accent-cyan-glow);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.45);
+  transform: translate3d(0, -2px, 0);
+}
+
+.btn-primary:active {
+  transform: translate3d(0, 0, 0) scale(0.98);
 }
 
 .btn-secondary {
@@ -284,7 +313,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translate3d(0, -2px, 0);
+}
+
+.btn-secondary:active {
+  transform: translate3d(0, 0, 0) scale(0.98);
 }
 
 /* Subtle Icon-Only Audio Toggle Button */
@@ -545,6 +579,10 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   z-index: 1;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 #scroll-video {
@@ -553,8 +591,9 @@ h1, h2, h3, h4, h5, h6 {
   object-fit: cover;
   object-position: center;
   opacity: 0.95;
-  will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Cinematic Vignette Overlays */
@@ -569,7 +608,9 @@ h1, h2, h3, h4, h5, h6 {
   background: radial-gradient(circle at center, transparent 40%, rgba(7, 8, 10, 0.6) 80%, rgba(7, 8, 10, 0.95) 100%),
               linear-gradient(to bottom, rgba(7, 8, 10, 0.7) 0%, transparent 20%, transparent 80%, rgba(7, 8, 10, 0.95) 100%);
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* HUD Interface (Persistent Over Video) */
@@ -728,13 +769,15 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(10, 12, 16, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
-              0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85),
+              0 0 0 1px rgba(255, 255, 255, 0.06);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(30px) scale(0.96);
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out), visibility 0.5s;
+  transform: translate3d(0, 26px, 0) scale(0.97);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.45s;
   will-change: opacity, transform;
 }
 
@@ -742,7 +785,91 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Staggered micro-choreography for stage card contents */
+.stage-card .eyebrow-badge {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.04s;
+}
+
+.stage-card.active .eyebrow-badge {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stage-card .stage-title {
+  font-size: var(--text-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 16px;
+  text-transform: none;
+  background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.1s;
+}
+
+.stage-card.active .stage-title {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stage-card .stage-desc {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.16s;
+}
+
+.stage-card.active .stage-desc {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.stage-card .stage-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stage-card .stage-tags .mini-spec-pill {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.96);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-card.active .stage-tags .mini-spec-pill:nth-child(1) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0.22s;
+}
+
+.stage-card.active .stage-tags .mini-spec-pill:nth-child(2) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0.28s;
+}
+
+.stage-card.active .stage-tags .mini-spec-pill:nth-child(3) {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0.34s;
 }
 
 /* Card Placements for dynamic composition */
@@ -769,31 +896,6 @@ h1, h2, h3, h4, h5, h6 {
 .stage-card[data-stage="5"] {
   left: 8%;
   text-align: left;
-}
-
-.stage-title {
-  font-size: var(--text-display);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  margin-bottom: 16px;
-  text-transform: none;
-  background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.stage-desc {
-  font-size: var(--text-base);
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-.stage-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 .mini-spec-pill {
@@ -851,20 +953,22 @@ h1, h2, h3, h4, h5, h6 {
 .bento-card {
   background: var(--bg-card);
   backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
   padding: 36px;
   position: relative;
   overflow: hidden;
-  transition: transform var(--duration-normal) var(--ease-out),
-              border-color var(--duration-normal) var(--ease-out),
-              box-shadow var(--duration-normal) var(--ease-out);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  will-change: transform, border-color, box-shadow;
 }
 
 .bento-card:hover {
-  transform: translateY(-4px);
+  transform: translate3d(0, -4px, 0);
   border-color: var(--border-hover);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-cyan-glow);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 32px var(--accent-cyan-glow);
 }
 
 .bento-card::before {
@@ -1019,11 +1123,12 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease-out), opacity 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 
 .gallery-main-view:hover img {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
 
 .zoom-badge {
@@ -1075,7 +1180,10 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   border: 2px solid transparent;
   background: #000;
-  transition: all var(--duration-fast);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 .gallery-thumb img {
@@ -1085,13 +1193,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gallery-thumb:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.035);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .gallery-thumb.active {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 15px var(--accent-cyan-glow);
+  box-shadow: 0 0 20px var(--accent-cyan-glow);
+  transform: scale(1.02);
 }
 
 /* ==========================================================================
@@ -1121,13 +1230,16 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: all var(--duration-normal) var(--ease-out);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  will-change: transform, border-color, box-shadow;
 }
 
 .tier-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  transform: translate3d(0, -6px, 0);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.08);
 }
 
 .tier-card.featured {
@@ -1268,6 +1380,19 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.3s ease,
+              border-color 0.3s ease;
+  will-change: transform;
+}
+
+.port-item:hover {
+  transform: translate3d(0, -3px, 0);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(56, 189, 248, 0.25);
 }
 
 .port-item .port-icon {
@@ -1380,6 +1505,17 @@ h1, h2, h3, h4, h5, h6 {
 /* ==========================================================================
    Interactive Modals & Overlays (Lightbox & Order Flow)
    ========================================================================== */
+/* Background page recess when modal is active */
+main {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+  will-change: transform, filter;
+}
+
+body.modal-is-open main {
+  transform: scale(0.985);
+  filter: brightness(0.75);
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1396,7 +1532,7 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
   padding: 24px;
 }
 
@@ -1416,12 +1552,15 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   position: relative;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.08);
-  transform: scale(0.95);
-  transition: transform 0.3s var(--ease-out);
+  transform: translate3d(0, 24px, 0) scale(0.96);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 
 .modal-overlay.active .modal-box {
-  transform: scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
 }
 
 .modal-close-btn {
@@ -1447,11 +1586,21 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Image Lightbox View */
 .lightbox-content {
+  position: relative;
   max-width: 90vw;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transform: translate3d(0, 24px, 0) scale(0.96);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.modal-overlay.active .lightbox-content {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
 }
 
 .lightbox-content img {
@@ -2017,6 +2166,15 @@ html.lenis, html.lenis body {
   .stage-card {
     transition: opacity 0.1s linear !important;
     transform: none !important;
+  }
+
+  .stage-card .eyebrow-badge,
+  .stage-card .stage-title,
+  .stage-card .stage-desc,
+  .stage-card .mini-spec-pill {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .scroll-reveal {
