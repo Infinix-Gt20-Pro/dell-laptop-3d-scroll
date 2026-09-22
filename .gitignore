@@ -9,6 +9,11 @@ audit-*.js
 diagnose*.js
 node_modules/
 
+# Local server and run scripts (not needed for Vercel static hosting)
+server.js
+scripts/
+start.bat
+
 # Loose root media (assets/video/dell-scroll.mp4 is kept)
 Dell_laptop_product_video_*.mp4
 Laptop_video_generation_storyboard_*.mp4
