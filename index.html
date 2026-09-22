@@ -55,7 +55,36 @@
           </svg>
           <span id="audio-label">Sound On</span>
         </button>
-        <a href="#configurator" class="btn-pill-sm btn-primary">Buy Now</a>
+        <a href="#configurator" class="btn-pill-sm btn-primary header-buy-btn">Buy Now</a>
+        <button id="mobile-menu-btn" class="mobile-hamburger" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true">
+      <div class="mobile-nav-backdrop"></div>
+      <div class="mobile-nav-panel">
+        <div class="mobile-nav-header">
+          <div class="mobile-nav-brand">
+            <span class="brand-text">DELL XPS 15</span>
+            <span class="brand-sub">PRECISION DIRECT</span>
+          </div>
+          <button id="mobile-nav-close" class="mobile-nav-close-btn" aria-label="Close menu">&times;</button>
+        </div>
+        <ul class="mobile-nav-links">
+          <li><a href="#hero-scroll-container" class="mobile-nav-link"><span class="nav-num">01</span> Overview</a></li>
+          <li><a href="#performance" class="mobile-nav-link"><span class="nav-num">02</span> Performance</a></li>
+          <li><a href="#gallery" class="mobile-nav-link"><span class="nav-num">03</span> Gallery</a></li>
+          <li><a href="#configurator" class="mobile-nav-link"><span class="nav-num">04</span> Configurations</a></li>
+          <li><a href="#ports" class="mobile-nav-link"><span class="nav-num">05</span> Connectivity</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+          <a href="#configurator" class="btn-mobile-order mobile-nav-link">Configure & Buy Now</a>
+        </div>
       </div>
     </div>
   </header>

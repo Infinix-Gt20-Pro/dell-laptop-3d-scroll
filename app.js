@@ -505,8 +505,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 6. Smooth In-Page Anchor Navigation
+  // 6. Smooth In-Page Anchor Navigation & Mobile Drawer
   // =========================================================================
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileNavDrawer = document.getElementById('mobile-nav-drawer');
+  const mobileNavClose = document.getElementById('mobile-nav-close');
+  const mobileNavBackdrop = document.querySelector('.mobile-nav-backdrop');
+
+  function openMobileNav() {
+    if (!mobileNavDrawer) return;
+    mobileNavDrawer.classList.add('open');
+    mobileNavDrawer.setAttribute('aria-hidden', 'false');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.classList.add('active');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    if (!mobileNavDrawer) return;
+    mobileNavDrawer.classList.remove('open');
+    mobileNavDrawer.setAttribute('aria-hidden', 'true');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.classList.remove('active');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+      if (mobileNavDrawer && mobileNavDrawer.classList.contains('open')) {
+        closeMobileNav();
+      } else {
+        openMobileNav();
+      }
+    });
+  }
+
+  if (mobileNavClose) mobileNavClose.addEventListener('click', closeMobileNav);
+  if (mobileNavBackdrop) mobileNavBackdrop.addEventListener('click', closeMobileNav);
+
+  // Close drawer on link click and smoothly scroll to section
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -514,9 +555,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
         e.preventDefault();
-        const offsetValue = -90; // Provide clear breathing room beneath floating header
+        closeMobileNav();
+        const offsetValue = window.innerWidth <= 768 ? -70 : -90;
         if (window._lenisInstance) {
-          window._lenisInstance.scrollTo(targetEl, { offset: offsetValue, duration: 1.0 });
+          window._lenisInstance.scrollTo(targetEl, { offset: offsetValue, duration: 0.9 });
         } else {
           const top = targetEl.getBoundingClientRect().top + window.pageYOffset + offsetValue;
           window.scrollTo({ top, behavior: 'smooth' });
@@ -525,3 +567,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
