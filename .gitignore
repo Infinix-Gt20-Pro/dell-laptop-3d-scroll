@@ -1,0 +1,14 @@
+# Test and temporary artifacts
+*.png
+*.log
+*.zip
+WhatsApp*
+test-*.js
+verify-*.js
+audit-*.js
+diagnose*.js
+node_modules/
+
+# Loose root media (assets/video/dell-scroll.mp4 is kept)
+Dell_laptop_product_video_*.mp4
+Laptop_video_generation_storyboard_*.mp4

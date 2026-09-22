@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dell XPS 15 — Precision Engineered. A Higher Dimension.</title>
+  <meta name="description" content="Explore the new Dell XPS 15. CNC machined aluminum, carbon-fiber palm rest, 3.5K OLED InfinityEdge display, and NVIDIA Studio graphics in an ultra-thin masterpiece.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22%2338bdf8%22 stroke-width=%228%22/><text x=%2250%22 y=%2258%22 font-family=%22sans-serif%22 font-weight=%22900%22 font-size=%2226%22 fill=%22%23ffffff%22 text-anchor=%22middle%22>DELL</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Lenis Momentum Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+</head>
+<body>
+
+  <!-- Floating Glass Navigation Bar -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#hero-scroll-container" class="brand-logo">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="16" cy="16" r="14"></circle>
+          <path d="M10 12h12M10 16h8M10 20h12"></path>
+        </svg>
+        <span>DELL</span>
+        <span class="brand-badge">XPS 15</span>
+      </a>
+
+      <nav class="nav-menu">
+        <ul class="nav-links">
+          <li><a href="#hero-scroll-container">Overview</a></li>
+          <li><a href="#performance">Performance</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#configurator">Configurations</a></li>
+          <li><a href="#ports">Connectivity</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button id="audio-toggle-btn" class="btn-pill-sm btn-secondary" title="Ambient Sound Experience">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span id="audio-label">Sound On</span>
+        </button>
+        <a href="#configurator" class="btn-pill-sm btn-primary">Buy Now</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =====================================================================
+         Hero Scroll Canvas Container (Pinned 4-Stage Cinematic Scrub)
+         ===================================================================== -->
+    <section id="hero-scroll-container">
+      <div class="sticky-viewport">
+        
+        <!-- Video Canvas Canvas / Stream -->
+        <div class="video-canvas-wrap">
+          <video 
+            id="scroll-video" 
+            src="assets/video/dell-scroll.mp4" 
+            muted 
+            playsinline 
+            preload="auto"
+            webkit-playsinline>
+          </video>
+        </div>
+
+        <!-- Cinematic Vignette & Ambient Fog Gradients -->
+        <div class="cinematic-vignette"></div>
+
+        <!-- HUD Layer: Meta, Scroll Position, Progress & Live Specs -->
+        <div class="hud-layer">
+          <div class="hud-top">
+            <div class="hud-meta">
+              <span class="hud-mono">DELL TECHNOLOGIES // PRECISION LABS</span>
+              <span class="hud-mono" style="color: var(--accent-cyan);">XPS 15 · 9530 ULTRALIGHT EDITION</span>
+            </div>
+            <div class="hud-progress-block">
+              <span id="progress-stage-text" class="progress-label">STAGE 01 / 05</span>
+              <div class="progress-track">
+                <div id="progress-bar-fill" class="progress-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hud-bottom">
+            <div class="scroll-indicator">
+              <div class="mouse-icon">
+                <div class="mouse-wheel"></div>
+              </div>
+              <span>Scroll to Scrub Frames</span>
+            </div>
+            
+            <div class="specs-live-pill">
+              <span><strong>Weight</strong> 1.86 kg</span>
+              <span><strong>Chassis</strong> CNC Aluminum</span>
+              <span><strong>Display</strong> 3.5K OLED</span>
+              <span><strong>GPU</strong> RTX 4070</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synchronized Narrative Stage Overlays (5-Stage Storyboard) -->
+        <div class="narrative-stage-layer">
+          
+          <!-- Stage 1 (0.0s - 2.0s): Dark Studio Smoke & Closed Unibody -->
+          <div class="stage-card active" data-stage="1">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              01 // CRAFTSMANSHIP
+            </div>
+            <h1 class="stage-title">PRECISION IN<br>SILENCE.</h1>
+            <p class="stage-desc">
+              Carved from a singular block of aerospace-grade aluminum. Wrapped in an ethereal veil of smoke and engineered with pure structural integrity to eliminate micro-vibrations.
+            </p>
+            <div class="stage-tags">
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Unibody Aluminum
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+                18mm Razor-Thin
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                Diamond Cut Bevels
+              </span>
+            </div>
+          </div>
+
+          <!-- Stage 2 (2.0s - 3.8s): Laptop Unfolds & Screen Awakens -->
+          <div class="stage-card" data-stage="2">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              02 // INFINITYEDGE OLED
+            </div>
+            <h2 class="stage-title">LUMINESCENT<br>DEPTH.</h2>
+            <p class="stage-desc">
+              The unibody hinge smoothly unlatches to reveal a borderless 15.6" 3.5K OLED canvas. 500 nits peak luminance, obsidian black levels, and 100% DCI-P3 color precision.
+            </p>
+            <div class="stage-tags">
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/></svg>
+                92.9% Screen-to-Body
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                500 Nits Peak HDR
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+                100,000:1 Contrast
+              </span>
+            </div>
+          </div>
+
+          <!-- Stage 3 (3.8s - 5.8s): Plunge into Translucent Silicon Chips -->
+          <div class="stage-card" data-stage="3">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              03 // SILICON ARCHITECTURE
+            </div>
+            <h2 class="stage-title">TRANSLUCENT<br>COMPUTE.</h2>
+            <p class="stage-desc">
+              Push straight through the glass into computational power. Intel® Core™ high-frequency multi-die architecture paired with high-bandwidth memory for realtime creative rendering.
+            </p>
+            <div class="stage-tags">
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+                14 Hybrid Cores
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                5.4 GHz Turbo
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                64GB DDR5 5200 MT/s
+              </span>
+            </div>
+          </div>
+
+          <!-- Stage 4 (5.8s - 7.8s): Macro Chamfered Sidewalls & Ports -->
+          <div class="stage-card" data-stage="4">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              04 // AEROSPACE PROFILE
+            </div>
+            <h2 class="stage-title">MICRON-LEVEL<br>REFINEMENT.</h2>
+            <p class="stage-desc">
+              Double-anodized sidewalls provide a diamond-hard, scratch-resistant surface. Integrated dual Thunderbolt™ 4 ports and full-sized SD v6.0 reader with zero bezel gap.
+            </p>
+            <div class="stage-tags">
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Double Anodized
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Dual Thunderbolt™ 4
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                Full-Size SD v6.0
+              </span>
+            </div>
+          </div>
+
+          <!-- Stage 5 (7.8s - 10.0s): Cybernetic Energy Pulses on Deck -->
+          <div class="stage-card" data-stage="5">
+            <div class="eyebrow-badge">
+              <span class="dot"></span>
+              05 // NEURAL PULSE
+            </div>
+            <h2 class="stage-title">UNLEASHED<br>PERFORMANCE.</h2>
+            <p class="stage-desc">
+              Electric circuits illuminate the carbon-fiber deck and backlit keyboard. Discrete NVIDIA® GeForce RTX™ 4070 Studio graphics deliver instant AI upscaling and hardware ray tracing.
+            </p>
+            <div class="stage-tags">
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/></svg>
+                RTX 4070 Studio
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Dual Vapor Chamber
+              </span>
+              <span class="mini-spec-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                NVIDIA DLSS 3
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         Section: Performance Bento Grid
+         ===================================================================== -->
+    <section id="performance" class="section-performance">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow-badge">
+            <span class="dot"></span>
+            RAW POWER // THERMAL EQUILIBRIUM
+          </div>
+          <h2>DESKTOP-CALIBER CREATIVE POWER.</h2>
+          <p>Harness workstation-class computation without thermal throttling. Built for 3D animation, 8K RED RAW grading, and local LLM execution.</p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Card 1: Processor -->
+          <div class="bento-card col-8">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+            </div>
+            <div class="bento-metric">5.4 <span class="unit">GHz Turbo</span></div>
+            <h3>13th Gen Intel® Core™ i9-13900H</h3>
+            <p>14 high-performance hybrid cores (6 Performance + 8 Efficient) and 20 threads. Delivers effortless multi-threaded rendering in Cinema4D, Blender, and Unreal Engine 5.</p>
+          </div>
+
+          <!-- Card 2: GPU -->
+          <div class="bento-card col-4">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div class="bento-metric">RTX <span class="unit">4070</span></div>
+            <h3>NVIDIA® Studio Graphics</h3>
+            <p>8GB GDDR6 dedicated VRAM with 3rd-Gen RT cores and 4th-Gen Tensor cores. Hardware-accelerated AI upscaling and real-time ray tracing.</p>
+          </div>
+
+          <!-- Card 3: Memory & Storage -->
+          <div class="bento-card col-4">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </div>
+            <div class="bento-metric">64 <span class="unit">GB DDR5</span></div>
+            <h3>5200 MT/s Dual Channel</h3>
+            <p>Load immense timeline caches instantly. Expandable dual SODIMM slots with up to 4TB PCIe Gen4 NVMe storage reaching 7,000 MB/s.</p>
+          </div>
+
+          <!-- Card 4: Vapor Chamber Thermals -->
+          <div class="bento-card col-4">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="bento-metric">31% <span class="unit">More Airflow</span></div>
+            <h3>Dual Opposite Exhaust Fans</h3>
+            <p>GORE™ Thermal Insulation with ultra-thin liquid-crystal polymer fan blades that quietly exhaust heat through hidden hinge exhaust vents.</p>
+            <div class="thermal-bar-wrap">
+              <div class="thermal-bar-fill"></div>
+            </div>
+          </div>
+
+          <!-- Card 5: Waves Audio Array -->
+          <div class="bento-card col-4">
+            <div class="bento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </div>
+            <div class="bento-metric">8W <span class="unit">Quad Sound</span></div>
+            <h3>Studio Waves Nx® 3D Audio</h3>
+            <p>Discrete 2.5W woofers and 1.5W tweeters tuned by multi-Grammy Award-winning producer Jack Joseph Puig for spatial immersion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         Section: Multi-Angle Interactive Product Gallery
+         ===================================================================== -->
+    <section id="gallery" class="section-gallery">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow-badge">
+            <span class="dot"></span>
+            HARDWARE INSPECTION
+          </div>
+          <h2>THE ARCHITECTURE IN FOCUS.</h2>
+          <p>Explore the physical materials, diamond-cut CNC aluminum lid, and tactile carbon-fiber palm rest from every perspective.</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="gallery-tabs">
+          <button class="gallery-tab-btn active" data-filter="all">All Perspectives</button>
+          <button class="gallery-tab-btn" data-filter="lid">CNC Aluminum Lid</button>
+          <button class="gallery-tab-btn" data-filter="deck">Carbon Fiber Deck</button>
+          <button class="gallery-tab-btn" data-filter="display">InfinityEdge Display</button>
+        </div>
+
+        <!-- Showcase Box -->
+        <div class="gallery-showcase">
+          <div class="gallery-main-view" id="gallery-lightbox-trigger" title="Click to view full resolution">
+            <img id="gallery-active-img" src="assets/images/dell-angled-open.jpg" alt="Dell XPS 15 Hardware Architecture" decoding="async" width="1600" height="1000">
+            <div class="zoom-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              Click to Inspect 4K
+            </div>
+          </div>
+
+          <div class="gallery-details">
+            <div>
+              <div class="eyebrow-badge" id="gallery-category-badge">3/4 WORKSTATION PERSPECTIVE</div>
+              <h3 class="gallery-view-title" id="gallery-title">Carbon-Fiber Deck & Backlit Keyboard</h3>
+              <p class="gallery-view-desc" id="gallery-desc">
+                The open chassis showcases the ergonomic chiclet keyboard with 1.3mm travel, surrounded by an expansive glass Precision touchpad and the tactile carbon-fiber weave that stays cool against your wrists.
+              </p>
+            </div>
+
+            <div class="gallery-thumbs-grid">
+              <div class="gallery-thumb active" data-img="assets/images/dell-angled-open.jpg" data-cat="deck" data-title="Carbon-Fiber Deck & Backlit Keyboard" data-desc="The open chassis showcases the ergonomic chiclet keyboard with 1.3mm travel, surrounded by an expansive glass Precision touchpad and tactile carbon-fiber weave.">
+                <img src="assets/images/dell-angled-open.jpg" alt="Angled View" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+              <div class="gallery-thumb" data-img="assets/images/dell-lid-perspective.jpg" data-cat="lid" data-title="Machined Aluminum Top Shell" data-desc="Sculpted from a single solid block of aluminum. The center-embossed Dell metallic emblem reflects light with jewelry-grade luster.">
+                <img src="assets/images/dell-lid-perspective.jpg" alt="Lid Perspective" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+              <div class="gallery-thumb" data-img="assets/images/dell-display-closeup.jpg" data-cat="display" data-title="InfinityEdge Borderless Display" data-desc="Vibrant forest lake wallpaper demonstrates the razor-thin bezels, saturated emerald tones, and deep shadow gradation.">
+                <img src="assets/images/dell-display-closeup.jpg" alt="Display Closeup" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+              <div class="gallery-thumb" data-img="assets/images/dell-lid-topdown.jpg" data-cat="lid" data-title="Clean Minimalist Lid Profile" data-desc="Ultra-smooth matte platinum silver finish with bead-blasted texture and chamfered edges designed for effortless slip into any briefcase.">
+                <img src="assets/images/dell-lid-topdown.jpg" alt="Lid Top Down" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+              <div class="gallery-thumb" data-img="assets/images/dell-front-open.jpg" data-cat="display" data-title="Frontal Command Center" data-desc="Symmetric top and bottom spacing, integrated Windows Hello IR facial recognition camera in the top bezel, and dual-microphone noise cancellation array.">
+                <img src="assets/images/dell-front-open.jpg" alt="Front Open" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+              <div class="gallery-thumb" data-img="assets/images/dell-deck-vertical.jpg" data-cat="deck" data-title="Precision Glass Touchpad" data-desc="Large multi-touch glass surface with seamless palm rejection and smooth glide friction engineered for exacting timeline scrubbing.">
+                <img src="assets/images/dell-deck-vertical.jpg" alt="Deck Vertical" loading="lazy" decoding="async" width="320" height="200">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         Section: Interactive Model Configurator
+         ===================================================================== -->
+    <section id="configurator" class="section-configurator">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow-badge">
+            <span class="dot"></span>
+            EDITIONS & PRICING
+          </div>
+          <h2>CONFIGURE YOUR XPS 15.</h2>
+          <p>Choose your configuration tailored for coding, video mastery, or 3D architectural rendering. Complimentary next-day priority dispatch included.</p>
+        </div>
+
+        <div class="tier-cards-grid">
+          
+          <!-- Tier 1: Creator Edition -->
+          <div class="tier-card" data-tier="creator">
+            <div class="tier-header">
+              <h3 class="tier-name">Creator Edition</h3>
+              <p class="tier-subtitle">For digital artists, photographers, and developers.</p>
+            </div>
+            <div class="tier-price-box">
+              <div class="tier-price"><span class="currency">$</span>1,899</div>
+            </div>
+            <ul class="tier-specs-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Intel® Core™ i7-13700H (14-Core)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                NVIDIA® RTX™ 4050 (6GB GDDR6)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                16GB DDR5 5200MHz RAM
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                512GB PCIe Gen4 M.2 SSD
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                15.6" FHD+ (1920x1200) 500 nits
+              </li>
+            </ul>
+            <button class="btn-tier btn-tier-outline select-config-btn" data-model="Creator Edition" data-price="1,899">Configure Model</button>
+          </div>
+
+          <!-- Tier 2: Studio Pro (Featured) -->
+          <div class="tier-card featured" data-tier="studio">
+            <div class="popular-badge">MOST POPULAR // STUDIO PICK</div>
+            <div class="tier-header">
+              <h3 class="tier-name">Studio Pro</h3>
+              <p class="tier-subtitle">Engineered for 4K video editing, colorists, and AI workflows.</p>
+            </div>
+            <div class="tier-price-box">
+              <div class="tier-price"><span class="currency">$</span>2,399</div>
+            </div>
+            <ul class="tier-specs-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Intel® Core™ i9-13900H (14-Core, 5.4GHz)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                NVIDIA® RTX™ 4060 (8GB GDDR6)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                32GB DDR5 5200MHz RAM
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                1TB PCIe Gen4 M.2 SSD
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                15.6" 3.5K (3456x2160) OLED Touch
+              </li>
+            </ul>
+            <button class="btn-tier btn-tier-primary select-config-btn" data-model="Studio Pro" data-price="2,399">Order Studio Pro</button>
+          </div>
+
+          <!-- Tier 3: Extreme Performance -->
+          <div class="tier-card" data-tier="extreme">
+            <div class="tier-header">
+              <h3 class="tier-name">Extreme Performance</h3>
+              <p class="tier-subtitle">Unthrottled computing for real-time VFX and 3D simulation.</p>
+            </div>
+            <div class="tier-price-box">
+              <div class="tier-price"><span class="currency">$</span>2,999</div>
+            </div>
+            <ul class="tier-specs-list">
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Intel® Core™ i9-13900H (14-Core, 5.4GHz)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                NVIDIA® RTX™ 4070 (8GB GDDR6 Studio)
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                64GB DDR5 5200MHz RAM
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                2TB PCIe Gen4 NVMe SSD
+              </li>
+              <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                15.6" 3.5K OLED Anti-Reflective 500 nits
+              </li>
+            </ul>
+            <button class="btn-tier btn-tier-outline select-config-btn" data-model="Extreme Performance" data-price="2,999">Configure Model</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         Section: Architecture & Connectivity Ports
+         ===================================================================== -->
+    <section id="ports" class="section-ports">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow-badge">
+            <span class="dot"></span>
+            EXPANSION ARCHITECTURE
+          </div>
+          <h2>STUDIO CONNECTIVITY. NO ADAPTERS NEEDED.</h2>
+          <p>Full-bandwidth 40Gbps Thunderbolt™ 4 ports and a dedicated full-sized SD card slot built directly into the aluminum sidewalls.</p>
+        </div>
+
+        <div class="ports-card">
+          <div class="port-item">
+            <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <h4>2x Thunderbolt™ 4</h4>
+            <p>40 Gbps data transfer, DisplayPort 1.4 video output, and 100W Power Delivery charging on both sides.</p>
+          </div>
+          <div class="port-item">
+            <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <h4>Full-Size SD v6.0</h4>
+            <p>Direct ingest for RED, Sony, and Canon camera media up to 312 MB/s without dangling dongles.</p>
+          </div>
+          <div class="port-item">
+            <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+            <h4>1x USB-C 3.2 Gen 2</h4>
+            <p>High-speed 10Gbps accessory connection with full DisplayPort alt-mode compatibility.</p>
+          </div>
+          <div class="port-item">
+            <svg class="port-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+            <h4>3.5mm Headphone Jack</h4>
+            <p>Audiophile studio jack supporting high-impedance studio monitoring headphones.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       Site Footer
+       ===================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>DELL TECHNOLOGIES</h3>
+          <p>
+            The Dell XPS 15 is engineered in Round Rock, Texas. Built with 100% recycled aluminum packaging, zero plastics in ocean waste, and Energy Star® 8.0 certification.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Hardware</h5>
+          <ul>
+            <li><a href="#hero-scroll-container">Overview</a></li>
+            <li><a href="#performance">Specifications</a></li>
+            <li><a href="#gallery">Visual Gallery</a></li>
+            <li><a href="#configurator">Configure & Price</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Creator Suite</h5>
+          <ul>
+            <li><a href="#performance">NVIDIA Studio Driver</a></li>
+            <li><a href="#performance">Dell PremierColor</a></li>
+            <li><a href="#performance">Waves Nx® 3D Sound</a></li>
+            <li><a href="#ports">Thunderbolt 4 Hubs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Support</h5>
+          <ul>
+            <li><a href="#configurator">Dell ProSupport Plus</a></li>
+            <li><a href="#configurator">Accidental Damage</a></li>
+            <li><a href="#configurator">Warranty Status</a></li>
+            <li><a href="#configurator">Contact Studio Specialist</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Dell Inc. All rights reserved. XPS is a registered trademark of Dell Inc. Intel, Intel Core and the Intel logo are trademarks of Intel Corporation.</span>
+        <button id="back-to-top" class="back-to-top-btn" title="Back to Top">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       Modals: Image Lightbox & Checkout Modal
+       ===================================================================== -->
+  <!-- Image Lightbox Modal -->
+  <div id="lightbox-modal" class="modal-overlay">
+    <button class="modal-close-btn" id="lightbox-close-btn">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3C/svg%3E" alt="Hardware Inspection" loading="lazy" decoding="async">
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- Order Checkout Simulation Modal -->
+  <div id="checkout-modal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="checkout-close-btn">&times;</button>
+      <div class="eyebrow-badge">
+        <span class="dot"></span>
+        DELL DIRECT DISPATCH
+      </div>
+      <h3 style="font-size: 1.8rem; margin-bottom: 8px;">Order Summary</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">Your custom workstation is assembled to order with 3-year Premium ProSupport.</p>
+      
+      <div style="background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <strong id="modal-model-title" style="font-size: 1.1rem;">Dell XPS 15 Studio Pro</strong>
+          <strong id="modal-model-price" style="color: var(--accent-cyan); font-size: 1.1rem;">$2,399</strong>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          • CNC Platinum Silver Chassis with Black Carbon Fiber Deck<br>
+          • Factory Calibrated 3.5K OLED 500 nits Display<br>
+          • 130W Type-C Fast Charger Included<br>
+          • 100% Recycled Zero-Plastic Cushion Packaging
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button id="confirm-order-btn" class="btn-tier btn-tier-primary" style="flex: 2;">Confirm & Reserve Order</button>
+        <button id="cancel-order-btn" class="btn-tier btn-tier-outline" style="flex: 1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-notice">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan);"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-message">Configuration reserved successfully!</span>
+  </div>
+
+  <!-- Ambient Audio Element (Synthesized White Noise & Harmonic Drone) -->
+  <audio id="ambient-audio" loop preload="none">
+    <!-- Using a gentle browser-generated web audio api synthesizer fallback in app.js -->
+  </audio>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
