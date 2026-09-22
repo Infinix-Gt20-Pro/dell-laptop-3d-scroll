@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const BASE_DIR = __dirname;
+const BASE_DIR = path.resolve(__dirname, '..');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -22,7 +22,6 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf'
 };
 
-// Guard against process termination from aborted client sockets during rapid video scrub
 process.on('uncaughtException', (err) => {
   if (err.code === 'EPIPE' || err.code === 'ECONNRESET' || err.code === 'ERR_STREAM_DESTROYED') {
     return;
@@ -34,7 +33,7 @@ process.on('unhandledRejection', (reason) => {
   console.error('Server handled unhandledRejection:', reason);
 });
 
-const server = http.createServer((req, res) => {
+const handler = (req, res) => {
   // CORS and Range headers for media elements
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Range, Content-Type');
@@ -131,7 +130,9 @@ const server = http.createServer((req, res) => {
     res.on('error', () => fileStream.destroy());
     fileStream.pipe(res);
   });
-});
+};
+
+const server = http.createServer(handler);
 
 if (require.main === module) {
   server.listen(PORT, '0.0.0.0', () => {
@@ -143,4 +144,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = server;
+module.exports = handler;
