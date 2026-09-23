@@ -17,6 +17,10 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Preload First 3D Frame for Instant LCP & Zero-Stall Initial Paint -->
+  <link rel="preload" as="image" href="assets/frames/desktop/frame_001.webp" media="(min-width: 769px)" type="image/webp">
+  <link rel="preload" as="image" href="assets/frames/mobile/frame_001.webp" media="(max-width: 768px)" type="image/webp">
+
   <!-- GSAP & ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -118,14 +122,16 @@
     <section id="hero-scroll-container">
       <div class="sticky-viewport">
         
-        <!-- Video Canvas Canvas / Stream -->
+        <!-- Apple-Standard Hardware Canvas 3D Scroll (Zero-Seek-Latency GPU Engine) -->
         <div class="video-canvas-wrap">
+          <canvas id="scroll-canvas" aria-label="Dell XPS 15 3D Scroll Viewport"></canvas>
           <video 
             id="scroll-video" 
             muted 
             playsinline 
             preload="auto"
-            webkit-playsinline>
+            webkit-playsinline
+            style="display: none;">
             <source src="assets/video/dell-scroll.mp4" media="(min-width: 769px)" type="video/mp4">
             <source src="assets/video/dell-scroll-mobile.mp4" media="(max-width: 768px)" type="video/mp4">
           </video>
