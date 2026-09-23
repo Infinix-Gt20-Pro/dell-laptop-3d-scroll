@@ -646,6 +646,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   height: 100%;
   z-index: 1;
+  contain: strict;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -982,6 +983,17 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent-cyan);
 }
 
+/* High-Performance Offscreen Content Optimization */
+.section-inspection,
+.section-inventory,
+.section-operations,
+.section-gallery,
+.section-ports,
+.section-instagram {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
 /* ==========================================================================
    Section: Performance Specs (Bento Grid)
    ========================================================================== */
@@ -1018,18 +1030,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bento-card {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  background: rgba(15, 19, 26, 0.88);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
   padding: 36px;
   position: relative;
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s ease,
-              box-shadow 0.35s ease;
-  will-change: transform, border-color, box-shadow;
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  contain: paint;
 }
 
 .bento-card:hover {
@@ -1168,12 +1178,12 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 32px;
-  background: var(--bg-card);
+  background: rgba(15, 19, 26, 0.92);
   border: 1px solid var(--border-subtle);
   border-radius: 24px;
   padding: 32px;
-  backdrop-filter: var(--glass-blur);
   align-items: center;
+  contain: paint;
 }
 
 .gallery-main-view {
@@ -1298,9 +1308,9 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   position: relative;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s ease,
-              box-shadow 0.35s ease;
-  will-change: transform, border-color, box-shadow;
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  contain: paint;
 }
 
 .tier-card:hover {
@@ -1575,7 +1585,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Background page recess when modal is active */
 main {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
-  will-change: transform, filter;
 }
 
 body.modal-is-open main {
@@ -2615,12 +2624,11 @@ html.lenis, html.lenis body {
    ========================================================================== */
 .grading-system-card {
   margin-top: 56px;
-  background: rgba(13, 17, 23, 0.7);
+  background: rgba(13, 17, 23, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
   padding: 40px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  contain: paint;
 }
 
 .grading-system-header {

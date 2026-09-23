@@ -122,11 +122,12 @@
         <div class="video-canvas-wrap">
           <video 
             id="scroll-video" 
-            src="assets/video/dell-scroll.mp4" 
             muted 
             playsinline 
             preload="auto"
             webkit-playsinline>
+            <source src="assets/video/dell-scroll.mp4" media="(min-width: 769px)" type="video/mp4">
+            <source src="assets/video/dell-scroll-mobile.mp4" media="(max-width: 768px)" type="video/mp4">
           </video>
         </div>
 

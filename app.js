@@ -15,24 +15,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressStageText = document.getElementById('progress-stage-text');
   const stageCards = document.querySelectorAll('.stage-card');
 
+  // Device & Motion State
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
+
   // Video Scrubbing State
   let videoDuration = 10.0;
   let isVideoReady = false;
   let isSeeking = false;
   let queuedTargetTime = null;
   let lastCommittedTime = -1;
+  let lastSeekTimestamp = 0;
   let decoderPrimed = false;
   let isEngineInitialized = false;
+  let isHeroVisible = true;
+  let isScrubDirty = true;
 
   // Motion Interpolation State
   let targetProgress = 0;
   let smoothProgress = 0;
   let currentStage = -1;
 
-  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Pre-cached stage card elements to eliminate redundant DOM queries/parsing
+  const cachedStageCards = Array.from(stageCards).map((card) => ({
+    element: card,
+    stage: parseInt(card.getAttribute('data-stage'), 10)
+  }));
 
-  // Configure video element for ultra-low-latency scrubbing
+  // Viewport Awareness: Completely suspend video seek & ticker work when off-screen
+  if ('IntersectionObserver' in window && heroContainer) {
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isHeroVisible = entry.isIntersecting;
+        if (!isHeroVisible) {
+          if (video && !video.paused) {
+            try { video.pause(); } catch (e) {}
+          }
+        } else {
+          isScrubDirty = true;
+        }
+      });
+    }, { rootMargin: '100px 0px 100px 0px' });
+    heroObserver.observe(heroContainer);
+  }
+
+  // Ensure video element is configured for ultra-fast scrubbing
   if (video) {
+    if (!video.currentSrc && !video.src && video.children.length === 0) {
+      video.src = isMobile ? 'assets/video/dell-scroll-mobile.mp4' : 'assets/video/dell-scroll.mp4';
+    }
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
@@ -40,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     video.addEventListener('seeked', () => {
       isSeeking = false;
-      if (queuedTargetTime !== null) {
+      if (queuedTargetTime !== null && isHeroVisible) {
         const nextTime = queuedTargetTime;
         queuedTargetTime = null;
         dispatchVideoSeek(nextTime);
@@ -71,47 +102,53 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('touchstart', primeDecoder, { once: true, passive: true });
   window.addEventListener('click', primeDecoder, { once: true, passive: true });
 
-  // Low-latency hardware seek dispatcher with ordered non-blocking queue
+  // Instant All-Intra Frame Seek Dispatcher (Keyframe on every frame = 1-2ms seek time)
   function dispatchVideoSeek(targetSeconds) {
-    if (!video || !isVideoReady || videoDuration <= 0) return;
+    if (!video || !isVideoReady || videoDuration <= 0 || !isHeroVisible) return;
 
     if (isSeeking) {
       queuedTargetTime = targetSeconds;
       return;
     }
 
-    // Deadband threshold: avoid redundant micro-seeks under ~1 video frame (~0.016s)
-    if (Math.abs(lastCommittedTime - targetSeconds) < 0.016) {
+    if (Math.abs(lastCommittedTime - targetSeconds) < 0.008) {
       return;
     }
 
     isSeeking = true;
     lastCommittedTime = targetSeconds;
-
-    if (typeof video.fastSeek === 'function') {
-      try {
-        video.fastSeek(targetSeconds);
-      } catch (err) {
-        video.currentTime = targetSeconds;
-      }
-    } else {
-      video.currentTime = targetSeconds;
-    }
+    video.currentTime = targetSeconds;
   }
 
-  // Single scheduler tick function (called from GSAP / Lenis RAF loop)
+  // Ultra-responsive, buttery-smooth RAF loop (Zero sludge, zero rubber-banding)
   function videoScrubTick() {
-    if (!video || !isVideoReady || videoDuration <= 0) return;
+    if (!video || !isVideoReady || videoDuration <= 0 || !isHeroVisible) return;
 
-    // Smooth exponential lerp interpolation towards target scroll progress
-    const lerpRate = prefersReducedMotion ? 1.0 : 0.22;
-    smoothProgress += (targetProgress - smoothProgress) * lerpRate;
+    const delta = targetProgress - smoothProgress;
+    const absDelta = Math.abs(delta);
 
-    // Convert progress to exact clamped seconds
+    if (absDelta > 0.0002) {
+      // Responsive 0.65 interpolation: instantaneous response with momentum fluidity
+      const lerpRate = prefersReducedMotion ? 1.0 : (isMobile ? 0.80 : 0.65);
+      smoothProgress += delta * lerpRate;
+      isScrubDirty = true;
+    } else if (isScrubDirty) {
+      smoothProgress = targetProgress;
+      isScrubDirty = false;
+    } else {
+      // Ensure any pending queued seek is flushed when settled
+      if (queuedTargetTime !== null && !isSeeking) {
+        const nextTime = queuedTargetTime;
+        queuedTargetTime = null;
+        dispatchVideoSeek(nextTime);
+      }
+      return;
+    }
+
     const targetSeconds = Math.max(0.001, Math.min(videoDuration - 0.02, smoothProgress * videoDuration));
     dispatchVideoSeek(targetSeconds);
 
-    // Subtle optical parallax and camera zoom layers (ThreeUI depth aesthetic)
+    // Subtle optical parallax only on desktop screens
     if (!prefersReducedMotion && window.innerWidth > 768) {
       if (videoCanvasWrap) {
         const subtleZoom = 1 + smoothProgress * 0.035;
@@ -138,7 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Master update pipeline: Synchronizes video, HUD, and narrative stage cards
   function applyProgress(progress) {
     const clamped = Math.max(0, Math.min(1, progress));
-    targetProgress = clamped;
+    if (Math.abs(targetProgress - clamped) > 0.0001) {
+      targetProgress = clamped;
+      isScrubDirty = true;
+    }
 
     // 1. Update HUD Progress Bar
     if (progressBarFill) {
@@ -149,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStageCards(clamped);
   }
 
-  // Synchronized narrative stage cards (01 to 05) with fluid timing
+  // Synchronized narrative stage cards (01 to 05) with cached dataset
   function updateStageCards(progress) {
     let activeStage = 1;
     if (progress < 0.20) {
@@ -171,12 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
       progressStageText.textContent = `STAGE 0${activeStage} / 05`;
     }
 
-    stageCards.forEach((card) => {
-      const cardStage = parseInt(card.getAttribute('data-stage'), 10);
-      if (cardStage === activeStage) {
-        card.classList.add('active');
+    cachedStageCards.forEach((item) => {
+      if (item.stage === activeStage) {
+        item.element.classList.add('active');
       } else {
-        card.classList.remove('active');
+        item.element.classList.remove('active');
       }
     });
   }
@@ -209,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof Lenis !== 'undefined') {
       try {
         lenis = new Lenis({
-          duration: prefersReducedMotion ? 0.01 : 1.15,
+          duration: prefersReducedMotion ? 0.01 : (isMobile ? 0.85 : 1.15),
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           orientation: 'vertical',
           smoothWheel: !prefersReducedMotion,
@@ -230,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lenis.raf(time * 1000);
             videoScrubTick();
           });
-          gsap.ticker.lagSmoothing(0);
+          gsap.ticker.lagSmoothing(500, 33); // Graceful recovery instead of freezing
         } else {
           function raf(time) {
             lenis.raf(time);
@@ -257,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
           trigger: heroContainer,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: true, // Let Lenis handle the smoothing, no double interpolation
+          scrub: 0, // Direct 1:1 sync with momentum scroll — zero secondary lag!
           onUpdate: () => {
             applyProgress(proxy.progress);
           }
@@ -386,10 +425,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(preloadGalleryImages);
+  const gallerySec = document.getElementById('gallery');
+  if ('IntersectionObserver' in window && gallerySec) {
+    const galleryObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        preloadGalleryImages();
+        galleryObserver.disconnect();
+      }
+    }, { rootMargin: '400px 0px 400px 0px' });
+    galleryObserver.observe(gallerySec);
+  } else if ('requestIdleCallback' in window) {
+    setTimeout(() => {
+      window.requestIdleCallback(preloadGalleryImages);
+    }, 2500);
   } else {
-    setTimeout(preloadGalleryImages, 1000);
+    setTimeout(preloadGalleryImages, 3500);
   }
 
   let isGalleryTransitioning = false;
@@ -997,44 +1047,69 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Dynamic active navigation indicator tracking
-  const navTrackedSections = [
+  // Dynamic active navigation indicator tracking (Zero Layout Thrashing with pre-cached offsets)
+  const navTrackedData = [
     { id: 'hero-scroll-container', linkSelector: 'a[href="#hero-scroll-container"]' },
     { id: 'performance', linkSelector: 'a[href="#performance"]' },
     { id: 'inspection', linkSelector: 'a[href="#inspection"]' },
     { id: 'inventory', linkSelector: 'a[href="#inventory"]' },
     { id: 'gallery', linkSelector: 'a[href="#gallery"]' },
     { id: 'ports', linkSelector: 'a[href="#ports"]' }
-  ];
+  ].map((item) => ({
+    ...item,
+    element: document.getElementById(item.id),
+    links: Array.from(document.querySelectorAll(item.linkSelector)),
+    cachedTop: 0
+  }));
+
+  function recalculateNavOffsets() {
+    navTrackedData.forEach((item) => {
+      if (item.element) {
+        item.cachedTop = item.element.offsetTop - 140;
+      }
+    });
+  }
+
+  // Calculate once on init and update on debounced resize only
+  recalculateNavOffsets();
+  let navResizeDebounce = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(navResizeDebounce);
+    navResizeDebounce = setTimeout(recalculateNavOffsets, 150);
+  }, { passive: true });
+
+  let currentActiveNavId = 'hero-scroll-container';
+  let isNavUpdateScheduled = false;
 
   function updateActiveNavLink() {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    let currentActiveId = 'hero-scroll-container';
+    if (isNavUpdateScheduled) return;
+    isNavUpdateScheduled = true;
 
-    for (let i = navTrackedSections.length - 1; i >= 0; i--) {
-      const sec = document.getElementById(navTrackedSections[i].id);
-      if (sec) {
-        const top = sec.offsetTop - 140;
-        if (scrollY >= top) {
-          currentActiveId = navTrackedSections[i].id;
+    requestAnimationFrame(() => {
+      isNavUpdateScheduled = false;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      let newActiveId = 'hero-scroll-container';
+
+      for (let i = navTrackedData.length - 1; i >= 0; i--) {
+        if (scrollY >= navTrackedData[i].cachedTop) {
+          newActiveId = navTrackedData[i].id;
           break;
         }
       }
-    }
 
-    navTrackedSections.forEach((item) => {
-      const links = document.querySelectorAll(item.linkSelector);
-      links.forEach((link) => {
-        if (item.id === currentActiveId) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
+      if (newActiveId === currentActiveNavId) return; // Zero DOM mutations when unchanged
+      currentActiveNavId = newActiveId;
+
+      navTrackedData.forEach((item) => {
+        const isActive = item.id === currentActiveNavId;
+        item.links.forEach((link) => {
+          link.classList.toggle('active', isActive);
+        });
       });
     });
   }
 
-  // Scroll listener for nav active indicators
+  // Single passive scroll listener
   window.addEventListener('scroll', updateActiveNavLink, { passive: true });
 
   // Initial call
