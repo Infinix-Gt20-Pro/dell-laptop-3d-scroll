@@ -48,6 +48,12 @@ class HeroVideoScrubber {
     this.playInterval = null;
     this.userInteracting = false;
     
+    // 120 FPS Frame-Rate Independent Physics State
+    this.lastTime = performance.now();
+    this.touchVelocity = 0;
+    this.lastTouchX = 0;
+    this.lastTouchTime = 0;
+    
     // Drag state
     this.isDragging = false;
     this.dragStartX = 0;
@@ -129,17 +135,17 @@ class HeroVideoScrubber {
     // 1. Preload unboxing keyframes immediately
     this.preloadKeyframes();
 
-    // 2. Preload 250 frames with prioritized progressive loading
+    // 2. Preload 250 frames with prioritized progressive loading & GPU texture decoding
     this.preloadFrames();
 
-    // 3. Scroll listener
+    // 3. Scroll listener with passive high-priority updates
     window.addEventListener('scroll', () => {
       if (!this.userInteracting && !this.isPlaying) {
         this.onScroll();
       }
     }, { passive: true });
 
-    // 4. Interactive Drag on canvas
+    // 4. Interactive Drag & Touch gesture controls with 120 FPS inertial physics
     this.setupDragControls();
 
     // 5. Interactive Scrub Slider
@@ -169,7 +175,7 @@ class HeroVideoScrubber {
       });
     });
 
-    // 8. 60fps RAF loop with smooth cinematic lerping
+    // 8. 120 FPS High-Precision RAF loop with delta-time exponential damping
     this.rafLoop = this.tick.bind(this);
     requestAnimationFrame(this.rafLoop);
 
@@ -189,12 +195,20 @@ class HeroVideoScrubber {
     keyframes.forEach(item => {
       const img = new Image();
       img.src = item.src;
-      img.onload = () => {
-        this.keyframeAssets[item.key] = img;
-        if (item.key === 'stage1' && this.currentProgress < 0.05) {
-          this.render();
-        }
-      };
+      if (img.decode) {
+        img.decode().then(() => {
+          this.keyframeAssets[item.key] = img;
+          if (item.key === 'stage1' && this.currentProgress < 0.05) this.render();
+        }).catch(() => {
+          this.keyframeAssets[item.key] = img;
+          if (item.key === 'stage1' && this.currentProgress < 0.05) this.render();
+        });
+      } else {
+        img.onload = () => {
+          this.keyframeAssets[item.key] = img;
+          if (item.key === 'stage1' && this.currentProgress < 0.05) this.render();
+        };
+      }
     });
   }
 
@@ -207,12 +221,19 @@ class HeroVideoScrubber {
     // 1. Load frame 0 immediately
     const firstImg = new Image();
     firstImg.src = this.getFrameUrl(0);
-    firstImg.onload = () => {
+    const onFirstReady = () => {
       this.frames[0] = firstImg;
       this.loadedFramesCount++;
       this.render();
       this.loadRemainingFrames();
     };
+
+    if (firstImg.decode) {
+      firstImg.decode().then(onFirstReady).catch(onFirstReady);
+    } else {
+      firstImg.onload = onFirstReady;
+    }
+
     firstImg.onerror = () => {
       if (this.isMobile) {
         this.basePath = 'assets/frames/desktop/';
@@ -222,15 +243,15 @@ class HeroVideoScrubber {
   }
 
   loadRemainingFrames() {
-    // Staggered loading: first load every 5th frame for instant scrub response across all 10s
+    // Staggered loading: first load every 4th frame for instant scrub response across all 10s
     const priorityIndices = [];
-    for (let i = 5; i < this.totalFrames; i += 5) priorityIndices.push(i);
+    for (let i = 4; i < this.totalFrames; i += 4) priorityIndices.push(i);
     for (let i = 1; i < this.totalFrames; i++) {
-      if (i % 5 !== 0) priorityIndices.push(i);
+      if (i % 4 !== 0) priorityIndices.push(i);
     }
 
     let pointer = 0;
-    const batchSize = 12;
+    const batchSize = 16;
 
     const loadNextBatch = () => {
       if (pointer >= priorityIndices.length) return;
@@ -238,24 +259,40 @@ class HeroVideoScrubber {
       pointer += batchSize;
 
       let batchLoaded = 0;
+      const checkDone = () => {
+        batchLoaded++;
+        if (batchLoaded === batch.length) {
+          setTimeout(loadNextBatch, 4);
+        }
+      };
+
       batch.forEach((idx) => {
-        if (this.frames[idx]) return;
+        if (this.frames[idx]) {
+          checkDone();
+          return;
+        }
         const img = new Image();
         img.src = this.getFrameUrl(idx);
-        img.onload = () => {
-          this.frames[idx] = img;
-          this.loadedFramesCount++;
-          batchLoaded++;
-          if (batchLoaded === batch.length) {
-            setTimeout(loadNextBatch, 8);
-          }
-        };
-        img.onerror = () => {
-          batchLoaded++;
-          if (batchLoaded === batch.length) {
-            setTimeout(loadNextBatch, 8);
-          }
-        };
+        if (img.decode) {
+          img.decode().then(() => {
+            this.frames[idx] = img;
+            this.loadedFramesCount++;
+            checkDone();
+          }).catch(() => {
+            this.frames[idx] = img;
+            this.loadedFramesCount++;
+            checkDone();
+          });
+        } else {
+          img.onload = () => {
+            this.frames[idx] = img;
+            this.loadedFramesCount++;
+            checkDone();
+          };
+          img.onerror = () => {
+            checkDone();
+          };
+        }
       });
     };
 
@@ -271,6 +308,9 @@ class HeroVideoScrubber {
     const onPointerDown = (clientX) => {
       this.isDragging = true;
       this.userInteracting = true;
+      this.touchVelocity = 0;
+      this.lastTouchX = clientX;
+      this.lastTouchTime = performance.now();
       if (this.isPlaying) this.togglePlay();
       this.dragStartX = clientX;
       this.dragStartProgress = this.targetProgress;
@@ -279,9 +319,20 @@ class HeroVideoScrubber {
 
     const onPointerMove = (clientX) => {
       if (!this.isDragging) return;
-      const deltaX = clientX - this.dragStartX;
-      const sensitivity = 0.0016; // Smooth responsive dragging across 10s timeline
-      let newP = this.dragStartProgress - (deltaX * sensitivity);
+      const now = performance.now();
+      const dt = Math.max(1, now - this.lastTouchTime);
+      const deltaX = clientX - this.lastTouchX;
+      
+      // Calculate smoothed momentum velocity
+      const instantVelocity = deltaX / (window.innerWidth * 1.5);
+      this.touchVelocity = (this.touchVelocity * 0.4) + (instantVelocity * 0.6);
+      this.lastTouchX = clientX;
+      this.lastTouchTime = now;
+
+      // 1:1 direct tactile scrub responsiveness
+      const totalDelta = clientX - this.dragStartX;
+      const sensitivity = this.isMobile ? 0.0024 : 0.0018;
+      let newP = this.dragStartProgress - (totalDelta * sensitivity);
       newP = Math.max(0, Math.min(1, newP));
       this.targetProgress = newP;
     };
@@ -292,7 +343,7 @@ class HeroVideoScrubber {
       targetEl.classList.remove('canvas-dragging');
       setTimeout(() => {
         this.userInteracting = false;
-      }, 400);
+      }, 500);
     };
 
     targetEl.addEventListener('mousedown', (e) => {
@@ -308,6 +359,7 @@ class HeroVideoScrubber {
       if (this.isDragging) onPointerUp();
     });
 
+    // Touch event handling with 120 FPS high polling rate
     targetEl.addEventListener('touchstart', (e) => {
       if (e.target.closest('button') || e.target.closest('.hotspot-pin') || e.target.closest('.hero-stage-card') || e.target.closest('input')) return;
       if (e.touches.length === 1) {
@@ -329,13 +381,14 @@ class HeroVideoScrubber {
   resize() {
     if (!this.canvas) return;
     const rect = this.canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // 1.5 max DPR on mobile to guarantee constant 120 FPS without GPU bandwidth bottleneck
+    const maxDpr = this.isMobile ? 1.5 : Math.min(window.devicePixelRatio || 1, 2);
     
     const displayWidth = rect.width || window.innerWidth;
     const displayHeight = rect.height || window.innerHeight;
 
-    this.canvas.width = Math.round(displayWidth * dpr);
-    this.canvas.height = Math.round(displayHeight * dpr);
+    this.canvas.width = Math.round(displayWidth * maxDpr);
+    this.canvas.height = Math.round(displayHeight * maxDpr);
 
     this.render();
   }
@@ -356,11 +409,23 @@ class HeroVideoScrubber {
     this.targetProgress = progress;
   }
 
-  tick() {
-    // 0.16 lerp factor gives silky-smooth camera inertia
+  tick(timestamp) {
+    const now = timestamp || performance.now();
+    const dt = Math.min((now - (this.lastTime || now)) / 1000, 0.05);
+    this.lastTime = now;
+
+    // Apply touch momentum glide on touch release
+    if (!this.isDragging && Math.abs(this.touchVelocity) > 0.0001) {
+      this.targetProgress -= this.touchVelocity * dt * 35;
+      this.targetProgress = Math.max(0, Math.min(1, this.targetProgress));
+      this.touchVelocity *= Math.pow(0.86, dt * 60); // Buttery smooth friction
+    }
+
+    // High-Precision 120 FPS Frame-Rate Independent Exponential Damping
     const diff = this.targetProgress - this.currentProgress;
-    if (Math.abs(diff) > 0.0001) {
-      this.currentProgress += diff * 0.16;
+    if (Math.abs(diff) > 0.00005) {
+      const smoothingFactor = 1 - Math.exp(-26 * dt);
+      this.currentProgress += diff * smoothingFactor;
     } else {
       this.currentProgress = this.targetProgress;
     }
@@ -383,6 +448,11 @@ class HeroVideoScrubber {
     // Clear background with obsidian matte black
     this.ctx.fillStyle = '#05070b';
     this.ctx.fillRect(0, 0, cw, ch);
+
+    // Adaptive smoothing quality for 120 FPS
+    const isMoving = Math.abs(this.targetProgress - this.currentProgress) > 0.002;
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingQuality = isMoving ? 'medium' : 'high';
 
     // Map progress directly to the 250 frames (0 to 249)
     const frameIndex = Math.min(

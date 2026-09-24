@@ -86,23 +86,23 @@
       </nav>
 
       <!-- Glass Action Controls -->
-      <div class="flex items-center gap-2.5">
+      <div class="flex items-center gap-2">
         
-        <!-- Ambient Soundscape Toggle -->
-        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" class="apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-slate-300 hover:text-cyan-400">
+        <!-- Ambient Soundscape Toggle (Desktop/Tablet) -->
+        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" class="hidden sm:flex apple-secondary-glass-btn w-9 h-9 items-center justify-center text-slate-300 hover:text-cyan-400">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
           </svg>
         </button>
 
         <!-- Wishlist -->
-        <button data-action="open-auth" title="Saved Devices" class="apple-secondary-glass-btn relative w-9 h-9 flex items-center justify-center text-slate-300 hover:text-rose-400">
+        <button data-action="open-auth" title="Saved Devices" class="hidden sm:flex apple-secondary-glass-btn relative w-9 h-9 items-center justify-center text-slate-300 hover:text-rose-400">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           <span class="wishlist-badge absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold font-mono flex items-center justify-center" style="display: none;">0</span>
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-3.5 py-1.5 flex items-center gap-2 text-xs font-bold font-mono">
+        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
           <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
@@ -111,11 +111,18 @@
         </button>
 
         <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="apple-action-btn px-3 py-1.5 text-xs flex items-center gap-1.5 shadow-md">
+        <button data-action="open-auth" class="apple-action-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-md">
           <div class="w-5 h-5 rounded-full bg-slate-950 text-cyan-300 flex items-center justify-center text-[10px] font-bold font-mono">
             KA
           </div>
-          <span class="hidden sm:inline">Kashan</span>
+          <span class="hidden sm:inline">Account</span>
+        </button>
+
+        <!-- Mobile Navigation Menu Toggle Button -->
+        <button id="mobile-menu-toggle-btn" class="md:hidden apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-cyan-400 hover:text-white" aria-label="Open Mobile Menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
         </button>
 
       </div>
@@ -123,19 +130,90 @@
   </header>
 
   <!-- ===================================================
+       MOBILE NAVIGATION DRAWER OVERLAY (APPLE ULTRA GLASS)
+       =================================================== -->
+  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-[#05070b]/95 backdrop-blur-2xl p-5 overflow-y-auto md:hidden">
+    <div class="flex items-center justify-between pb-5 border-b border-white/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-slate-950 font-black text-xs">
+          CC
+        </div>
+        <div>
+          <div class="text-sm font-black text-white">CLASSIC COMPUTER</div>
+          <div class="text-[9px] font-mono text-cyan-400">CERTIFIED REFURBISHED HUB</div>
+        </div>
+      </div>
+      <button id="mobile-menu-close-btn" class="apple-secondary-glass-btn w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Links -->
+    <div class="py-5 space-y-2.5 font-mono text-xs">
+      <a href="products.html" class="flex items-center justify-between p-3.5 rounded-2xl bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 font-bold shadow-lg">
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg">🛒</span>
+          <div class="text-left">
+            <div class="text-sm font-black text-white">ALL 8 PRODUCTS CATALOG</div>
+            <div class="text-[10px] text-cyan-400">Explore Laptops, 4K & Desktops</div>
+          </div>
+        </div>
+        <span class="text-[10px] bg-cyan-400 text-slate-950 px-2 py-0.5 rounded-full font-black">VIEW →</span>
+      </a>
+
+      <a href="#hero-scroll-container" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-slate-200">
+        <span class="text-base text-cyan-400">✦</span>
+        <span>Dell 5530 3D Unboxing & Video</span>
+      </a>
+      <a href="#display-simulator" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-slate-200">
+        <span class="text-base text-blue-400">🖥️</span>
+        <span>4K vs 1080p Display Simulator</span>
+      </a>
+      <a href="#benchmarks" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-slate-200">
+        <span class="text-base text-amber-400">⚡</span>
+        <span>Astra Benchmarks (i7 + Quadro)</span>
+      </a>
+      <a href="#showcase" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-slate-200">
+        <span class="text-base text-purple-400">📸</span>
+        <span>100% Real Hardware Photo Lab</span>
+      </a>
+      <a href="#configurator" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-slate-200">
+        <span class="text-base text-emerald-400">⚙️</span>
+        <span>RAM & SSD Studio Configurator</span>
+      </a>
+    </div>
+
+    <!-- Quick Support & Account on Mobile -->
+    <div class="pt-4 border-t border-white/10 space-y-2.5">
+      <a href="https://wa.me/919999999999?text=Hi%2C%20I%20am%20interested%20in%20Dell%20Precision%205530%204K%20Workstation" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold">
+        <span>💬</span>
+        <span>WhatsApp Expert Order (1-Click)</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <button data-action="open-auth" class="flex-1 py-2.5 rounded-xl apple-secondary-glass-btn text-xs font-mono text-center">
+          👤 Member Login
+        </button>
+        <button data-action="open-cart" class="flex-1 py-2.5 rounded-xl apple-action-btn text-xs font-mono text-center font-bold">
+          🛍️ Bag (<span class="cart-badge-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================
        2. MOTIONSITES-STYLE LUXURY HERO TITLE INTRO
        =================================================== -->
-  <section class="pt-14 pb-6 text-center max-w-5xl mx-auto px-4 relative z-10">
-    <div class="inline-flex items-center gap-2 mb-3">
+  <section class="pt-8 sm:pt-14 pb-4 sm:pb-6 text-center max-w-5xl mx-auto px-4 relative z-10 w-full max-w-full overflow-hidden">
+    <div class="inline-flex items-center gap-2 mb-2 sm:mb-3">
       <span class="motionsites-badge-pill">
         <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span class="motionsites-gradient-text">CERTIFIED ENTERPRISE REFURBISHED HUB</span>
+        <span class="motionsites-gradient-text text-[10px] sm:text-xs font-mono">CERTIFIED REFURBISHED HUB</span>
       </span>
     </div>
     
-    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[1.08]">
+    <h1 class="text-2xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-white leading-[1.12]">
       THE APEX OF <em class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300">Certified</em>
-      <div class="glow-title mt-1 block">
+      <div class="glow-title mt-0.5 sm:mt-1 block">
         <span class="animate-gradient-shift bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-200 to-white">
           WORKSTATIONS
         </span>
@@ -143,18 +221,18 @@
       </div>
     </h1>
 
-    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto mt-4 leading-relaxed font-sans">
-      Precision engineering meets sustainable computing. Featuring the <strong>Dell Precision 5530 4K Mobile Workstation</strong> — lab-audited with Intel® Core™ i7 H-Series power, dedicated NVIDIA® graphics, and genuine Windows 11 Pro.
+    <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto mt-3 sm:mt-4 leading-relaxed font-sans px-2">
+      Featuring the <strong>Dell Precision 5530 4K Mobile Workstation</strong> — lab-audited Intel® Core™ i7 H-Series power, dedicated NVIDIA® graphics, and genuine Windows 11 Pro.
     </p>
 
-    <!-- Interactive Navigation Pills in MotionSites Chamfered Style -->
-    <div class="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+    <!-- Interactive Navigation Pills in MotionSites Chamfered Style (Swipeable on Mobile) -->
+    <div class="mt-4 sm:mt-6 flex items-center justify-center overflow-x-auto no-scrollbar w-full px-2">
       <div class="motionsites-tab-bar">
-        <a href="#hero-scroll-container" class="motionsites-tab active">✦ 3D Interactive Model</a>
-        <a href="#display-simulator" class="motionsites-tab">4K vs 1080p Simulator</a>
-        <a href="#benchmarks" class="motionsites-tab">Astra Benchmarks</a>
-        <a href="#showcase" class="motionsites-tab">100% Real Lab Photos</a>
-        <a href="products.html" class="motionsites-tab" style="color: #06b6d4;">
+        <a href="#hero-scroll-container" class="motionsites-tab active">✦ 3D Model</a>
+        <a href="#display-simulator" class="motionsites-tab">4K Simulator</a>
+        <a href="#benchmarks" class="motionsites-tab">Benchmarks</a>
+        <a href="#showcase" class="motionsites-tab">Lab Photos</a>
+        <a href="products.html" class="motionsites-tab font-bold text-cyan-400" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35);">
           Explore All 8 Machines →
         </a>
       </div>
@@ -216,12 +294,13 @@
       </div>
 
       <!-- Scrubber HUD Island Control -->
-      <div class="absolute top-20 left-4 right-4 max-w-4xl mx-auto z-20 ultra-glass rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xl border border-white/10">
+      <div class="scrubber-hud-island absolute top-16 sm:top-20 left-2 sm:left-4 right-2 sm:right-4 max-w-4xl mx-auto z-20 ultra-glass rounded-2xl p-2.5 sm:p-3.5 flex flex-wrap items-center justify-between gap-2 sm:gap-3 shadow-2xl border border-white/10">
         
-        <div class="flex items-center gap-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span id="scrub-stage-text" class="text-xs font-mono font-bold text-cyan-400 tracking-wider">01 // UNBOXING CEREMONY [0.00s - 2.10s]</span>
-          <span id="scrub-time-indicator" class="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">0.00s / 10.00s</span>
+        <div class="flex items-center gap-2 sm:gap-3">
+          <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span id="scrub-stage-text" class="text-[11px] sm:text-xs font-mono font-bold text-cyan-400 tracking-wider">01 // UNBOXING CEREMONY [0.00s - 1.80s]</span>
+          <span id="scrub-time-indicator" class="text-[10px] sm:text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">0.00s / 10.00s</span>
+          <span class="touch-scrub-hint">👆 Touch Scrub 10s</span>
         </div>
 
         <!-- Jump to stage quick pills -->
@@ -238,15 +317,15 @@
           <span class="hidden lg:inline text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">
             ✦ 10.0s Master Timeline
           </span>
-          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5">
+          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn px-3 py-1.5 text-xs font-bold flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             <span>Auto Tour</span>
           </button>
         </div>
 
         <!-- Interactive Scrub Range Slider Track (0.00s to 10.00s) -->
-        <div class="w-full flex items-center gap-3 pt-1">
-          <span class="text-[10px] font-mono text-slate-400">0.00s</span>
+        <div class="w-full flex items-center gap-2 sm:gap-3 pt-1">
+          <span class="text-[9px] sm:text-[10px] font-mono text-slate-400">0.00s</span>
           <input 
             type="range" 
             id="hero-scrub-range" 
@@ -255,7 +334,7 @@
             value="0" 
             class="w-full h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-cyan-400"
           />
-          <span class="text-[10px] font-mono text-cyan-400">10.00s</span>
+          <span class="text-[9px] sm:text-[10px] font-mono text-cyan-400">10.00s</span>
         </div>
       </div>
 
@@ -392,28 +471,29 @@
       </div>
 
       <!-- Stage 4: Assembled & Certified Hero (8.20s - 10.00s) -->
-      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute bottom-16 inset-x-4 max-w-xl mx-auto z-20 ultra-glass p-7 rounded-3xl border border-cyan-500/40 shadow-2xl text-center transition-all duration-500">
+      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute bottom-16 inset-x-4 max-w-xl mx-auto z-20 ultra-glass p-5 sm:p-7 rounded-3xl border border-cyan-500/40 shadow-2xl text-center transition-all duration-500">
         <div class="flex items-center justify-center gap-2 mb-2">
           <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
             ⭐ STAGE 05 // GRADE A+ CERTIFIED HERO
           </span>
           <span class="text-[9px] font-mono text-cyan-300 bg-cyan-500/20 px-2 py-0.5 rounded">8.20s - 10.00s</span>
         </div>
-        <h2 class="text-3xl font-black text-white mt-1">Dell Precision 5530 4K Workstation</h2>
+        <h2 class="text-xl sm:text-3xl font-black text-white mt-1">Dell Precision 5530 4K Workstation</h2>
         <p class="text-xs text-slate-300 mt-1">Core i7 8th Gen H-Series • 8GB RAM • 256GB NVMe SSD • 4GB Dedicated NVIDIA • 15.6" 4K</p>
         
-        <div class="mt-5 flex items-center justify-center gap-4">
+        <div class="mt-4 sm:mt-5 flex items-center justify-center gap-3 sm:gap-4">
           <div>
-            <span class="text-xs text-slate-500 line-through font-mono">₹1,85,000</span>
-            <div class="text-3xl font-black text-white font-mono">₹34,999</div>
+            <span class="text-[10px] sm:text-xs text-slate-500 line-through font-mono">₹1,85,000</span>
+            <div class="text-xl sm:text-3xl font-black text-white font-mono">₹34,999</div>
           </div>
-          <button onclick="storeEngine.addToCart(PRODUCTS[0])" class="apple-action-btn px-6 py-3 text-xs shadow-xl flex items-center gap-2">
+          <button onclick="storeEngine.addToCart(PRODUCTS[0])" class="apple-action-btn px-4 sm:px-6 py-2.5 sm:py-3 text-xs shadow-xl flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
             <span>Add to Bag</span>
           </button>
-          <a href="#configurator" class="apple-secondary-glass-btn px-4 py-3 text-xs font-bold flex items-center gap-1.5">
-            <span>Configure RAM/SSD</span>
+          <a href="#configurator" class="apple-secondary-glass-btn px-3 sm:px-4 py-2.5 sm:py-3 text-xs font-bold flex items-center gap-1.5">
+            <span>Configure</span>
           </a>
+        </div>
       </div>
 
       <!-- Bottom Drag / Scroll Hint -->
@@ -451,24 +531,24 @@
           alt="Dell 5530 4K UltraSharp" 
           class="w-full h-full object-cover"
         />
-        <div class="absolute bottom-6 right-6 z-10 ultra-glass px-4 py-2 rounded-xl text-xs font-mono border-l-4 border-l-cyan-400">
-          <span class="text-cyan-400 font-bold block">DELL 5530 4K ULTRASHARP™</span>
-          <span class="text-slate-300 text-[11px]">3840×2160 • 8.3M Pixels • 100% AdobeRGB • 400 Nits</span>
+        <div class="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 z-10 ultra-glass px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono border-l-4 border-l-cyan-400">
+          <span class="text-cyan-400 font-bold block text-[10px] sm:text-xs">DELL 5530 4K ULTRASHARP™</span>
+          <span class="text-slate-300 text-[9px] sm:text-[11px] hidden sm:block">3840×2160 • 8.3M Pixels • 100% AdobeRGB</span>
         </div>
       </div>
 
       <!-- Left Overlay: Standard 1080p Screen (Lower contrast, simulated 1080p) -->
       <div class="display-compare-overlay w-1/2" id="display-compare-overlay">
-        <div class="absolute inset-0 w-[1280px] h-[520px] pointer-events-none" style="filter: blur(1.5px) contrast(80%) saturate(60%);">
+        <div class="absolute inset-0 w-full h-full pointer-events-none" style="filter: blur(1.5px) contrast(80%) saturate(60%);">
           <img 
             src="assets/images/real-5530/dell_5530_front_display.jpg" 
             alt="Standard 1080p Screen" 
             class="w-full h-full object-cover"
           />
         </div>
-        <div class="absolute bottom-6 left-6 z-10 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-mono border-l-4 border-l-slate-500">
-          <span class="text-slate-400 font-bold block">STANDARD 1080P FHD</span>
-          <span class="text-slate-500 text-[11px]">1920×1080 • 2.0M Pixels • 45% NTSC • 250 Nits</span>
+        <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 z-10 bg-slate-950/85 backdrop-blur-md px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono border-l-4 border-l-slate-500">
+          <span class="text-slate-400 font-bold block text-[10px] sm:text-xs">STANDARD 1080P FHD</span>
+          <span class="text-slate-500 text-[9px] sm:text-[11px] hidden sm:block">1920×1080 • 2.0M Pixels • 45% NTSC</span>
         </div>
 
         <!-- Draggable Handle Pill -->
@@ -916,7 +996,7 @@
   <!-- ===================================================
        7. DEDICATED STORE GATEWAY & HIGHLIGHTED CATALOG
        =================================================== -->
-  <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
       <div>
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-pill text-cyan-400 text-xs font-mono font-semibold mb-3">
@@ -1330,5 +1410,26 @@
       }, { passive: true });
     }
   </script>
+
+  <!-- Mobile Sticky Action Bar -->
+  <div class="mobile-sticky-bar md:hidden flex items-center justify-between gap-3">
+    <div>
+      <div class="text-[9px] font-mono text-cyan-400 font-bold uppercase tracking-wider">GRADE A+ 4K WORKSTATION</div>
+      <div class="flex items-baseline gap-1.5">
+        <span class="text-base font-black text-white font-mono">₹34,999</span>
+        <span class="text-[10px] text-slate-500 line-through font-mono">₹1.85L</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="products.html" class="px-3 py-2 rounded-full apple-secondary-glass-btn text-[11px] font-mono text-cyan-300 border border-cyan-500/30">
+        8 Models →
+      </a>
+      <button onclick="storeEngine.addToCart(PRODUCTS[0])" class="px-4 py-2 rounded-full apple-action-btn text-xs font-bold font-mono flex items-center gap-1.5 shadow-lg">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <span>Add to Bag</span>
+      </button>
+    </div>
+  </div>
+
 </body>
 </html>

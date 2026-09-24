@@ -449,11 +449,42 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAurora();
   }
 
+  // 9. Mobile Navigation Drawer Controller
+  const mobileMenuBtn = document.getElementById('mobile-menu-toggle-btn');
+  const mobileDrawer = document.getElementById('mobile-nav-drawer');
+  const mobileCloseBtn = document.getElementById('mobile-menu-close-btn');
+
+  if (mobileMenuBtn && mobileDrawer) {
+    const openMobileMenu = () => {
+      mobileDrawer.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMobileMenu = () => {
+      mobileDrawer.classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+    if (mobileCloseBtn) mobileCloseBtn.addEventListener('click', closeMobileMenu);
+
+    mobileDrawer.querySelectorAll('.mobile-nav-link, a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeMobileMenu();
+      });
+    });
+  }
+
   // Keyboard escape listeners for modals
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       window.closePhotoLightbox();
       window.closeMarketingVideoModal();
+      if (mobileDrawer) {
+        mobileDrawer.classList.remove('drawer-open');
+        mobileDrawer.classList.add('drawer-closed');
+        document.body.style.overflow = '';
+      }
       if (aiDrawer) aiDrawer.classList.remove('open');
       storeEngine.closeCart();
       storeEngine.closeAuthModal();

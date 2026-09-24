@@ -454,6 +454,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) searchInput.value = searchQuery;
   }
 
+  // Mobile Navigation Drawer Controller for products.html
+  const pMobileBtn = document.getElementById('products-mobile-menu-btn');
+  const pMobileDrawer = document.getElementById('products-mobile-nav-drawer');
+  const pMobileClose = document.getElementById('products-mobile-menu-close');
+
+  if (pMobileBtn && pMobileDrawer) {
+    pMobileBtn.addEventListener('click', () => {
+      pMobileDrawer.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+    if (pMobileClose) {
+      pMobileClose.addEventListener('click', () => {
+        pMobileDrawer.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+    }
+  }
+
   // Initial render
   renderCatalog();
 });
