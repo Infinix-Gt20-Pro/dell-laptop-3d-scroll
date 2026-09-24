@@ -1,0 +1,553 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-deep: #05070b;
+  --bg-surface: #0a0e17;
+  --bg-elevated: #0f1523;
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  --glass-specular: rgba(255, 255, 255, 0.35);
+  --glass-shadow: rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-deep);
+  color: #f8fafc;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6, 182, 212, 0.15), transparent),
+    radial-gradient(circle at 100% 40%, rgba(59, 130, 246, 0.08), transparent 45%),
+    radial-gradient(circle at 0% 70%, rgba(20, 184, 166, 0.06), transparent 40%);
+  background-attachment: fixed;
+}
+
+/* ===================================================
+   APPLE 4K ULTRA REALISTIC GLASSMORPHISM
+   =================================================== */
+
+/* Master Ultra Glass Panel */
+.ultra-glass {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.06) 0%, 
+    rgba(255, 255, 255, 0.015) 100%
+  ), rgba(10, 14, 23, 0.72);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.22),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Floating Glass Island / Nav Bar */
+.apple-nav-glass {
+  background: linear-gradient(
+    180deg, 
+    rgba(15, 21, 35, 0.85) 0%, 
+    rgba(8, 11, 18, 0.88) 100%
+  );
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Frosted Glass Pill */
+.glass-pill {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Glass Card with Glowing Specular Border */
+.specular-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(17, 24, 39, 0.7) 0%, rgba(9, 13, 22, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.specular-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(6, 182, 212, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+/* Apple Liquid Button Styles */
+.apple-action-btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0.15) 100%), #06b6d4;
+  color: #041017;
+  font-weight: 700;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 4px 18px rgba(6, 182, 212, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-action-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 
+    0 8px 28px rgba(6, 182, 212, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.apple-secondary-glass-btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-secondary-glass-btn:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45);
+}
+
+/* Interactive Cursor Spotlight Glow */
+#cursor-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.07) 0%, transparent 70%);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #05070b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}
+
+/* Animations */
+@keyframes specularShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  transform: skewX(-20deg);
+  animation: specularShimmer 4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+/* Hero Canvas Container */
+#hero-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.hero-stage-card {
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===================================================
+   360 INTERACTIVE DRAG & CANVAS CONTROLS
+   =================================================== */
+.canvas-interactive {
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.canvas-interactive:active {
+  cursor: grabbing;
+}
+
+/* Interactive Hotspots with Apple/Google Glow */
+.hotspot-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 25;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+.hotspot-pin:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.hotspot-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.85);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.9), inset 0 0 6px #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hotspot-ripple {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(6, 182, 212, 0.6);
+  animation: hotspotPulse 2s infinite cubic-bezier(0, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.xray-hotspot .hotspot-dot {
+  background: #06b6d4;
+  border-color: #ffffff;
+  box-shadow: 0 0 24px rgba(6, 182, 212, 1), 0 0 10px rgba(59, 130, 246, 0.8), inset 0 0 6px #ffffff;
+}
+
+.xray-hotspot .hotspot-ripple {
+  border-color: rgba(6, 182, 212, 0.9);
+  animation: hotspotPulse 1.6s infinite cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes hotspotPulse {
+  0% { transform: scale(0.85); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.hotspot-card {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 260px;
+  background: rgba(10, 14, 23, 0.92);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(6, 182, 212, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 30;
+}
+
+.hotspot-card::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(10, 14, 23, 0.92) transparent transparent transparent;
+}
+
+.hotspot-pin:hover .hotspot-card,
+.hotspot-pin.active .hotspot-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===================================================
+   4K DISPLAY SIMULATOR (BEFORE / AFTER SPLIT SLIDER)
+   =================================================== */
+.display-compare-container {
+  position: relative;
+  width: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  user-select: none;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.display-compare-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+  border-right: 2px solid #06b6d4;
+  box-shadow: 4px 0 25px rgba(6, 182, 212, 0.5);
+}
+
+.display-compare-handle {
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #06b6d4;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+  z-index: 20;
+}
+
+/* ===================================================
+   GOOGLE FLOW / ASTRA AI ASSISTANT CHAT WIDGET
+   =================================================== */
+.ai-assistant-drawer {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: min(420px, calc(100vw - 32px));
+  height: 580px;
+  max-height: calc(100vh - 100px);
+  background: rgba(10, 14, 23, 0.94);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.75rem;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(6, 182, 212, 0.18);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  transform: translateY(120%) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-assistant-drawer.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ai-floating-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 990;
+  animation: floatPulse 3s infinite ease-in-out;
+}
+
+@keyframes floatPulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ===================================================
+   PERFORMANCE BENCHMARK BARS
+   =================================================== */
+.benchmark-track {
+  height: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.benchmark-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+/* ===================================================
+   MOTIONSITES.AI LUXURY AGENCY TOKENS & ANIMATIONS
+   =================================================== */
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* MotionSites Radial Gradient Pill Badge */
+.motionsites-badge-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(14, 18, 28, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.motionsites-gradient-text {
+  background: radial-gradient(80.17% 109.2% at 44.37% 35.15%, rgb(208, 178, 255) 0%, rgb(255, 238, 216) 42.83%, rgb(6, 182, 212) 88.38%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Dual-Layer Glow Headline */
+.glow-title {
+  position: relative;
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.glow-title .glow-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 110% at 50% 40%, rgba(6, 182, 212, 0.9) 0%, rgba(59, 130, 246, 0.6) 45%, rgba(147, 51, 234, 0.4) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: blur(16px);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* MotionSites Tactile Chamfered Bevel Tabs */
+.motionsites-tab-bar {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+}
+
+.motionsites-tab {
+  position: relative;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.motionsites-tab:hover {
+  color: #ffffff;
+}
+
+.motionsites-tab.active {
+  background-color: rgb(24, 27, 36);
+  color: #ffffff;
+  border-top: 1px solid rgb(75, 82, 98);
+  border-right: 1px solid rgb(40, 45, 56);
+  border-bottom: 1px solid rgb(30, 34, 44);
+  border-left: 1px solid rgb(40, 45, 56);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Floating Telemetry Chips for Hero */
+.telemetry-chip {
+  background: rgba(10, 14, 23, 0.75);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+}
+
+.telemetry-chip:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Ambient Particles/Waves Behind Hero Canvas */
+#ambient-aurora-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+
