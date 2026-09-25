@@ -5,6 +5,29 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Initialize Ultra-Fluid Kinetic Smooth Scroll Engine (Lenis)
+  if (typeof window.Lenis !== 'undefined' && !window.lenis) {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple exponential curve
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 1.15,
+      infinite: false,
+    });
+    window.lenis = lenis;
+
+    function lenisRaf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(lenisRaf);
+    }
+    requestAnimationFrame(lenisRaf);
+
+    window.dispatchEvent(new CustomEvent('lenis-ready', { detail: { lenis } }));
+  }
+
   // 1. Initialize 3D Video Scrubber for Hero (singleton)
   const scrubber = window.heroScrubber || new HeroVideoScrubber({
     canvasId: 'hero-canvas',
@@ -376,6 +399,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (auroraCanvas) {
     const actx = auroraCanvas.getContext('2d');
     let aW = 0, aH = 0;
+    let isAuroraVisible = true;
+    let auroraRafId = null;
     
     const resizeAurora = () => {
       aW = auroraCanvas.width = auroraCanvas.parentElement ? auroraCanvas.parentElement.clientWidth : window.innerWidth;
@@ -384,18 +409,19 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeAurora();
     window.addEventListener('resize', resizeAurora, { passive: true });
 
-    const particles = Array.from({ length: 35 }, () => ({
+    const particles = Array.from({ length: 24 }, () => ({
       x: Math.random() * (aW || 1200),
       y: Math.random() * (aH || 800),
-      radius: Math.random() * 2.2 + 0.8,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4 - 0.15,
-      alpha: Math.random() * 0.45 + 0.15,
+      radius: Math.random() * 2.0 + 0.8,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35 - 0.1,
+      alpha: Math.random() * 0.4 + 0.12,
       hue: Math.random() > 0.5 ? 190 : 230
     }));
 
     let glowTime = 0;
     const renderAurora = () => {
+      if (!isAuroraVisible) return;
       if (!actx || aW === 0 || aH === 0) return;
       actx.clearRect(0, 0, aW, aH);
       glowTime += 0.012;
@@ -415,20 +441,6 @@ document.addEventListener('DOMContentLoaded', () => {
       actx.fillStyle = grad1;
       actx.fillRect(0, 0, aW, aH);
 
-      const grad2 = actx.createRadialGradient(
-        aW * 0.65 + Math.cos(glowTime * 0.7) * 100,
-        aH * 0.55 + Math.sin(glowTime * 0.9) * 90,
-        60,
-        aW * 0.65,
-        aH * 0.55,
-        aW * 0.5
-      );
-      grad2.addColorStop(0, 'rgba(147, 51, 234, 0.05)');
-      grad2.addColorStop(0.7, 'rgba(6, 182, 212, 0.02)');
-      grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      actx.fillStyle = grad2;
-      actx.fillRect(0, 0, aW, aH);
-
       // Drifting ethereal micro-particles
       particles.forEach(p => {
         p.x += p.vx;
@@ -444,9 +456,25 @@ document.addEventListener('DOMContentLoaded', () => {
         actx.fill();
       });
 
-      requestAnimationFrame(renderAurora);
+      auroraRafId = requestAnimationFrame(renderAurora);
     };
-    renderAurora();
+
+    if ('IntersectionObserver' in window && auroraCanvas.parentElement) {
+      const auroraObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isAuroraVisible = entry.isIntersecting;
+          if (isAuroraVisible) {
+            cancelAnimationFrame(auroraRafId);
+            auroraRafId = requestAnimationFrame(renderAurora);
+          } else {
+            cancelAnimationFrame(auroraRafId);
+          }
+        });
+      }, { threshold: 0.05 });
+      auroraObs.observe(auroraCanvas.parentElement);
+    } else {
+      auroraRafId = requestAnimationFrame(renderAurora);
+    }
   }
 
   // 9. Mobile Navigation Drawer Controller

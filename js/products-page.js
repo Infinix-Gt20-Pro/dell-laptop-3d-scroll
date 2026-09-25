@@ -4,6 +4,27 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Initialize Ultra-Fluid Kinetic Smooth Scroll Engine (Lenis)
+  if (typeof window.Lenis !== 'undefined' && !window.lenis) {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple exponential curve
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 1.15,
+      infinite: false,
+    });
+    window.lenis = lenis;
+
+    function lenisRaf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(lenisRaf);
+    }
+    requestAnimationFrame(lenisRaf);
+  }
+
   // Store state
   let activeCategory = 'all';
   let activeBrand = 'all';
@@ -106,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isDellFlagship = product.id === 'dell-5530-flagship';
 
       return `
-        <div class="specular-card group flex flex-col justify-between overflow-hidden p-5 transition-all duration-300 bg-white border border-slate-200">
+        <div class="specular-card catalog-product-card group flex flex-col justify-between overflow-hidden p-5 transition-all duration-300 bg-white border border-slate-200">
           
           <!-- Card Top: Badges & Wishlist -->
           <div>
@@ -183,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <!-- Card Bottom: Pricing & Actions -->
-          <div class="pt-3 border-t border-slate-100">
+          <div class="catalog-card-footer pt-3 border-t border-slate-100 mt-auto">
             <div class="flex items-baseline justify-between mb-3">
               <div>
                 <div class="text-2xl font-black text-slate-900 font-mono tracking-tight">
@@ -479,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.LiquidGlass && typeof window.LiquidGlass.init === 'function') {
     window.LiquidGlass.init({
       selector: '.ultra-glass, .specular-card, .apple-action-btn, .apple-secondary-glass-btn, .liquid-glass',
-      gradientBlur: true,
+      gradientBlur: false,
       blurSize: 28
     });
   }

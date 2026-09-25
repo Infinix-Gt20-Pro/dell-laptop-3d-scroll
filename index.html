@@ -29,9 +29,16 @@
     }
   </script>
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.ico">
+
   <!-- Custom Apple 4K Ultra Glass Light Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/liquid-glass.css">
+
+  <!-- Lenis Butter-Smooth Kinetic Scroll Engine -->
+  <script src="js/lenis.min.js"></script>
 </head>
 <body class="min-h-screen text-slate-900 bg-[#f8fafc] flex flex-col selection:bg-cyan-500 selection:text-white">
 
@@ -55,38 +62,38 @@
           <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-600 transition-colors">
             CLASSIC COMPUTER
           </span>
-          <span class="text-[10px] font-mono tracking-widest text-cyan-600 uppercase -mt-0.5 font-bold">
+          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-600 uppercase -mt-0.5 font-bold">
             CERTIFIED REFURBISHED HUB
           </span>
         </div>
       </a>
 
-      <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-1.5 text-xs font-semibold font-mono">
-        <a href="#hero-scroll-container" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+      <!-- Navigation Links (Desktop) -->
+      <nav class="apple-desktop-nav hidden items-center gap-1 text-xs font-semibold font-mono">
+        <a href="#hero-scroll-container" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
           Flagship 5530
         </a>
-        <a href="#display-simulator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#display-simulator" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
           4K Simulator
         </a>
-        <a href="#benchmarks" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#benchmarks" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
           Benchmarks
         </a>
-        <a href="#showcase" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#showcase" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
           Photo Lab
         </a>
-        <a href="#configurator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#configurator" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
           Studio
         </a>
         <!-- Separate Products Page Link -->
-        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-sm font-bold">
-          <span>Explore All Products</span>
+        <a href="products.html" class="px-3 py-1.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-sm font-bold">
+          <span>All 8 Models</span>
           <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
         </a>
       </nav>
 
       <!-- Glass Action Controls -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2">
         
         <!-- Ambient Soundscape Toggle (Desktop/Tablet) -->
         <button id="ambient-audio-toggle" title="Toggle Spatial Audio" class="hidden sm:flex apple-secondary-glass-btn w-9 h-9 items-center justify-center text-slate-700 hover:text-cyan-600">
@@ -102,24 +109,24 @@
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
+        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
           <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
-          <span class="hidden sm:inline">Bag</span>
+          <span class="header-glass-btn-label hidden sm:inline">Bag</span>
           <span class="cart-badge w-4 h-4 rounded-full bg-cyan-600 text-white text-[10px] font-black font-mono flex items-center justify-center" style="display: none;">0</span>
         </button>
 
         <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="apple-action-btn px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
+        <button data-action="open-auth" class="apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
           <div class="w-5 h-5 rounded-full bg-white text-cyan-700 flex items-center justify-center text-[10px] font-bold font-mono">
             KA
           </div>
-          <span class="hidden sm:inline">Account</span>
+          <span class="header-glass-btn-label hidden sm:inline">Account</span>
         </button>
 
-        <!-- Mobile Navigation Menu Toggle -->
-        <button id="mobile-menu-toggle-btn" class="apple-secondary-glass-btn md:hidden w-9 h-9 flex items-center justify-center text-slate-700 hover:text-cyan-600">
+        <!-- Mobile & Tablet Navigation Menu Toggle -->
+        <button id="mobile-menu-toggle-btn" class="apple-mobile-menu-trigger apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-slate-700 hover:text-cyan-600">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
 
@@ -130,7 +137,7 @@
   <!-- ===================================================
        MOBILE NAVIGATION DRAWER OVERLAY (LIGHT FROSTED GLASS)
        =================================================== -->
-  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl p-5 overflow-y-auto md:hidden">
+  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl p-5 overflow-y-auto lg:hidden">
     <div class="flex items-center justify-between pb-5 border-b border-slate-200">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-xs">
@@ -223,8 +230,8 @@
     </p>
 
     <!-- Interactive Navigation Pills -->
-    <div class="mt-4 sm:mt-6 flex items-center justify-center overflow-x-auto no-scrollbar w-full px-2">
-      <div class="motionsites-tab-bar">
+    <div class="mt-4 sm:mt-6 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar w-full max-w-full px-2">
+      <div class="motionsites-tab-bar shrink-0 mx-auto">
         <a href="#hero-scroll-container" class="motionsites-tab active">✦ 3D Video Scroll</a>
         <a href="#display-simulator" class="motionsites-tab">4K Simulator</a>
         <a href="#benchmarks" class="motionsites-tab">Benchmarks</a>
@@ -241,8 +248,8 @@
        =================================================== -->
   <section id="hero-scroll-container" class="relative w-full h-[520vh]">
     
-    <!-- Pinned Viewport (100vh) with Interactive Canvas & Hotspots -->
-    <div id="hero-pinned-viewport" class="sticky top-0 w-full h-screen overflow-hidden flex flex-col items-center justify-center relative">
+    <!-- Pinned Viewport (100vh / 100dvh) with Interactive Canvas & Glass Optics -->
+    <div id="hero-pinned-viewport" class="sticky top-0 w-full h-screen h-[100dvh] overflow-hidden flex flex-col items-center justify-center relative">
       
       <!-- Ambient Aurora Glow Canvas -->
       <canvas id="ambient-aurora-canvas"></canvas>
@@ -261,8 +268,15 @@
         <div></div><div></div><div></div><div></div><div></div><div></div>
       </div>
 
-      <!-- Optical Dynamic Glass Sheen Reflection -->
-      <div class="hero-scroll-glass-sheen"></div>
+      <!-- Optical Dynamic Liquid Glass Sheen & Refraction Sweep (Gleams when scrolling) -->
+      <div class="hero-scroll-glass-sheen pointer-events-none"></div>
+      <div class="hero-glass-optical-sweep pointer-events-none"></div>
+      <div class="hero-glass-edge-glow pointer-events-none"></div>
+
+      <!-- Ultra-Thin Apple Liquid Glass Timeline Track (Fixed at top edge, non-occluding) -->
+      <div class="hero-liquid-glass-track pointer-events-none z-30">
+        <div id="hero-liquid-glass-indicator" class="hero-liquid-glass-indicator"></div>
+      </div>
 
       <!-- ===================================================
            ULTRA-MINIMAL APPLE LIQUID GLASS CINEMATIC STATUS CAPSULE
@@ -1152,13 +1166,21 @@
   <script src="js/cart-auth.js?v=120fps"></script>
   <script src="js/app.js?v=120fps"></script>
 
-  <!-- Ambient Cursor Spotlight Script -->
+  <!-- Ambient Cursor Spotlight Script (RAF Throttled GPU Transform) -->
   <script>
     const spotlight = document.getElementById('cursor-spotlight');
     if (spotlight) {
+      let mouseX = 0, mouseY = 0, ticking = false;
       window.addEventListener('mousemove', (e) => {
-        spotlight.style.left = `${e.clientX}px`;
-        spotlight.style.top = `${e.clientY}px`;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            spotlight.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
       }, { passive: true });
     }
   </script>

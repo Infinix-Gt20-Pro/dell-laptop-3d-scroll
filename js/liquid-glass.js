@@ -298,6 +298,8 @@
    */
   function applyLiquidGlass(element, options = {}) {
     if (!element) return;
+    if (element.dataset && element.dataset.liquidGlassInitialized === 'true') return;
+    if (element.dataset) element.dataset.liquidGlassInitialized = 'true';
 
     element.classList.add('liquid-glass');
 

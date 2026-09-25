@@ -21,7 +21,7 @@ class HeroVideoScrubber {
     this.timeIndicator = document.getElementById('scrub-time-indicator');
     this.playBtn = document.getElementById('hero-play-toggle-btn');
 
-    // Ultra-Minimal Liquid Glass Capsule elements
+    // Ultra-Minimal Liquid Glass Capsule & Optical Elements
     this.glassCapsule = document.getElementById('hero-glass-capsule');
     this.glassStageText = document.getElementById('glass-capsule-stage');
     this.glassTimeText = document.getElementById('glass-capsule-time');
@@ -29,6 +29,9 @@ class HeroVideoScrubber {
     this.glassStageCta = document.getElementById('hero-stage5-cta');
     this.glassStagesToggle = document.getElementById('glass-stages-toggle-btn');
     this.glassStagesPopover = document.getElementById('glass-stages-popover');
+    this.glassTimelineIndicator = document.getElementById('hero-liquid-glass-indicator');
+    this.glassOpticalSweep = document.querySelector('.hero-glass-optical-sweep');
+    this.glassEdgeGlow = document.querySelector('.hero-glass-edge-glow');
 
     this.isInHeroView = false;
     this.isScrolling = false;
@@ -150,12 +153,22 @@ class HeroVideoScrubber {
     // 2. Preload 240 sequential frames with progressive loading & GPU texture decoding
     this.preloadFrames();
 
-    // 3. Scroll listener with passive high-priority updates
-    window.addEventListener('scroll', () => {
+    // 3. Scroll listener with Lenis kinetic smooth-scroll coordination
+    const handleScrollUpdate = (scrollPos) => {
       if (!this.userInteracting && !this.isPlaying) {
-        this.onScroll();
+        this.onScroll(scrollPos);
       }
-    }, { passive: true });
+    };
+
+    if (window.lenis) {
+      window.lenis.on('scroll', (e) => handleScrollUpdate(e.scroll));
+    }
+    window.addEventListener('lenis-ready', (e) => {
+      if (e.detail && e.detail.lenis) {
+        e.detail.lenis.on('scroll', (evt) => handleScrollUpdate(evt.scroll));
+      }
+    });
+    window.addEventListener('scroll', () => handleScrollUpdate(), { passive: true });
 
     // 4. Interactive Drag & Touch gesture controls with 120 FPS inertial physics
     this.setupDragControls();
@@ -337,6 +350,7 @@ class HeroVideoScrubber {
       this.dragStartX = clientX;
       this.dragStartProgress = this.targetProgress;
       targetEl.classList.add('canvas-dragging');
+      this.markScrolling();
     };
 
     const onPointerMove = (clientX) => {
@@ -353,12 +367,14 @@ class HeroVideoScrubber {
       const progressChange = (totalDelta / window.innerWidth) * 0.85;
       
       this.targetProgress = Math.max(0, Math.min(1, this.dragStartProgress + progressChange));
+      this.markScrolling();
     };
 
     const onPointerUp = () => {
       if (!this.isDragging) return;
       this.isDragging = false;
       targetEl.classList.remove('canvas-dragging');
+      this.markScrolling();
       setTimeout(() => {
         this.userInteracting = false;
       }, 500);
@@ -383,28 +399,42 @@ class HeroVideoScrubber {
 
   resize() {
     if (!this.canvas) return;
-    const rect = this.canvas.parentElement.getBoundingClientRect();
+    const rect = this.canvas.parentElement ? this.canvas.parentElement.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
     const dpr = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.5 : 2);
     
     this.canvas.width = Math.floor(rect.width * dpr);
     this.canvas.height = Math.floor(rect.height * dpr);
+
+    // Cache container geometry to eliminate scroll layout thrashing
+    if (this.container) {
+      this.cachedContainerHeight = this.container.offsetHeight;
+      const cRect = this.container.getBoundingClientRect();
+      this.cachedContainerTop = window.scrollY + cRect.top;
+    }
+    this.cachedWindowHeight = window.innerHeight;
+
     this.render();
   }
 
-  onScroll() {
+  onScroll(scrollPos) {
     if (!this.container) return;
-    const rect = this.container.getBoundingClientRect();
-    const containerHeight = this.container.offsetHeight;
-    const windowHeight = window.innerHeight;
+    const currentY = (typeof scrollPos === 'number') ? scrollPos : window.scrollY;
+    
+    const containerHeight = this.cachedContainerHeight || this.container.offsetHeight;
+    const windowHeight = this.cachedWindowHeight || window.innerHeight;
+    const containerTop = (this.cachedContainerTop !== undefined) ? this.cachedContainerTop : (currentY + this.container.getBoundingClientRect().top);
+
+    const relativeTop = containerTop - currentY;
+    const relativeBottom = relativeTop + containerHeight;
 
     // Full-screen cinematic detection: hide header/options when in 3D hero
-    const inHero = rect.top <= 120 && rect.bottom >= windowHeight * 0.15;
+    const inHero = relativeTop <= 120 && relativeBottom >= windowHeight * 0.15;
     if (inHero !== this.isInHeroView) {
       this.isInHeroView = inHero;
       document.body.classList.toggle('hero-in-view', inHero);
     }
 
-    const scrollDistance = -rect.top;
+    const scrollDistance = currentY - containerTop;
     const maxScroll = containerHeight - windowHeight;
 
     if (maxScroll <= 0) return;
@@ -413,19 +443,46 @@ class HeroVideoScrubber {
     progress = Math.max(0, Math.min(1, progress));
     this.targetProgress = progress;
 
+    // Dynamic Apple Liquid Glass optical sweep reflection coordinates
+    if (this.glassOpticalSweep) {
+      const sweepX = 30 + progress * 40;
+      const sweepY = 35 + progress * 30;
+      this.glassOpticalSweep.style.setProperty('--sweep-x', `${sweepX}%`);
+      this.glassOpticalSweep.style.setProperty('--sweep-y', `${sweepY}%`);
+    }
+
+    // Update ultra-thin hairline progress track at top edge
+    if (this.glassTimelineIndicator) {
+      this.glassTimelineIndicator.style.width = `${(progress * 100).toFixed(2)}%`;
+    }
+
     this.markScrolling();
   }
 
   markScrolling() {
     this.isScrolling = true;
+    document.body.classList.add('is-scrolling');
     if (this.glassCapsule) {
       this.glassCapsule.classList.add('scrolling');
+    }
+    if (this.glassOpticalSweep) {
+      this.glassOpticalSweep.classList.add('active');
+    }
+    if (this.glassEdgeGlow) {
+      this.glassEdgeGlow.classList.add('active');
     }
     clearTimeout(this.scrollTimeout);
     this.scrollTimeout = setTimeout(() => {
       this.isScrolling = false;
+      document.body.classList.remove('is-scrolling');
       if (this.glassCapsule) {
         this.glassCapsule.classList.remove('scrolling');
+      }
+      if (this.glassOpticalSweep) {
+        this.glassOpticalSweep.classList.remove('active');
+      }
+      if (this.glassEdgeGlow) {
+        this.glassEdgeGlow.classList.remove('active');
       }
     }, 450);
   }
@@ -444,8 +501,9 @@ class HeroVideoScrubber {
 
     // High-Precision 120 FPS Frame-Rate Independent Exponential Damping
     const diff = this.targetProgress - this.currentProgress;
-    if (Math.abs(diff) > 0.00005) {
-      const smoothingFactor = 1 - Math.exp(-26 * dt);
+    if (Math.abs(diff) > 0.00002) {
+      const rate = this.isDragging ? 18 : 11.5;
+      const smoothingFactor = 1 - Math.exp(-rate * dt);
       this.currentProgress += diff * smoothingFactor;
     } else {
       this.currentProgress = this.targetProgress;
@@ -455,6 +513,29 @@ class HeroVideoScrubber {
     this.updateHUD(this.currentProgress);
 
     requestAnimationFrame(this.rafLoop);
+  }
+
+  getBestFrame(targetIndex, p) {
+    if (this.frames[targetIndex] && (this.frames[targetIndex].complete || this.frames[targetIndex].naturalWidth)) {
+      return this.frames[targetIndex];
+    }
+    // Search nearby loaded frames within search window
+    for (let offset = 1; offset < 24; offset++) {
+      const prev = targetIndex - offset;
+      if (prev >= 0 && this.frames[prev] && (this.frames[prev].complete || this.frames[prev].naturalWidth)) {
+        return this.frames[prev];
+      }
+      const next = targetIndex + offset;
+      if (next < this.totalFrames && this.frames[next] && (this.frames[next].complete || this.frames[next].naturalWidth)) {
+        return this.frames[next];
+      }
+    }
+    // High-resolution keyframe fallback based on 16s timeline stage
+    if (p < 0.20) return this.keyframeAssets.stage1;
+    if (p < 0.45) return this.keyframeAssets.stage2;
+    if (p < 0.65) return this.keyframeAssets.stage3;
+    if (p < 0.85) return this.keyframeAssets.stage4;
+    return this.keyframeAssets.stage5;
   }
 
   render() {
@@ -470,44 +551,30 @@ class HeroVideoScrubber {
     this.ctx.fillStyle = '#05070b';
     this.ctx.fillRect(0, 0, cw, ch);
 
-    // Adaptive smoothing quality for 120 FPS
-    const isMoving = Math.abs(this.targetProgress - this.currentProgress) > 0.002;
     this.ctx.imageSmoothingEnabled = true;
-    this.ctx.imageSmoothingQuality = isMoving ? 'medium' : 'high';
+    this.ctx.imageSmoothingQuality = 'high';
 
-    // Map progress directly to the 240 frames (0 to 239)
-    const frameIndex = Math.min(
-      this.totalFrames - 1,
-      Math.max(0, Math.floor(p * (this.totalFrames - 1)))
-    );
+    // Sub-frame continuous floating index (0 to 239.0)
+    const floatIndex = p * (this.totalFrames - 1);
+    const indexA = Math.floor(floatIndex);
+    const indexB = Math.min(this.totalFrames - 1, indexA + 1);
+    const blendFrac = floatIndex - indexA;
 
-    let img = this.frames[frameIndex];
+    const imgA = this.getBestFrame(indexA, p);
+    const imgB = (indexB !== indexA) ? this.getBestFrame(indexB, p) : null;
 
-    if (!img) {
-      // Find nearest loaded frame within search window
-      for (let offset = 1; offset < 30; offset++) {
-        if (frameIndex - offset >= 0 && this.frames[frameIndex - offset]) {
-          img = this.frames[frameIndex - offset];
-          break;
-        }
-        if (frameIndex + offset < this.totalFrames && this.frames[frameIndex + offset]) {
-          img = this.frames[frameIndex + offset];
-          break;
-        }
-      }
+    if (imgA) {
+      this.ctx.globalAlpha = 1.0;
+      this.drawImageScaled(imgA);
     }
 
-    // High-resolution keyframe fallback based on 16s timeline stage
-    if (!img) {
-      if (p < 0.20) img = this.keyframeAssets.stage1;
-      else if (p < 0.45) img = this.keyframeAssets.stage2;
-      else if (p < 0.65) img = this.keyframeAssets.stage3;
-      else if (p < 0.85) img = this.keyframeAssets.stage4;
-      else img = this.keyframeAssets.stage5;
-    }
-
-    if (img) {
-      this.drawImageScaled(img);
+    // Blend next frame for ultra-fluid 120 FPS continuous motion
+    if (imgB && imgB !== imgA && blendFrac > 0.005) {
+      // Hermite smoothstep curve for optical continuity
+      const smoothAlpha = blendFrac * blendFrac * (3 - 2 * blendFrac);
+      this.ctx.globalAlpha = smoothAlpha;
+      this.drawImageScaled(imgB);
+      this.ctx.globalAlpha = 1.0;
     }
   }
 
@@ -530,10 +597,10 @@ class HeroVideoScrubber {
       baseRatio = Math.min(hRatio, vRatio) * 1.02;
     }
 
-    const renderW = iw * baseRatio;
-    const renderH = ih * baseRatio;
-    const shiftX = (cw - renderW) / 2;
-    const shiftY = (ch - renderH) / 2;
+    const renderW = Math.round(iw * baseRatio);
+    const renderH = Math.round(ih * baseRatio);
+    const shiftX = Math.round((cw - renderW) / 2);
+    const shiftY = Math.round((ch - renderH) / 2);
 
     this.ctx.drawImage(img, 0, 0, iw, ih, shiftX, shiftY, renderW, renderH);
   }
@@ -542,15 +609,24 @@ class HeroVideoScrubber {
     const currentTimeSec = (progress * this.totalDuration).toFixed(2);
     const currentStage = this.stages.find(s => progress >= s.start && progress <= s.end) || this.stages[0];
 
-    // 1. Update Minimal Apple Liquid Glass Capsule
-    if (this.glassStageText) {
-      this.glassStageText.textContent = `${currentStage.name} • ${currentStage.badge}`;
+    // 1. Update Minimal Apple Liquid Glass Capsule with deduplication
+    if (this.lastHUDStage !== currentStage.id) {
+      this.lastHUDStage = currentStage.id;
+      if (this.glassStageText) {
+        this.glassStageText.textContent = `${currentStage.name} • ${currentStage.badge}`;
+      }
     }
-    if (this.glassTimeText) {
-      this.glassTimeText.textContent = `${currentTimeSec}s / 16.00s`;
+    if (this.lastHUDTime !== currentTimeSec) {
+      this.lastHUDTime = currentTimeSec;
+      if (this.glassTimeText) {
+        this.glassTimeText.textContent = `${currentTimeSec}s / 16.00s`;
+      }
     }
     if (this.glassProgressBar) {
       this.glassProgressBar.style.width = `${(progress * 100).toFixed(1)}%`;
+    }
+    if (this.glassTimelineIndicator) {
+      this.glassTimelineIndicator.style.width = `${(progress * 100).toFixed(2)}%`;
     }
 
     // 2. Stage 5 End CTA Pill (Appears smoothly at 13.60s - 16.00s)
