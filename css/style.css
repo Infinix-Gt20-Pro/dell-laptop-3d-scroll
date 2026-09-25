@@ -77,6 +77,8 @@ body {
   box-shadow: 
     0 4px 24px rgba(15, 23, 42, 0.04),
     inset 0 -1px 0 rgba(15, 23, 42, 0.04);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, background 0.3s ease;
+  will-change: transform, opacity;
 }
 
 /* Frosted Glass Pill */
@@ -231,6 +233,99 @@ body {
   image-rendering: crisp-edges;
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* ===================================================
+   FULL SCREEN CINEMATIC 3D HERO VIEWPORT & TRANSITIONS
+   =================================================== */
+body.hero-in-view header.apple-nav-glass {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.hero-in-view .mobile-sticky-bar {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.hero-in-view #cursor-spotlight {
+  opacity: 0;
+}
+
+body.hero-in-view #ai-assistant-toggle {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+}
+
+/* ===================================================
+   APPLE LIQUID GLASS CINEMATIC SCROLL CAPSULE
+   =================================================== */
+.liquid-glass-capsule {
+  position: absolute !important;
+  bottom: 1.5rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 35 !important;
+  max-width: calc(100vw - 2rem) !important;
+  pointer-events: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: opacity, transform;
+}
+
+.liquid-glass-capsule.scrolling {
+  opacity: 0.3 !important;
+  transform: translateX(-50%) translateY(4px) scale(0.97) !important;
+}
+
+.liquid-glass-capsule:hover {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(-1px) scale(1.02) !important;
+}
+
+.glass-capsule-body {
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(40px) saturate(220%) contrast(106%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(220%) contrast(106%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 
+    0 20px 48px -10px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  position: relative;
+  overflow: visible;
+}
+
+.glass-capsule-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.hero-scroll-glass-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(2, 132, 199, 0.12) 0%, transparent 60%);
+  transition: opacity 0.5s ease;
+  z-index: 15;
+}
+
+body.hero-in-view .hero-scroll-glass-sheen {
+  opacity: 1;
 }
 
 /* ===================================================
@@ -701,54 +796,18 @@ body {
     flex-shrink: 0;
   }
 
-  .scrubber-hud-island {
-    top: 4.85rem !important;
-    left: 0.65rem !important;
-    right: 0.65rem !important;
-    padding: 0.65rem 0.85rem !important;
-    border-radius: 1.15rem !important;
+  .liquid-glass-capsule {
+    bottom: 1rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    max-width: 92vw !important;
   }
 
-  .hero-stage-card {
-    position: absolute !important;
-    bottom: 4.5rem !important;
-    left: 0.75rem !important;
-    right: 0.75rem !important;
-    top: auto !important;
-    max-width: none !important;
-    padding: 0.85rem 1rem !important;
-    border-radius: 1.25rem !important;
-    margin: 0 !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4) !important;
-  }
-
-  .hero-stage-card h2 {
-    font-size: 1.15rem !important;
-    line-height: 1.25 !important;
-    margin-top: 0.25rem !important;
-  }
-
-  .hero-stage-card p {
-    font-size: 0.72rem !important;
-    line-height: 1.35 !important;
-    margin-top: 0.35rem !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .touch-scrub-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    color: #0284c7;
-    background: rgba(2, 132, 199, 0.08);
-    padding: 3px 8px;
-    border-radius: 999px;
-    border: 1px solid rgba(2, 132, 199, 0.25);
+  .glass-capsule-body {
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    justify-content: space-between !important;
   }
 
   .ai-floating-trigger, #ai-assistant-toggle {

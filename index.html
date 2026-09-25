@@ -253,267 +253,74 @@
       <!-- Multi-Layer Radial Vignette -->
       <div class="absolute inset-0 bg-radial from-transparent via-black/20 to-black pointer-events-none z-10"></div>
 
+      <!-- Progressive 8-Layer Liquid Glass Optical Refraction Voids -->
+      <div class="lg-gradient-blur lg-gradient-blur-top pointer-events-none z-20">
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+      <div class="lg-gradient-blur lg-gradient-blur-bottom pointer-events-none z-20">
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+
+      <!-- Optical Dynamic Glass Sheen Reflection -->
+      <div class="hero-scroll-glass-sheen"></div>
+
       <!-- ===================================================
-           iOS 27 LIQUID GLASS SPEC HIGHLIGHTS RAILS (SIDE NOTES)
+           ULTRA-MINIMAL APPLE LIQUID GLASS CINEMATIC STATUS CAPSULE
+           Non-intrusive floating indicator with authentic Snell's Law refraction
+           Smoothly fades while scrolling so only 3D effect is seen!
            =================================================== -->
+      <div id="hero-glass-capsule" class="liquid-glass-capsule">
+        <div class="glass-capsule-body flex items-center gap-2 sm:gap-3 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full cursor-pointer select-none">
+          <!-- Live pulse dot -->
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#38bdf8] flex-shrink-0"></span>
 
-      <!-- Left Spec Rail: Architecture & Hinge -->
-      <div class="hidden lg:flex flex-col gap-3.5 absolute left-5 xl:left-8 top-1/2 -translate-y-1/2 z-20 pointer-events-auto max-w-[260px] xl:max-w-[280px]">
-        <div id="telemetry-chip-tl" class="telemetry-chip flex items-center gap-3">
-          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
-            ⚡
+          <!-- Stage Info -->
+          <span id="glass-capsule-stage" class="text-[11px] sm:text-xs font-mono font-bold text-slate-800 tracking-wide truncate max-w-[200px] sm:max-w-none">
+            01 // THE MONOLITH • CNC ALUMINUM UNIBODY
+          </span>
+
+          <!-- Time Indicator -->
+          <span id="glass-capsule-time" class="text-[9px] sm:text-[10px] font-mono text-cyan-700 bg-cyan-100/70 border border-cyan-200/80 px-2 py-0.5 rounded-full font-bold flex-shrink-0">
+            0.00s / 16.00s
+          </span>
+
+          <!-- Hairline Progress Track -->
+          <div class="hidden sm:block w-20 sm:w-28 h-1 bg-slate-200/70 rounded-full overflow-hidden flex-shrink-0">
+            <div id="glass-capsule-progress" class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full transition-all duration-75" style="width: 0%;"></div>
           </div>
-          <div class="min-w-0">
-            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-cyan-600 truncate">UNIBODY ARCHITECTURE</div>
-            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">CNC Anodized Aluminum</div>
-            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Timeline: 0.00s • 1.78kg Chassis</div>
-          </div>
+
+          <!-- Quick Jump / Stages Button -->
+          <button id="glass-stages-toggle-btn" class="apple-secondary-glass-btn px-2 py-0.5 text-[10px] font-mono font-bold text-slate-700 hover:text-cyan-700 flex-shrink-0 flex items-center gap-1" title="Jump to Stages">
+            <span>Stages</span>
+            <svg class="w-2.5 h-2.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+
+          <!-- Auto Tour Button -->
+          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-slate-700 hover:text-cyan-600 flex-shrink-0 shadow-sm" title="Toggle Auto Tour">
+            <svg class="w-3 h-3 text-cyan-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
         </div>
 
-        <div id="telemetry-chip-bl" class="telemetry-chip flex items-center gap-3">
-          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
-            🎮
-          </div>
-          <div class="min-w-0">
-            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-amber-600 truncate">PRECISION HINGE</div>
-            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">Fluid One-Finger Rise</div>
-            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Diamond-Cut Beveled Chamfers</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Spec Rail: Lab Audit & Battery -->
-      <div class="hidden lg:flex flex-col gap-3.5 absolute right-5 xl:right-8 top-1/2 -translate-y-1/2 z-20 pointer-events-auto max-w-[260px] xl:max-w-[280px]">
-        <div id="telemetry-chip-tr" class="telemetry-chip flex items-center gap-3">
-          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
-            🖥️
-          </div>
-          <div class="min-w-0">
-            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-blue-600 truncate">LAB INTEGRITY</div>
-            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">30-Point Certified Pass</div>
-            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Pristine Zero-Blemish Grade A+</div>
-          </div>
-        </div>
-
-        <div id="telemetry-chip-br" class="telemetry-chip flex items-center gap-3">
-          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
-            ⭐
-          </div>
-          <div class="min-w-0">
-            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-emerald-600 truncate">BATTERY HEALTH</div>
-            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">92% Tested Capacity</div>
-            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">97Wh High-Capacity Cell</div>
-          </div>
+        <!-- Sleek Collapsed Stages Popover (Opens only when clicked) -->
+        <div id="glass-stages-popover" class="hidden absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 p-1.5 rounded-2xl liquid-glass bg-white/95 backdrop-blur-2xl border border-white/90 shadow-2xl flex items-center gap-1 text-[10px] font-mono whitespace-nowrap z-40">
+          <button onclick="heroScrubber.jumpToProgress(0.0)" class="stage-pill-btn px-2.5 py-1 rounded-full text-slate-700 hover:text-cyan-600 font-semibold">01 Monolith</button>
+          <button onclick="heroScrubber.jumpToProgress(0.28)" class="stage-pill-btn px-2.5 py-1 rounded-full text-slate-700 hover:text-cyan-600 font-semibold">02 4K Screen</button>
+          <button onclick="heroScrubber.jumpToProgress(0.55)" class="stage-pill-btn px-2.5 py-1 rounded-full text-slate-700 hover:text-cyan-600 font-semibold">03 Carbon Deck</button>
+          <button onclick="heroScrubber.jumpToProgress(0.75)" class="stage-pill-btn px-2.5 py-1 rounded-full text-slate-700 hover:text-cyan-600 font-semibold">04 i7 Silicon</button>
+          <button onclick="heroScrubber.jumpToProgress(0.95)" class="stage-pill-btn px-2.5 py-1 rounded-full text-slate-700 hover:text-cyan-600 font-semibold">05 Certified</button>
         </div>
       </div>
 
-      <!-- Scrubber HUD Island Control (iOS 27 Liquid Glass) -->
-      <div class="scrubber-hud-island absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-4xl mx-auto z-30 flex flex-wrap items-center justify-between gap-2 sm:gap-3 shadow-2xl">
-        
-        <div class="flex items-center gap-2 sm:gap-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 animate-pulse shadow-[0_0_10px_#0284c7]"></span>
-          <span id="scrub-stage-text" class="text-[11px] sm:text-xs font-mono font-bold text-cyan-700 tracking-wider">01 // THE MONOLITH [0.00s - 3.20s]</span>
-          <span id="scrub-time-indicator" class="text-[10px] sm:text-xs font-mono font-bold text-amber-700 bg-amber-100/90 px-2.5 py-0.5 rounded-full border border-amber-300">0.00s / 16.00s</span>
-          <span class="touch-scrub-hint hidden sm:inline text-[10px] font-mono text-slate-500">👆 Touch Scrub 16s</span>
-        </div>
-
-        <!-- Jump to stage quick pills -->
-        <div class="hidden sm:flex items-center gap-1.5 text-[10px] font-mono">
-          <button onclick="heroScrubber.jumpToProgress(0.0)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">01 Monolith</button>
-          <button onclick="heroScrubber.jumpToProgress(0.28)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">02 4K Screen</button>
-          <button onclick="heroScrubber.jumpToProgress(0.55)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">03 Carbon Deck</button>
-          <button onclick="heroScrubber.jumpToProgress(0.75)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">04 i7 + GPU</button>
-          <button onclick="heroScrubber.jumpToProgress(0.95)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">05 Certified</button>
-        </div>
-
-        <!-- Controls: Auto Tour + 120 FPS Badge -->
+      <!-- Stage 5 Seamless End CTA (Appears smoothly only at 13.60s - 16.00s at bottom-right) -->
+      <div id="hero-stage5-cta" class="hidden opacity-0 pointer-events-none absolute bottom-5 right-4 sm:right-8 z-30 transition-all duration-400">
         <div class="flex items-center gap-2">
-          <span class="hidden lg:inline text-[10px] font-mono text-cyan-700 bg-cyan-100/80 px-2.5 py-1 rounded-full border border-cyan-300 font-bold shadow-sm">
-            ⚡ 120 FPS Engine
-          </span>
-          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
-            <svg class="w-3.5 h-3.5 text-cyan-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <span>Auto Tour</span>
+          <button onclick="storeEngine.addToCart(PRODUCTS[0])" class="apple-action-btn px-4 py-2 text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg">
+            <span>Add to Bag • ₹34,999</span>
           </button>
-        </div>
-
-        <!-- Interactive Scrub Range Slider Track (0.00s to 16.00s) -->
-        <div class="w-full flex items-center gap-2 sm:gap-3 pt-1">
-          <span class="text-[9px] sm:text-[10px] font-mono text-slate-500 font-bold">0.00s</span>
-          <input 
-            type="range" 
-            id="hero-scrub-range" 
-            min="0" 
-            max="1000" 
-            value="0" 
-            class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-cyan-600"
-          />
-          <span class="text-[9px] sm:text-[10px] font-mono text-cyan-700 font-bold">16.00s</span>
-        </div>
-      </div>
-
-      <!-- ===================================================
-           INTERACTIVE 3D HOTSPOT PINS
-           =================================================== -->
-      
-      <!-- Hotspot 1: CNC Aluminum Unibody -->
-      <div class="hotspot-pin" style="top: 55%; left: 24%;" data-target-progress="0.30">
-        <div class="hotspot-dot">
-          <span class="w-2 h-2 rounded-full bg-white"></span>
-          <div class="hotspot-ripple"></div>
-        </div>
-        <div class="hotspot-card">
-          <span class="text-[9px] font-mono text-cyan-600 uppercase font-bold">CHASSIS CRAFTSMANSHIP</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">CNC Milled Aluminum</h4>
-          <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-            Single-block aerospace aluminum unibody with soft-touch carbon fiber palmrest. Weighs only 1.78 kg.
-          </p>
-          <span class="text-[10px] text-cyan-600 font-mono mt-2 block font-bold">✦ Click to jump to 4.80s</span>
-        </div>
-      </div>
-
-      <!-- Hotspot 2: 15.6" 4K UltraSharp Display -->
-      <div class="hotspot-pin" style="top: 28%; left: 48%;" data-target-progress="0.40">
-        <div class="hotspot-dot">
-          <span class="w-2 h-2 rounded-full bg-white"></span>
-          <div class="hotspot-ripple"></div>
-        </div>
-        <div class="hotspot-card">
-          <span class="text-[9px] font-mono text-blue-600 uppercase font-bold">100% ADOBERGB PANEL</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">15.6" 4K InfinityEdge</h4>
-          <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-            3840 x 2160 UltraSharp panel with 400 nits brightness and borderless edge-to-edge glass.
-          </p>
-          <span class="text-[10px] text-blue-600 font-mono mt-2 block font-bold">✦ Click to jump to 6.40s</span>
-        </div>
-      </div>
-
-      <!-- Hotspot 3: Intel Core i7 H-Series Silicon (X-Ray) -->
-      <div class="hotspot-pin xray-hotspot" style="top: 52%; left: 44%;" data-target-progress="0.75">
-        <div class="hotspot-dot">
-          <span class="w-2 h-2 rounded-full bg-cyan-600"></span>
-          <div class="hotspot-ripple"></div>
-        </div>
-        <div class="hotspot-card">
-          <span class="text-[9px] font-mono text-cyan-600 uppercase font-bold">45W HIGH-VOLTAGE CPU</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">Intel Core i7 8th Gen H</h4>
-          <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-            6 Cores / 12 Threads up to 4.30 GHz Turbo. Full 45W high-voltage processing architecture.
-          </p>
-          <span class="text-[10px] text-cyan-600 font-mono mt-2 block font-bold">✦ Click to jump to 12.0s</span>
-        </div>
-      </div>
-
-      <!-- Hotspot 4: 4GB Dedicated NVIDIA GPU (X-Ray) -->
-      <div class="hotspot-pin xray-hotspot" style="top: 53%; left: 58%;" data-target-progress="0.80">
-        <div class="hotspot-dot">
-          <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-          <div class="hotspot-ripple"></div>
-        </div>
-        <div class="hotspot-card">
-          <span class="text-[9px] font-mono text-emerald-600 uppercase font-bold">WORKSTATION ACCELERATION</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">4GB Dedicated NVIDIA</h4>
-          <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-            Dedicated GPU acceleration for CAD modeling, Premiere Pro 4K renders, and dual monitor output.
-          </p>
-          <span class="text-[10px] text-emerald-600 font-mono mt-2 block font-bold">✦ Click to jump to 12.8s</span>
-        </div>
-      </div>
-
-      <!-- ===================================================
-           FLOATING NARRATIVE STAGE CARDS (DOCK CENTERED BOTTOM)
-           =================================================== -->
-
-      <!-- Stage 0: The Monolith (0.00s - 3.20s) -->
-      <div class="hero-stage-card absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-cyan-600 shadow-2xl transition-all duration-400">
-        <div class="flex items-center justify-center gap-2 mb-1.5">
-          <span class="text-[10px] font-mono text-cyan-700 uppercase tracking-widest font-bold">STAGE 01 // THE MONOLITH</span>
-          <span class="text-[9px] font-mono text-cyan-700 bg-cyan-100/90 px-2 py-0.5 rounded-full font-bold">0.00s - 3.20s</span>
-        </div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900">CNC Aluminum Unibody</h2>
-        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
-          Sculpted from a single block of aerospace-grade aluminum with diamond-cut chamfered edges and laser-etched Dell medallion. Zero-tolerance rigidity.
-        </p>
-        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-cyan-700 font-bold">
-          <span>✨ 1.78kg Aluminum Unibody</span> • <span>Fluid One-Finger Hinge</span>
-        </div>
-      </div>
-
-      <!-- Stage 1: InfinityEdge Awakening (3.20s - 7.20s) -->
-      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-blue-600 shadow-2xl transition-all duration-400">
-        <div class="flex items-center justify-center gap-2 mb-1.5">
-          <span class="text-[10px] font-mono text-blue-700 uppercase tracking-widest font-bold">STAGE 02 // INFINITYEDGE AWAKENING</span>
-          <span class="text-[9px] font-mono text-blue-700 bg-blue-100/90 px-2 py-0.5 rounded-full font-bold">3.20s - 7.20s</span>
-        </div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900">15.6" 4K UHD UltraSharp</h2>
-        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
-          Open the lid to 8.29 million pixels of pure clarity. 100% Adobe RGB color fidelity ignites the emerald lake landscape with razor-thin 4mm bezels.
-        </p>
-        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-blue-700 font-bold">
-          <span>🖥️ 3840×2160 UHD</span> • <span>100% Adobe RGB Gamut</span>
-        </div>
-      </div>
-
-      <!-- Stage 2: Tactile Craftsmanship (7.20s - 10.40s) -->
-      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-purple-600 shadow-2xl transition-all duration-400">
-        <div class="flex items-center justify-center gap-2 mb-1.5">
-          <span class="text-[10px] font-mono text-purple-700 uppercase tracking-widest font-bold">STAGE 03 // TACTILE CRAFTSMANSHIP</span>
-          <span class="text-[9px] font-mono text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-full font-bold">7.20s - 10.40s</span>
-        </div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Woven Carbon Fiber</h2>
-        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
-          Heat-isolated aeronautic woven carbon palm rest keeps your hands cool under maximum loads. Backlit chiclet keyboard and oversized precision glass trackpad.
-        </p>
-        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-purple-700 font-bold">
-          <span>⌨️ Backlit Chiclet</span> • <span>Glass Precision Trackpad</span>
-        </div>
-      </div>
-
-      <!-- Stage 3: Raw Silicon Teardown (10.40s - 13.60s) -->
-      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-emerald-600 shadow-2xl transition-all duration-400">
-        <div class="flex items-center justify-center gap-2 mb-1.5">
-          <span class="text-[10px] font-mono text-emerald-700 uppercase tracking-widest font-bold">STAGE 04 // RAW SILICON TEARDOWN</span>
-          <span class="text-[9px] font-mono text-emerald-700 bg-emerald-100/90 px-2 py-0.5 rounded-full font-bold">10.40s - 13.60s</span>
-        </div>
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Intel i7 H + NVIDIA GPU</h2>
-        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
-          High-voltage 45W Intel Core i7 H-Series CPU and 4GB dedicated NVIDIA graphics. Dual high-velocity cooling fans and copper heatpipes ensure sustained zero-throttle rendering.
-        </p>
-        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-emerald-700 font-bold">
-          <span>⚡ 45W i7-8850H</span> • <span>4GB Dedicated GPU</span> • <span>Dual Fans</span>
-        </div>
-      </div>
-
-      <!-- Stage 4: Assembled Masterpiece (13.60s - 16.00s) -->
-      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-7 text-center border border-cyan-400 shadow-2xl transition-all duration-400">
-        <div class="flex items-center justify-center gap-2 mb-1.5">
-          <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-cyan-100/90 text-cyan-800 border border-cyan-300">
-            ⭐ STAGE 05 // ASSEMBLED MASTERPIECE
-          </span>
-          <span class="text-[9px] font-mono text-cyan-800 bg-cyan-100/90 px-2 py-0.5 rounded-full font-bold">13.60s - 16.00s</span>
-        </div>
-        <h2 class="text-xl sm:text-3xl font-black text-slate-900">Dell Latitude / Precision 5530 4K</h2>
-        <p class="text-xs text-slate-600 mt-1">Core i7 8th Gen H-Series • 8GB RAM • 256GB NVMe SSD • 4GB Dedicated NVIDIA • 15.6" 4K</p>
-        
-        <div class="mt-4 flex items-center justify-center gap-3 sm:gap-4">
-          <div>
-            <span class="text-[10px] sm:text-xs text-slate-400 line-through font-mono">₹1,85,000</span>
-            <div class="text-xl sm:text-3xl font-black text-slate-900 font-mono">₹34,999</div>
-          </div>
-          <button onclick="storeEngine.addToCart(PRODUCTS[0])" class="apple-action-btn px-4 sm:px-6 py-2.5 sm:py-3 text-xs shadow-lg flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-            <span>Add to Bag</span>
-          </button>
-          <a href="#configurator" class="apple-secondary-glass-btn px-3 sm:px-4 py-2.5 sm:py-3 text-xs font-bold flex items-center gap-1.5">
+          <a href="#configurator" class="apple-secondary-glass-btn px-3 py-2 text-xs font-mono font-bold hidden sm:inline-flex">
             <span>Configure</span>
           </a>
         </div>
-      </div>
-
-      <!-- Bottom Drag / Scroll Hint -->
-      <div class="absolute bottom-5 inset-x-0 flex flex-col items-center justify-center text-slate-400 text-[11px] font-mono animate-bounce z-20 pointer-events-none">
-        <span>SCROLL DOWN TO EXPLORE 3D CHASSIS</span>
-        <svg class="w-4 h-4 mt-1 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
       </div>
 
     </div>

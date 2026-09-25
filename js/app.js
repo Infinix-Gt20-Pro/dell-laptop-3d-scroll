@@ -5,8 +5,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize 3D Video Scrubber for Hero
-  const scrubber = new HeroVideoScrubber({
+  // 1. Initialize 3D Video Scrubber for Hero (singleton)
+  const scrubber = window.heroScrubber || new HeroVideoScrubber({
     canvasId: 'hero-canvas',
     containerId: 'hero-scroll-container',
     totalFrames: 240
@@ -478,8 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 10. Apple Liquid Glass UI Engine Init (Snell's Law Optical Refraction + Progressive Blurs)
   if (window.LiquidGlass && typeof window.LiquidGlass.init === 'function') {
     window.LiquidGlass.init({
-      selector: '.scrubber-hud-island, .telemetry-chip, .hero-stage-card, .apple-action-btn, .apple-secondary-glass-btn, .liquid-glass',
-      gradientBlur: true,
+      selector: '.liquid-glass, .liquid-glass-capsule, .glass-capsule-body, .apple-action-btn, .apple-secondary-glass-btn, [data-liquid-glass]',
+      gradientBlur: false, // We inject gradient blur directly into container voids
       blurSize: 32
     });
   }

@@ -20,6 +20,19 @@ class HeroVideoScrubber {
     this.stageIndicator = document.getElementById('scrub-stage-text');
     this.timeIndicator = document.getElementById('scrub-time-indicator');
     this.playBtn = document.getElementById('hero-play-toggle-btn');
+
+    // Ultra-Minimal Liquid Glass Capsule elements
+    this.glassCapsule = document.getElementById('hero-glass-capsule');
+    this.glassStageText = document.getElementById('glass-capsule-stage');
+    this.glassTimeText = document.getElementById('glass-capsule-time');
+    this.glassProgressBar = document.getElementById('glass-capsule-progress');
+    this.glassStageCta = document.getElementById('hero-stage5-cta');
+    this.glassStagesToggle = document.getElementById('glass-stages-toggle-btn');
+    this.glassStagesPopover = document.getElementById('glass-stages-popover');
+
+    this.isInHeroView = false;
+    this.isScrolling = false;
+    this.scrollTimeout = null;
     
     // Exact 16.00s duration at 15 fps = 240 high-performance WebP frames
     this.totalDuration = 16.00;
@@ -166,7 +179,18 @@ class HeroVideoScrubber {
       });
     }
 
-    // 7. Hotspot clicks
+    // 7. Stages popover toggle in Liquid Glass Capsule
+    if (this.glassStagesToggle && this.glassStagesPopover) {
+      this.glassStagesToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.glassStagesPopover.classList.toggle('hidden');
+      });
+      document.addEventListener('click', () => {
+        if (this.glassStagesPopover) this.glassStagesPopover.classList.add('hidden');
+      });
+    }
+
+    // 8. Hotspot clicks (if any in DOM)
     document.querySelectorAll('.hotspot-pin').forEach(pin => {
       pin.addEventListener('click', (e) => {
         const targetP = parseFloat(pin.getAttribute('data-target-progress') || '0');
@@ -174,7 +198,7 @@ class HeroVideoScrubber {
       });
     });
 
-    // 8. 120 FPS High-Precision RAF loop with delta-time exponential damping
+    // 9. 120 FPS High-Precision RAF loop with delta-time exponential damping
     this.rafLoop = this.tick.bind(this);
     requestAnimationFrame(this.rafLoop);
 
@@ -373,6 +397,13 @@ class HeroVideoScrubber {
     const containerHeight = this.container.offsetHeight;
     const windowHeight = window.innerHeight;
 
+    // Full-screen cinematic detection: hide header/options when in 3D hero
+    const inHero = rect.top <= 120 && rect.bottom >= windowHeight * 0.15;
+    if (inHero !== this.isInHeroView) {
+      this.isInHeroView = inHero;
+      document.body.classList.toggle('hero-in-view', inHero);
+    }
+
     const scrollDistance = -rect.top;
     const maxScroll = containerHeight - windowHeight;
 
@@ -381,6 +412,22 @@ class HeroVideoScrubber {
     let progress = scrollDistance / maxScroll;
     progress = Math.max(0, Math.min(1, progress));
     this.targetProgress = progress;
+
+    this.markScrolling();
+  }
+
+  markScrolling() {
+    this.isScrolling = true;
+    if (this.glassCapsule) {
+      this.glassCapsule.classList.add('scrolling');
+    }
+    clearTimeout(this.scrollTimeout);
+    this.scrollTimeout = setTimeout(() => {
+      this.isScrolling = false;
+      if (this.glassCapsule) {
+        this.glassCapsule.classList.remove('scrolling');
+      }
+    }, 450);
   }
 
   tick(timestamp) {
@@ -474,7 +521,14 @@ class HeroVideoScrubber {
 
     const hRatio = cw / iw;
     const vRatio = ch / ih;
-    const baseRatio = Math.max(hRatio, vRatio);
+    let baseRatio;
+
+    // Mobile portrait: fit to width so entire laptop chassis is visible without edge truncation!
+    if (this.isMobile && cw < ch) {
+      baseRatio = hRatio;
+    } else {
+      baseRatio = Math.min(hRatio, vRatio) * 1.02;
+    }
 
     const renderW = iw * baseRatio;
     const renderH = ih * baseRatio;
@@ -486,6 +540,44 @@ class HeroVideoScrubber {
 
   updateHUD(progress) {
     const currentTimeSec = (progress * this.totalDuration).toFixed(2);
+    const currentStage = this.stages.find(s => progress >= s.start && progress <= s.end) || this.stages[0];
+
+    // 1. Update Minimal Apple Liquid Glass Capsule
+    if (this.glassStageText) {
+      this.glassStageText.textContent = `${currentStage.name} • ${currentStage.badge}`;
+    }
+    if (this.glassTimeText) {
+      this.glassTimeText.textContent = `${currentTimeSec}s / 16.00s`;
+    }
+    if (this.glassProgressBar) {
+      this.glassProgressBar.style.width = `${(progress * 100).toFixed(1)}%`;
+    }
+
+    // 2. Stage 5 End CTA Pill (Appears smoothly at 13.60s - 16.00s)
+    if (this.glassStageCta) {
+      if (progress >= 0.88) {
+        this.glassStageCta.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          this.glassStageCta.classList.remove('opacity-0', 'pointer-events-none');
+          this.glassStageCta.classList.add('opacity-100', 'pointer-events-auto');
+        });
+      } else {
+        this.glassStageCta.classList.remove('opacity-100', 'pointer-events-auto');
+        this.glassStageCta.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          if (this.currentProgress < 0.88) this.glassStageCta.classList.add('hidden');
+        }, 300);
+      }
+    }
+
+    // 3. Highlight active stage pill in popover (if present)
+    document.querySelectorAll('.stage-pill-btn').forEach((btn, idx) => {
+      if (this.stages[idx] === currentStage) {
+        btn.classList.add('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
+      } else {
+        btn.classList.remove('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
+      }
+    });
 
     if (this.progressBar) {
       this.progressBar.style.width = `${(progress * 100).toFixed(1)}%`;
@@ -499,59 +591,50 @@ class HeroVideoScrubber {
       this.timeIndicator.textContent = `${currentTimeSec}s / 16.00s`;
     }
 
-    const currentStage = this.stages.find(s => progress >= s.start && progress <= s.end) || this.stages[0];
-
     if (this.stageIndicator) {
       this.stageIndicator.textContent = `${currentStage.name} [${currentStage.startTime} - ${currentStage.endTime}]`;
     }
 
-    // Highlight active stage pill
-    document.querySelectorAll('.stage-pill-btn').forEach((btn, idx) => {
-      if (this.stages[idx] === currentStage) {
-        btn.classList.add('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
-      } else {
-        btn.classList.remove('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
-      }
-    });
-
-    // Update narrative cards
+    // Update narrative cards if any in DOM
     const stageCards = document.querySelectorAll('.hero-stage-card');
-    stageCards.forEach((card, idx) => {
-      const stage = this.stages[idx];
-      if (stage && progress >= stage.start - 0.02 && progress <= stage.end + 0.02) {
-        card.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-        card.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
-      } else {
-        card.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
-        card.classList.add('opacity-0', 'translate-y-8', 'pointer-events-none');
-      }
-    });
+    if (stageCards.length > 0) {
+      stageCards.forEach((card, idx) => {
+        const stage = this.stages[idx];
+        if (stage && progress >= stage.start - 0.02 && progress <= stage.end + 0.02) {
+          card.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          card.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
+        } else {
+          card.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          card.classList.add('opacity-0', 'translate-y-8', 'pointer-events-none');
+        }
+      });
+    }
 
-    // Hotspot pins reactive mapping across 16-second timeline
+    // Hotspot pins reactive mapping if any in DOM
     const hotspots = document.querySelectorAll('.hotspot-pin');
-    hotspots.forEach(hotspot => {
-      const targetStageProgress = parseFloat(hotspot.getAttribute('data-target-progress') || '0');
-      const stageDistance = Math.abs(progress - targetStageProgress);
+    if (hotspots.length > 0) {
+      hotspots.forEach(hotspot => {
+        const targetStageProgress = parseFloat(hotspot.getAttribute('data-target-progress') || '0');
+        const stageDistance = Math.abs(progress - targetStageProgress);
 
-      if (progress >= 0.25 && progress <= 0.60) {
-        // Stage 2 & 3: Display & Chassis Hotspots
-        if (stageDistance < 0.14) {
+        if (progress >= 0.25 && progress <= 0.60) {
+          if (stageDistance < 0.14) {
+            hotspot.style.opacity = '1';
+            hotspot.style.pointerEvents = 'auto';
+          } else {
+            hotspot.style.opacity = '0.35';
+          }
+        } else if (progress >= 0.65 && progress <= 0.85 && hotspot.classList.contains('xray-hotspot')) {
           hotspot.style.opacity = '1';
           hotspot.style.pointerEvents = 'auto';
         } else {
-          hotspot.style.opacity = '0.35';
+          hotspot.style.opacity = '0';
+          hotspot.style.pointerEvents = 'none';
         }
-      } else if (progress >= 0.65 && progress <= 0.85 && hotspot.classList.contains('xray-hotspot')) {
-        // Stage 4: Silicon & GPU X-Ray Hotspots
-        hotspot.style.opacity = '1';
-        hotspot.style.pointerEvents = 'auto';
-      } else {
-        hotspot.style.opacity = '0';
-        hotspot.style.pointerEvents = 'none';
-      }
-    });
+      });
+    }
 
-    // Update Corner Telemetry Chips
+    // Update Corner Telemetry Chips (if present in DOM)
     this.updateTelemetryHUD(currentStage, progress, currentTimeSec);
   }
 
@@ -700,10 +783,12 @@ class HeroVideoScrubber {
   }
 }
 
-// Global initialization
+// Global initialization (singleton guard)
 window.HeroVideoScrubber = HeroVideoScrubber;
 document.addEventListener('DOMContentLoaded', () => {
-  window.heroScrubber = new HeroVideoScrubber({
-    totalFrames: 240
-  });
+  if (!window.heroScrubber) {
+    window.heroScrubber = new HeroVideoScrubber({
+      totalFrames: 240
+    });
+  }
 });
