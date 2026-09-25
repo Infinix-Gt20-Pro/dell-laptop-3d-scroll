@@ -252,68 +252,85 @@
       <!-- Multi-Layer Radial Vignette -->
       <div class="absolute inset-0 bg-radial from-transparent via-black/20 to-black pointer-events-none z-10"></div>
 
-      <!-- Corner Telemetry Chips (Floating Crystal HUD) -->
-      <div id="telemetry-chip-tl" class="hidden xl:flex absolute top-28 left-8 z-20 telemetry-chip items-center gap-3">
-        <span class="text-cyan-600 text-lg">⚡</span>
-        <div>
-          <div class="tele-title text-[10px] font-mono uppercase font-bold text-cyan-600">UNIBODY ARCHITECTURE</div>
-          <div class="tele-val text-xs font-mono font-bold text-slate-900">CNC Anodized Aluminum</div>
-          <div class="tele-sub text-[9px] font-mono text-slate-500">Timeline: 0.00s • 1.78kg Chassis</div>
+      <!-- ===================================================
+           iOS 27 LIQUID GLASS SPEC HIGHLIGHTS RAILS (SIDE NOTES)
+           =================================================== -->
+
+      <!-- Left Spec Rail: Architecture & Hinge -->
+      <div class="hidden lg:flex flex-col gap-3.5 absolute left-5 xl:left-8 top-1/2 -translate-y-1/2 z-20 pointer-events-auto max-w-[260px] xl:max-w-[280px]">
+        <div id="telemetry-chip-tl" class="telemetry-chip flex items-center gap-3">
+          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
+            ⚡
+          </div>
+          <div class="min-w-0">
+            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-cyan-600 truncate">UNIBODY ARCHITECTURE</div>
+            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">CNC Anodized Aluminum</div>
+            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Timeline: 0.00s • 1.78kg Chassis</div>
+          </div>
+        </div>
+
+        <div id="telemetry-chip-bl" class="telemetry-chip flex items-center gap-3">
+          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
+            🎮
+          </div>
+          <div class="min-w-0">
+            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-amber-600 truncate">PRECISION HINGE</div>
+            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">Fluid One-Finger Rise</div>
+            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Diamond-Cut Beveled Chamfers</div>
+          </div>
         </div>
       </div>
 
-      <div id="telemetry-chip-tr" class="hidden xl:flex absolute top-28 right-8 z-20 telemetry-chip items-center gap-3">
-        <span class="text-blue-600 text-lg">🖥️</span>
-        <div>
-          <div class="tele-title text-[10px] font-mono uppercase font-bold text-blue-600">LAB INTEGRITY</div>
-          <div class="tele-val text-xs font-mono font-bold text-slate-900">30-Point Certified Pass</div>
-          <div class="tele-sub text-[9px] font-mono text-slate-500">Pristine Zero-Blemish Grade A+</div>
+      <!-- Right Spec Rail: Lab Audit & Battery -->
+      <div class="hidden lg:flex flex-col gap-3.5 absolute right-5 xl:right-8 top-1/2 -translate-y-1/2 z-20 pointer-events-auto max-w-[260px] xl:max-w-[280px]">
+        <div id="telemetry-chip-tr" class="telemetry-chip flex items-center gap-3">
+          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
+            🖥️
+          </div>
+          <div class="min-w-0">
+            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-blue-600 truncate">LAB INTEGRITY</div>
+            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">30-Point Certified Pass</div>
+            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">Pristine Zero-Blemish Grade A+</div>
+          </div>
+        </div>
+
+        <div id="telemetry-chip-br" class="telemetry-chip flex items-center gap-3">
+          <div class="tele-icon-badge w-10 h-10 rounded-2xl flex items-center justify-center text-lg flex-shrink-0">
+            ⭐
+          </div>
+          <div class="min-w-0">
+            <div class="tele-title text-[10px] font-mono uppercase font-bold tracking-wider text-emerald-600 truncate">BATTERY HEALTH</div>
+            <div class="tele-val text-xs font-mono font-black text-slate-900 truncate">92% Tested Capacity</div>
+            <div class="tele-sub text-[9px] font-mono text-slate-500 truncate">97Wh High-Capacity Cell</div>
+          </div>
         </div>
       </div>
 
-      <div id="telemetry-chip-bl" class="hidden xl:flex absolute bottom-28 left-8 z-20 telemetry-chip items-center gap-3">
-        <span class="text-amber-600 text-lg">🎮</span>
-        <div>
-          <div class="tele-title text-[10px] font-mono uppercase font-bold text-amber-600">PRECISION HINGE</div>
-          <div class="tele-val text-xs font-mono font-bold text-slate-900">Fluid One-Finger Rise</div>
-          <div class="tele-sub text-[9px] font-mono text-slate-500">Diamond-Cut Beveled Chamfers</div>
-        </div>
-      </div>
-
-      <div id="telemetry-chip-br" class="hidden xl:flex absolute bottom-28 right-8 z-20 telemetry-chip items-center gap-3">
-        <span class="text-emerald-600 text-lg">⭐</span>
-        <div>
-          <div class="tele-title text-[10px] font-mono uppercase font-bold text-emerald-600">BATTERY HEALTH</div>
-          <div class="tele-val text-xs font-mono font-bold text-slate-900">92% Tested Capacity</div>
-          <div class="tele-sub text-[9px] font-mono text-slate-500">97Wh High-Capacity Cell</div>
-        </div>
-      </div>
-
-      <!-- Scrubber HUD Island Control -->
-      <div class="scrubber-hud-island absolute top-16 sm:top-20 left-2 sm:left-4 right-2 sm:right-4 max-w-4xl mx-auto z-20 rounded-2xl p-2.5 sm:p-3.5 flex flex-wrap items-center justify-between gap-2 sm:gap-3 shadow-xl">
+      <!-- Scrubber HUD Island Control (iOS 27 Liquid Glass) -->
+      <div class="scrubber-hud-island absolute top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-4xl mx-auto z-30 flex flex-wrap items-center justify-between gap-2 sm:gap-3 shadow-2xl">
         
         <div class="flex items-center gap-2 sm:gap-3">
-          <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-cyan-600 animate-pulse"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 animate-pulse shadow-[0_0_10px_#0284c7]"></span>
           <span id="scrub-stage-text" class="text-[11px] sm:text-xs font-mono font-bold text-cyan-700 tracking-wider">01 // THE MONOLITH [0.00s - 3.20s]</span>
-          <span id="scrub-time-indicator" class="text-[10px] sm:text-xs font-mono font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300">0.00s / 16.00s</span>
-          <span class="touch-scrub-hint">👆 Touch Scrub 16s</span>
+          <span id="scrub-time-indicator" class="text-[10px] sm:text-xs font-mono font-bold text-amber-700 bg-amber-100/90 px-2.5 py-0.5 rounded-full border border-amber-300">0.00s / 16.00s</span>
+          <span class="touch-scrub-hint hidden sm:inline text-[10px] font-mono text-slate-500">👆 Touch Scrub 16s</span>
         </div>
 
         <!-- Jump to stage quick pills -->
         <div class="hidden sm:flex items-center gap-1.5 text-[10px] font-mono">
-          <button onclick="heroScrubber.jumpToProgress(0.0)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 hover:border-cyan-500 text-slate-700 transition-all font-semibold">01 Monolith</button>
-          <button onclick="heroScrubber.jumpToProgress(0.28)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 hover:border-cyan-500 text-slate-700 transition-all font-semibold">02 4K Screen</button>
-          <button onclick="heroScrubber.jumpToProgress(0.55)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 hover:border-cyan-500 text-slate-700 transition-all font-semibold">03 Carbon Deck</button>
-          <button onclick="heroScrubber.jumpToProgress(0.75)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 hover:border-cyan-500 text-slate-700 transition-all font-semibold">04 i7 + GPU</button>
-          <button onclick="heroScrubber.jumpToProgress(0.95)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 hover:border-cyan-500 text-slate-700 transition-all font-semibold">05 Certified</button>
+          <button onclick="heroScrubber.jumpToProgress(0.0)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">01 Monolith</button>
+          <button onclick="heroScrubber.jumpToProgress(0.28)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">02 4K Screen</button>
+          <button onclick="heroScrubber.jumpToProgress(0.55)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">03 Carbon Deck</button>
+          <button onclick="heroScrubber.jumpToProgress(0.75)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">04 i7 + GPU</button>
+          <button onclick="heroScrubber.jumpToProgress(0.95)" class="stage-pill-btn px-2.5 py-1 rounded-full border border-slate-200 text-slate-700 font-semibold">05 Certified</button>
         </div>
 
         <!-- Controls: Auto Tour + 120 FPS Badge -->
         <div class="flex items-center gap-2">
-          <span class="hidden lg:inline text-[10px] font-mono text-cyan-700 bg-cyan-100 px-2 py-1 rounded border border-cyan-300 font-bold">
+          <span class="hidden lg:inline text-[10px] font-mono text-cyan-700 bg-cyan-100/80 px-2.5 py-1 rounded-full border border-cyan-300 font-bold shadow-sm">
             ⚡ 120 FPS Engine
           </span>
-          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn px-3 py-1.5 text-xs font-bold flex items-center gap-1.5">
+          <button id="hero-play-toggle-btn" class="apple-secondary-glass-btn px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
             <svg class="w-3.5 h-3.5 text-cyan-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             <span>Auto Tour</span>
           </button>
@@ -321,7 +338,7 @@
 
         <!-- Interactive Scrub Range Slider Track (0.00s to 16.00s) -->
         <div class="w-full flex items-center gap-2 sm:gap-3 pt-1">
-          <span class="text-[9px] sm:text-[10px] font-mono text-slate-500">0.00s</span>
+          <span class="text-[9px] sm:text-[10px] font-mono text-slate-500 font-bold">0.00s</span>
           <input 
             type="range" 
             id="hero-scrub-range" 
@@ -403,81 +420,81 @@
       </div>
 
       <!-- ===================================================
-           FLOATING NARRATIVE STAGE CARDS (LIGHT FROSTED CRYSTAL)
+           FLOATING NARRATIVE STAGE CARDS (DOCK CENTERED BOTTOM)
            =================================================== -->
 
       <!-- Stage 0: The Monolith (0.00s - 3.20s) -->
-      <div class="hero-stage-card absolute bottom-20 left-6 sm:left-14 max-w-sm z-20 p-6 border-l-4 border-l-cyan-600 transition-all duration-500">
-        <div class="flex items-center justify-between mb-1">
+      <div class="hero-stage-card absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-cyan-600 shadow-2xl transition-all duration-400">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
           <span class="text-[10px] font-mono text-cyan-700 uppercase tracking-widest font-bold">STAGE 01 // THE MONOLITH</span>
-          <span class="text-[9px] font-mono text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded font-bold">0.00s - 3.20s</span>
+          <span class="text-[9px] font-mono text-cyan-700 bg-cyan-100/90 px-2 py-0.5 rounded-full font-bold">0.00s - 3.20s</span>
         </div>
-        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">CNC Aluminum Unibody</h2>
-        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">CNC Aluminum Unibody</h2>
+        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
           Sculpted from a single block of aerospace-grade aluminum with diamond-cut chamfered edges and laser-etched Dell medallion. Zero-tolerance rigidity.
         </p>
-        <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-cyan-700 font-semibold">
+        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-cyan-700 font-bold">
           <span>✨ 1.78kg Aluminum Unibody</span> • <span>Fluid One-Finger Hinge</span>
         </div>
       </div>
 
       <!-- Stage 1: InfinityEdge Awakening (3.20s - 7.20s) -->
-      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute bottom-24 right-6 sm:right-14 max-w-sm z-20 p-6 border-l-4 border-l-blue-600 transition-all duration-500">
-        <div class="flex items-center justify-between mb-1">
+      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-blue-600 shadow-2xl transition-all duration-400">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
           <span class="text-[10px] font-mono text-blue-700 uppercase tracking-widest font-bold">STAGE 02 // INFINITYEDGE AWAKENING</span>
-          <span class="text-[9px] font-mono text-blue-700 bg-blue-100 px-2 py-0.5 rounded font-bold">3.20s - 7.20s</span>
+          <span class="text-[9px] font-mono text-blue-700 bg-blue-100/90 px-2 py-0.5 rounded-full font-bold">3.20s - 7.20s</span>
         </div>
-        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">15.6" 4K UHD UltraSharp</h2>
-        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">15.6" 4K UHD UltraSharp</h2>
+        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
           Open the lid to 8.29 million pixels of pure clarity. 100% Adobe RGB color fidelity ignites the emerald lake landscape with razor-thin 4mm bezels.
         </p>
-        <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-blue-700 font-semibold">
+        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-blue-700 font-bold">
           <span>🖥️ 3840×2160 UHD</span> • <span>100% Adobe RGB Gamut</span>
         </div>
       </div>
 
       <!-- Stage 2: Tactile Craftsmanship (7.20s - 10.40s) -->
-      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute top-36 left-6 sm:left-14 max-w-sm z-20 p-6 border-l-4 border-l-purple-600 transition-all duration-500">
-        <div class="flex items-center justify-between mb-1">
+      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-purple-600 shadow-2xl transition-all duration-400">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
           <span class="text-[10px] font-mono text-purple-700 uppercase tracking-widest font-bold">STAGE 03 // TACTILE CRAFTSMANSHIP</span>
-          <span class="text-[9px] font-mono text-purple-700 bg-purple-100 px-2 py-0.5 rounded font-bold">7.20s - 10.40s</span>
+          <span class="text-[9px] font-mono text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-full font-bold">7.20s - 10.40s</span>
         </div>
-        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Woven Carbon Fiber</h2>
-        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Woven Carbon Fiber</h2>
+        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
           Heat-isolated aeronautic woven carbon palm rest keeps your hands cool under maximum loads. Backlit chiclet keyboard and oversized precision glass trackpad.
         </p>
-        <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-purple-700 font-semibold">
+        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-purple-700 font-bold">
           <span>⌨️ Backlit Chiclet</span> • <span>Glass Precision Trackpad</span>
         </div>
       </div>
 
       <!-- Stage 3: Raw Silicon Teardown (10.40s - 13.60s) -->
-      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute bottom-20 left-6 sm:left-14 max-w-sm z-20 p-6 border-l-4 border-l-emerald-600 transition-all duration-500">
-        <div class="flex items-center justify-between mb-1">
+      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-6 text-center border-b-4 border-b-emerald-600 shadow-2xl transition-all duration-400">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
           <span class="text-[10px] font-mono text-emerald-700 uppercase tracking-widest font-bold">STAGE 04 // RAW SILICON TEARDOWN</span>
-          <span class="text-[9px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold">10.40s - 13.60s</span>
+          <span class="text-[9px] font-mono text-emerald-700 bg-emerald-100/90 px-2 py-0.5 rounded-full font-bold">10.40s - 13.60s</span>
         </div>
-        <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Intel i7 H + NVIDIA GPU</h2>
-        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Intel i7 H + NVIDIA GPU</h2>
+        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed max-w-md mx-auto">
           High-voltage 45W Intel Core i7 H-Series CPU and 4GB dedicated NVIDIA graphics. Dual high-velocity cooling fans and copper heatpipes ensure sustained zero-throttle rendering.
         </p>
-        <div class="mt-4 flex items-center gap-2 text-[11px] font-mono text-emerald-700 font-semibold">
+        <div class="mt-3 flex items-center justify-center gap-2 sm:gap-3 text-[11px] font-mono text-emerald-700 font-bold">
           <span>⚡ 45W i7-8850H</span> • <span>4GB Dedicated GPU</span> • <span>Dual Fans</span>
         </div>
       </div>
 
       <!-- Stage 4: Assembled Masterpiece (13.60s - 16.00s) -->
-      <div class="hero-stage-card opacity-0 translate-y-8 pointer-events-none absolute bottom-16 inset-x-4 max-w-xl mx-auto z-20 p-5 sm:p-7 border border-cyan-300 text-center transition-all duration-500">
-        <div class="flex items-center justify-center gap-2 mb-2">
-          <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-cyan-100 text-cyan-800 border border-cyan-300">
+      <div class="hero-stage-card opacity-0 translate-y-6 pointer-events-none absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[92%] sm:w-full max-w-lg lg:max-w-xl z-20 p-5 sm:p-7 text-center border border-cyan-400 shadow-2xl transition-all duration-400">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
+          <span class="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-cyan-100/90 text-cyan-800 border border-cyan-300">
             ⭐ STAGE 05 // ASSEMBLED MASTERPIECE
           </span>
-          <span class="text-[9px] font-mono text-cyan-800 bg-cyan-100 px-2 py-0.5 rounded font-bold">13.60s - 16.00s</span>
+          <span class="text-[9px] font-mono text-cyan-800 bg-cyan-100/90 px-2 py-0.5 rounded-full font-bold">13.60s - 16.00s</span>
         </div>
-        <h2 class="text-xl sm:text-3xl font-black text-slate-900 mt-1">Dell Latitude / Precision 5530 4K</h2>
+        <h2 class="text-xl sm:text-3xl font-black text-slate-900">Dell Latitude / Precision 5530 4K</h2>
         <p class="text-xs text-slate-600 mt-1">Core i7 8th Gen H-Series • 8GB RAM • 256GB NVMe SSD • 4GB Dedicated NVIDIA • 15.6" 4K</p>
         
-        <div class="mt-4 sm:mt-5 flex items-center justify-center gap-3 sm:gap-4">
+        <div class="mt-4 flex items-center justify-center gap-3 sm:gap-4">
           <div>
             <span class="text-[10px] sm:text-xs text-slate-400 line-through font-mono">₹1,85,000</span>
             <div class="text-xl sm:text-3xl font-black text-slate-900 font-mono">₹34,999</div>

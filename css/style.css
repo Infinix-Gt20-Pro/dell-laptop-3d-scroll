@@ -110,48 +110,62 @@ body {
     0 0 25px rgba(2, 132, 199, 0.12);
 }
 
-/* Apple Liquid Button Styles (Light Mode) */
+/* Apple Liquid Button Styles (iOS 27 Specular Glass) */
 .apple-action-btn {
-  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
   color: #ffffff !important;
   font-weight: 700;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
   box-shadow: 
-    0 4px 14px rgba(2, 132, 199, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    0 8px 24px -4px rgba(2, 132, 199, 0.5),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.7),
+    inset 0 -1.5px 1.5px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
 }
 
 .apple-action-btn:hover {
-  background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
+  background: linear-gradient(135deg, #0369a1 0%, #075985 100%) !important;
   transform: translateY(-2px) scale(1.02);
   box-shadow: 
-    0 8px 24px rgba(2, 132, 199, 0.45),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    0 14px 32px -4px rgba(2, 132, 199, 0.6),
+    inset 0 1.5px 1.5px #fff !important;
+}
+
+.apple-action-btn:active {
+  transform: translateY(0) scale(0.96) !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
 }
 
 .apple-secondary-glass-btn {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
   color: #0f172a !important;
   border-radius: 9999px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
   box-shadow: 
-    0 2px 8px rgba(15, 23, 42, 0.04),
-    inset 0 1px 1px rgba(255, 255, 255, 1);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    0 4px 16px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 1) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .apple-secondary-glass-btn:hover {
-  background: #ffffff;
-  border-color: rgba(2, 132, 199, 0.4);
+  background: #ffffff !important;
+  border-color: rgba(2, 132, 199, 0.5) !important;
   color: #0284c7 !important;
-  transform: translateY(-1px);
+  transform: translateY(-1.5px) scale(1.02);
   box-shadow: 
-    0 6px 18px rgba(15, 23, 42, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 1);
+    0 8px 24px -2px rgba(0, 0, 0, 0.15),
+    0 0 16px rgba(2, 132, 199, 0.2),
+    inset 0 1.5px 1.5px #fff !important;
+}
+
+.apple-secondary-glass-btn:active {
+  transform: translateY(0) scale(0.96) !important;
 }
 
 /* Interactive Cursor Spotlight Glow (Desktop Only, Light Mode) */
@@ -218,45 +232,82 @@ body {
   will-change: transform;
 }
 
-/* Floating Stage Cards in Light Frosted Crystal */
-.hero-stage-card {
-  background: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+/* ===================================================
+   iOS 27 LIQUID GLASS DESIGN SYSTEM (HYPER-REALISTIC)
+   =================================================== */
+
+.ios27-glass,
+.telemetry-chip,
+.hero-stage-card,
+.scrubber-hud-island,
+.ultra-glass {
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(40px) saturate(220%) contrast(106%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(220%) contrast(106%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
   box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    0 4px 16px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 1) !important;
-  border-radius: 1.5rem !important;
+    0 24px 50px -12px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+  position: relative;
+}
+
+/* Subtle Specular Optical Sheen on Top Half */
+.telemetry-chip::before,
+.hero-stage-card::before,
+.scrubber-hud-island::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Floating Stage Cards in Light Frosted Crystal (Keynote Bottom Capsule) */
+.hero-stage-card {
+  border-radius: 1.75rem !important;
   color: #0f172a !important;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .hero-stage-card h2 {
   color: #0f172a !important;
+  letter-spacing: -0.025em;
 }
 
 .hero-stage-card p {
   color: #334155 !important;
 }
 
-/* Corner Telemetry Chips (Floating Crystal over Dark Theater) */
+/* Telemetry Spec Highlight Chips */
 .telemetry-chip {
-  background: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(24px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.9) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35) !important;
-  border-radius: 1rem;
-  padding: 10px 16px;
+  border-radius: 1.25rem !important;
+  padding: 10px 16px !important;
   color: #0f172a !important;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transform: translateZ(0);
 }
 
 .telemetry-chip:hover {
-  border-color: #0284c7 !important;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02) !important;
+  border-color: rgba(2, 132, 199, 0.6) !important;
+  box-shadow: 
+    0 24px 54px -10px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(2, 132, 199, 0.25),
+    inset 0 1.5px 2px #fff !important;
+}
+
+.tele-icon-badge {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.85) 100%);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1.5px #fff;
 }
 
 .telemetry-chip .tele-title {
@@ -273,12 +324,35 @@ body {
 
 /* Scrubber HUD Island */
 .scrubber-hud-island {
-  background: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.9) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35) !important;
+  border-radius: 9999px !important;
+  padding: 8px 18px !important;
   color: #0f172a !important;
+}
+@media (max-width: 640px) {
+  .scrubber-hud-island {
+    border-radius: 1.5rem !important;
+    padding: 10px 14px !important;
+  }
+}
+
+.stage-pill-btn {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: inset 0 1px 1px #fff, 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.stage-pill-btn:hover {
+  background: #ffffff !important;
+  border-color: rgba(2, 132, 199, 0.4) !important;
+  color: #0284c7 !important;
+  transform: translateY(-1px);
+}
+
+.stage-pill-btn:active {
+  transform: scale(0.96);
 }
 
 /* Interactive Drag Controls */
