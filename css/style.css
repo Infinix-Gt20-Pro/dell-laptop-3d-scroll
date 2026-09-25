@@ -72,6 +72,21 @@ html.lenis, html.lenis body {
   --dur-standard: 320ms;
   --dur-cinematic: 750ms;
   --dur-showcase: 1200ms;
+
+  /* Standardized Corner Radii Tokens (Usability Fix 3) */
+  --radius-sm: 0.5rem;    /* 8px - Inputs, badges, small controls */
+  --radius-md: 1rem;      /* 16px - Cards, dialogs, modals */
+  --radius-lg: 1.5rem;    /* 24px - Large feature sections & drawers */
+  --radius-pill: 9999px;  /* Pills, tags, action buttons */
+
+  /* Standardized Typography Scale (Usability Fix 1) */
+  --text-2xs: 0.75rem;    /* 12px - Minimum accessible caption/badge */
+  --text-xs: 0.8125rem;   /* 13px - Secondary captions, metadata */
+  --text-sm: 0.875rem;    /* 14px - Body small, table cells */
+  --text-base: 1rem;      /* 16px - Standard body text */
+  --text-lg: 1.125rem;    /* 18px - Subheadings, card titles */
+  --text-xl: 1.375rem;    /* 22px - Section titles */
+  --text-2xl: 1.75rem;    /* 28px - Section titles (desktop) */
 }
 
 * {
@@ -231,6 +246,98 @@ body::before {
 
 .apple-secondary-glass-btn:active {
   transform: translateY(0) scale(0.96) !important;
+}
+
+/* ===================================================
+   STANDARDIZED 4-TIER BUTTON SYSTEM (USABILITY FIX 4)
+   =================================================== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-family: inherit;
+  font-size: var(--text-2xs, 0.75rem);
+  font-weight: 700;
+  border-radius: var(--radius-pill, 9999px);
+  background-color: var(--text-primary, #0f172a);
+  color: #ffffff !important;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.2);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-family: inherit;
+  font-size: var(--text-2xs, 0.75rem);
+  font-weight: 600;
+  border-radius: var(--radius-pill, 9999px);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary, #0f172a) !important;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 180ms ease;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background-color: #ffffff;
+  border-color: rgba(2, 132, 199, 0.4);
+  color: #0284c7 !important;
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: var(--text-2xs, 0.75rem);
+  font-weight: 600;
+  color: #0369a1 !important;
+  background: transparent;
+  border-radius: var(--radius-pill, 9999px);
+  border: 1px solid transparent;
+  transition: all 150ms ease;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  background-color: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.2);
+}
+
+.btn-icon {
+  width: 2.375rem;
+  height: 2.375rem;
+  min-width: 38px;
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  background: rgba(255, 255, 255, 0.85);
+  color: #334155;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 180ms ease;
+  cursor: pointer;
+}
+.btn-icon:hover {
+  background: #ffffff;
+  color: #0284c7;
+  border-color: rgba(2, 132, 199, 0.4);
 }
 
 /* Interactive Cursor Spotlight Glow (Desktop Only, Light Mode) */

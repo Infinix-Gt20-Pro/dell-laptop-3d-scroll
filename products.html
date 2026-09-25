@@ -64,55 +64,53 @@
         </div>
         <div class="flex flex-col">
           <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-700 transition-colors">
-            CLASSIC COMPUTER
+            Classic Computer
           </span>
-          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-700 uppercase -mt-0.5 font-bold">
-            CERTIFIED WORKSTATION HUB
+          <span class="header-brand-subtitle text-xs font-mono tracking-wider text-cyan-700 uppercase font-semibold">
+            Certified Workstation Hub
           </span>
         </div>
       </a>
 
       <!-- Navigation Links -->
-      <nav class="apple-desktop-nav hidden items-center gap-1 text-xs font-semibold font-mono">
+      <nav class="apple-desktop-nav hidden items-center gap-1.5 text-xs font-semibold font-mono" aria-label="Primary navigation">
         <a href="index.html" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Home
         </a>
         <a href="index.html#hero-scroll-container" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          Flagship 5530
-        </a>
-        <a href="index.html#display-simulator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          4K Optical Lab
+          Overview
         </a>
         <a href="index.html#benchmarks" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Benchmarks
         </a>
-        <a href="index.html#refurb-process" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          Certification
+        <a href="index.html#configurator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          Configurator
         </a>
-        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 shadow-sm font-bold">
-          All 8 Models
+        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 shadow-xs font-bold">
+          <span>Catalog (8)</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse" aria-hidden="true"></span>
         </a>
       </nav>
 
-      <!-- Glass Action Controls -->
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- Standardized Utility Navigation Controls -->
+      <div class="flex items-center gap-2" role="toolbar" aria-label="Store utilities">
         
         <!-- Ambient Soundscape Toggle (Desktop/Tablet) -->
-        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" class="hidden sm:flex apple-secondary-glass-btn w-9 h-9 items-center justify-center text-slate-700 hover:text-cyan-600">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" aria-label="Toggle Spatial Audio" class="hidden sm:flex btn-icon">
+          <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
           </svg>
         </button>
 
         <!-- Wishlist -->
-        <button data-action="open-auth" title="Saved Devices" class="hidden sm:flex apple-secondary-glass-btn relative w-9 h-9 items-center justify-center text-slate-700 hover:text-rose-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <button data-action="open-auth" title="Saved Devices" aria-label="View Saved Devices" class="hidden sm:flex btn-icon relative">
+          <svg class="w-4 h-4 text-slate-700 hover:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           <span class="wishlist-badge absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold font-mono flex items-center justify-center" style="display: none;">0</span>
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="magnetic-btn apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono text-slate-800">
-          <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button data-action="open-cart" aria-label="View Shopping Bag" class="magnetic-btn btn-secondary relative px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono text-slate-800">
+          <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           <span class="header-glass-btn-label hidden sm:inline">Bag</span>
@@ -120,16 +118,16 @@
         </button>
 
         <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="magnetic-btn apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
-          <div class="w-5 h-5 rounded-full bg-white text-cyan-700 flex items-center justify-center text-[10px] font-bold font-mono">
+        <button data-action="open-auth" aria-label="Member Account" class="magnetic-btn btn-secondary px-2.5 py-1.5 text-xs flex items-center gap-1.5">
+          <div class="w-5 h-5 rounded-full bg-slate-100 text-cyan-700 flex items-center justify-center text-xs font-bold font-mono" aria-hidden="true">
             KA
           </div>
-          <span class="header-glass-btn-label hidden sm:inline">Account</span>
+          <span class="header-glass-btn-label hidden sm:inline font-mono">Account</span>
         </button>
 
         <!-- Mobile & Tablet Menu Toggle Button -->
-        <button id="products-mobile-menu-btn" class="apple-mobile-menu-trigger apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-slate-700 hover:text-cyan-600" aria-label="Open Mobile Menu">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="products-mobile-menu-btn" class="apple-mobile-menu-trigger btn-icon lg:hidden flex items-center justify-center text-slate-700 hover:text-cyan-600" aria-label="Open Mobile Menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>

@@ -64,77 +64,67 @@
         </div>
         <div class="flex flex-col">
           <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-700 transition-colors">
-            CLASSIC COMPUTER
+            Classic Computer
           </span>
-          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-700 uppercase -mt-0.5 font-bold">
-            CERTIFIED WORKSTATION HUB
+          <span class="header-brand-subtitle text-xs font-mono tracking-wider text-cyan-700 uppercase font-semibold">
+            Certified Workstation Hub
           </span>
         </div>
       </a>
 
-      <!-- Navigation Links (Desktop Architectural) -->
-      <nav class="apple-desktop-nav hidden items-center gap-1 text-xs font-semibold font-mono">
+      <!-- Navigation Links (Consolidated - Usability Fix 19) -->
+      <nav class="apple-desktop-nav hidden items-center gap-1.5 text-xs font-semibold font-mono" aria-label="Primary navigation">
         <a href="#hero-scroll-container" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          Flagship 5530
-        </a>
-        <a href="#display-simulator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          4K Optical Lab
+          Overview
         </a>
         <a href="#benchmarks" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Benchmarks
         </a>
-        <a href="#refurb-process" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          Certification
-        </a>
-        <a href="#showcase" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
-          Photo Lab
-        </a>
         <a href="#configurator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Configurator
         </a>
-        <!-- Separate Products Page Link -->
-        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-sm font-bold">
-          <span>All 8 Models</span>
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse"></span>
+        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-xs font-bold">
+          <span>Catalog (8)</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse" aria-hidden="true"></span>
         </a>
       </nav>
 
-      <!-- Glass Action Controls -->
-      <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- Standardized Utility Navigation Controls (Usability Fixes 20 & 23) -->
+      <div class="flex items-center gap-2" role="toolbar" aria-label="Store utilities">
         
         <!-- Ambient Soundscape Toggle (Desktop/Tablet) -->
-        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" class="hidden sm:flex apple-secondary-glass-btn w-9 h-9 items-center justify-center text-slate-700 hover:text-cyan-600">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="ambient-audio-toggle" title="Toggle Spatial Audio" aria-label="Toggle Spatial Audio" class="hidden sm:flex btn-icon">
+          <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
           </svg>
         </button>
 
         <!-- Wishlist -->
-        <button data-action="open-auth" title="Saved Devices" class="hidden sm:flex apple-secondary-glass-btn relative w-9 h-9 items-center justify-center text-slate-700 hover:text-rose-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <button data-action="open-auth" title="Saved Devices" aria-label="View Saved Devices" class="hidden sm:flex btn-icon relative">
+          <svg class="w-4 h-4 text-slate-700 hover:text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           <span class="wishlist-badge absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold font-mono flex items-center justify-center" style="display: none;">0</span>
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="magnetic-btn apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
-          <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button data-action="open-cart" aria-label="View Shopping Bag" class="magnetic-btn btn-secondary relative px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
+          <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
           <span class="header-glass-btn-label hidden sm:inline">Bag</span>
           <span class="cart-badge w-4 h-4 rounded-full bg-cyan-600 text-white text-[10px] font-black font-mono flex items-center justify-center" style="display: none;">0</span>
         </button>
 
-        <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="magnetic-btn apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
-          <div class="w-5 h-5 rounded-full bg-white text-cyan-700 flex items-center justify-center text-[10px] font-bold font-mono">
+        <!-- Member Hub / Account (Usability Fix 23: Secondary Style) -->
+        <button data-action="open-auth" aria-label="Member Account" class="magnetic-btn btn-secondary px-2.5 py-1.5 text-xs flex items-center gap-1.5">
+          <div class="w-5 h-5 rounded-full bg-slate-100 text-cyan-700 flex items-center justify-center text-xs font-bold font-mono" aria-hidden="true">
             KA
           </div>
-          <span class="header-glass-btn-label hidden sm:inline">Account</span>
+          <span class="header-glass-btn-label hidden sm:inline font-mono">Account</span>
         </button>
 
         <!-- Mobile & Tablet Navigation Menu Toggle -->
-        <button id="mobile-menu-toggle-btn" class="apple-mobile-menu-trigger apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-slate-700 hover:text-cyan-600">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <button id="mobile-menu-toggle-btn" aria-label="Toggle Navigation Menu" class="apple-mobile-menu-trigger btn-icon lg:hidden flex items-center justify-center text-slate-700 hover:text-cyan-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
 
       </div>
@@ -223,10 +213,10 @@
        =================================================== -->
   <section class="pt-10 sm:pt-16 pb-6 sm:pb-8 text-center max-w-6xl mx-auto px-4 relative z-10 w-full max-w-full overflow-hidden">
     
-    <!-- Architectural Lab Badge -->
+    <!-- Architectural Lab Badge (Usability Fix 7: text-xs) -->
     <div class="inline-flex items-center gap-2 mb-3 sm:mb-4 motion-fade-up delay-1">
-      <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 text-white text-[11px] font-mono font-semibold shadow-sm">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 text-white text-xs font-mono font-semibold shadow-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" aria-hidden="true"></span>
         <span>HARDWARE LAB SPECIFICATION // 2026 AUDITED EDITION</span>
       </span>
     </div>
@@ -242,7 +232,7 @@
     </h1>
 
     <!-- Hardware Curated Telemetry Strip -->
-    <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono font-bold text-slate-700 motion-fade-up delay-3">
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-mono font-bold text-slate-700 motion-fade-up delay-3">
       <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">45W INTEL® i7 H-SERIES</span>
       <span class="text-slate-300">•</span>
       <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">4GB DEDICATED NVIDIA®</span>
@@ -257,19 +247,23 @@
       Featuring the <strong>Dell Precision 5530 4K Mobile Workstation</strong> — lab-audited 6-core processing speed, professional ISV-certified graphics, and borderless InfinityEdge clarity. Inspected with zero defect tolerance.
     </p>
 
-    <!-- Editorial Action Group -->
+    <!-- Editorial Action Group (Usability Fixes 13, 18, 24, 25) -->
     <div class="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3 motion-fade-up delay-5">
-      <a href="#hero-scroll-container" class="magnetic-btn apple-action-btn px-6 py-3 text-xs font-mono font-bold flex items-center gap-2 shadow-lg">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-        <span>Explore 3D Architecture ↓</span>
+      <!-- Primary Action: High-contrast solid button with single icon -->
+      <a href="#hero-scroll-container" class="magnetic-btn btn-primary px-6 py-3 text-xs font-mono font-bold flex items-center gap-2 shadow-md">
+        <span>Explore 3D Architecture</span>
+        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
       </a>
 
-      <a href="#configurator" class="magnetic-btn apple-secondary-glass-btn px-5 py-3 text-xs font-mono font-bold">
+      <!-- Secondary Action: Refined glass configurator -->
+      <a href="#configurator" class="magnetic-btn btn-secondary px-5 py-3 text-xs font-mono font-bold">
         <span>Studio Configurator</span>
       </a>
 
-      <a href="products.html" class="magnetic-btn px-5 py-3 text-xs font-mono font-bold text-cyan-700 hover:text-cyan-800 flex items-center gap-1.5 transition-colors">
-        <span>View All 8 Machines →</span>
+      <!-- Tertiary/Catalog Action: Aligned secondary pill button -->
+      <a href="products.html" class="magnetic-btn btn-secondary px-5 py-3 text-xs font-mono font-bold text-slate-800 hover:text-cyan-700 flex items-center gap-2 border border-slate-300/80">
+        <span>Explore All 8 Models</span>
+        <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
     </div>
 
@@ -335,10 +329,10 @@
             <div id="glass-capsule-progress" class="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full transition-all duration-75" style="width: 0%;"></div>
           </div>
 
-          <!-- Quick Jump / Stages Button -->
-          <button id="glass-stages-toggle-btn" class="apple-secondary-glass-btn px-2 py-0.5 text-[10px] font-mono font-bold text-slate-700 hover:text-cyan-700 flex-shrink-0 flex items-center gap-1" title="Jump to Stages">
+          <!-- Quick Jump / Stages Button (Usability Fix 21) -->
+          <button id="glass-stages-toggle-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="glass-stages-popover" class="px-2.5 py-1 text-xs font-mono font-bold text-slate-700 bg-white/70 hover:bg-white rounded-full border border-slate-200/80 flex items-center gap-1.5 shadow-xs transition-colors" title="Jump to Video Stages">
             <span>Stages</span>
-            <svg class="w-2.5 h-2.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="w-3 h-3 text-cyan-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </button>
 
           <!-- Auto Tour Button -->
@@ -468,7 +462,7 @@
             <span class="text-xs font-mono text-cyan-700 font-bold">CINEBENCH R20 CPU</span>
             <span class="text-xs font-mono text-emerald-600 font-bold">+145% LEAD</span>
           </div>
-          <h4 class="text-lg font-bold text-slate-900">Multi-Threaded Rendering</h4>
+          <h3 class="text-lg font-bold text-slate-900">Multi-Threaded Rendering</h3>
           <p class="text-xs text-slate-600">Score measures raw 6-core processing speed during heavy compile jobs and rendering.</p>
           
           <div class="space-y-3 pt-2">
@@ -510,7 +504,7 @@
             <span class="text-xs font-mono text-amber-700 font-bold">PREMIERE PRO 4K EXPORT</span>
             <span class="text-xs font-mono text-emerald-600 font-bold">3.9X FASTER</span>
           </div>
-          <h4 class="text-lg font-bold text-slate-900">10-Minute 4K H.264 Render</h4>
+          <h3 class="text-lg font-bold text-slate-900">10-Minute 4K H.264 Render</h3>
           <p class="text-xs text-slate-600">Hardware CUDA acceleration cuts timeline export from minutes to seconds.</p>
           
           <div class="space-y-3 pt-2">
@@ -542,7 +536,7 @@
             <span class="text-xs font-mono text-emerald-700 font-bold">3D CAD / SOLIDWORKS</span>
             <span class="text-xs font-mono text-emerald-600 font-bold">60 FPS LOCKED</span>
           </div>
-          <h4 class="text-lg font-bold text-slate-900">Complex Mesh Viewport FPS</h4>
+          <h3 class="text-lg font-bold text-slate-900">Complex Mesh Viewport FPS</h3>
           <p class="text-xs text-slate-600">Dedicated ISV certified GPU drivers prevent viewport stuttering and crashes.</p>
           
           <div class="space-y-3 pt-2">
@@ -605,7 +599,7 @@
             Micrometer physical measurement of CNC aluminum chassis, hinge tension torque, and ultrasonic port continuity.
           </p>
         </div>
-        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+        <ul class="text-xs font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Hinge torque tension test</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Thunderbolt 3 port check</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 100% OEM structure pass</li>
@@ -624,7 +618,7 @@
             24-hour continuous AIDA64 multi-core burn-in, FurMark GPU thermal dissipation, and battery discharge telemetry.
           </p>
         </div>
-        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+        <ul class="text-xs font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 24hr AIDA64 stress test</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 4GB NVIDIA CUDA load</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Battery health verified</li>
@@ -643,7 +637,7 @@
             Ultrasonic acoustic dust evacuation, heatsink copper de-oxidation, and fresh Arctic MX-6 high-conductivity compound.
           </p>
         </div>
-        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+        <ul class="text-xs font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Arctic MX-6 thermal repaste</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Dual fan acoustic tuning</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ UV sanitized keyboard deck</li>
@@ -662,7 +656,7 @@
             100% AdobeRGB sub-pixel 4K optical calibration, zero-dead-pixel certification, and digital Windows 11 Pro activation.
           </p>
         </div>
-        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+        <ul class="text-xs font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 4K sub-pixel screen audit</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 0 Dead pixel guarantee</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Genuine Win 11 Pro license</li>
@@ -681,7 +675,7 @@
             Sealed in anti-static hermetic packaging with signed inspector QC pass card, 6-month lab warranty, and doorstep dispatch.
           </p>
         </div>
-        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+        <ul class="text-xs font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Signed QC inspection card</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ 6 Months full warranty</li>
           <li class="flex items-center gap-1.5 text-emerald-700">✓ Free doorstep shipping</li>
@@ -728,8 +722,8 @@
         </div>
         <div class="p-4 bg-white">
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">FRONT 4K SCREEN</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">Vibrant 4K Display Panel</h4>
-          <p class="text-[11px] text-slate-600 mt-1">100% AdobeRGB, 0 dead pixels, borderless glass bezel.</p>
+          <h3 class="text-sm font-bold text-slate-900 mt-0.5">Vibrant 4K Display Panel</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-normal">100% AdobeRGB, 0 dead pixels, borderless glass bezel.</p>
         </div>
       </div>
 
@@ -741,8 +735,8 @@
         </div>
         <div class="p-4 bg-white">
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">EXTERIOR TOP LID</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">CNC Machined Aluminum</h4>
-          <p class="text-[11px] text-slate-600 mt-1">Zero major dents or scratches. Factory brushed silver sheen.</p>
+          <h3 class="text-sm font-bold text-slate-900 mt-0.5">CNC Machined Aluminum</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-normal">Zero major dents or scratches. Factory brushed silver sheen.</p>
         </div>
       </div>
 
@@ -754,8 +748,8 @@
         </div>
         <div class="p-4 bg-white">
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">MACRO CLARITY</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">3840 x 2160 Pixel Density</h4>
-          <p class="text-[11px] text-slate-600 mt-1">Sub-pixel inspection passed. Ideal for precision CAD & color grading.</p>
+          <h3 class="text-sm font-bold text-slate-900 mt-0.5">3840 x 2160 Pixel Density</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-normal">Sub-pixel inspection passed. Ideal for precision CAD & color grading.</p>
         </div>
       </div>
 
@@ -767,8 +761,8 @@
         </div>
         <div class="p-4 bg-white">
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">SLIM WORKSTATION PROFILE</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">Thunderbolt 3 & HDMI 2.0</h4>
-          <p class="text-[11px] text-slate-600 mt-1">Wedge profile measuring just 11.48mm to 16.82mm at thickest point.</p>
+          <h3 class="text-sm font-bold text-slate-900 mt-0.5">Thunderbolt 3 & HDMI 2.0</h3>
+          <p class="text-xs text-slate-600 mt-1 leading-normal">Wedge profile measuring just 11.48mm to 16.82mm at thickest point.</p>
         </div>
       </div>
 
@@ -863,11 +857,12 @@
               <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-xs font-mono font-bold">3</span>
               <span>Warranty Protection Plan</span>
             </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
+            <!-- Usability Fix 14: Standardized 3-column grid matching RAM & SSD -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-4">
               <label class="relative p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-cyan-500 cursor-pointer transition-all flex flex-col justify-between">
                 <input type="radio" name="config-warranty" value="0" data-label="6 Months Certified Warranty (Included)" checked class="peer sr-only">
                 <div class="peer-checked:text-cyan-700 font-bold text-sm">6 Months Warranty</div>
-                <div class="text-[11px] text-slate-500 mt-1">Free included coverage for motherboard & display</div>
+                <div class="text-xs text-slate-500 mt-1">Free included coverage for motherboard & display</div>
                 <div class="text-xs font-mono font-bold text-slate-900 mt-3">+₹0</div>
                 <div class="absolute inset-0 rounded-2xl border-2 border-transparent peer-checked:border-cyan-500 pointer-events-none"></div>
               </label>
@@ -875,17 +870,23 @@
               <label class="relative p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-cyan-500 cursor-pointer transition-all flex flex-col justify-between">
                 <input type="radio" name="config-warranty" value="1999" data-label="1 Year Extended Complete Care Warranty" class="peer sr-only">
                 <div class="peer-checked:text-cyan-700 font-bold text-sm">1 Year Complete Care</div>
-                <div class="text-[11px] text-slate-500 mt-1">12 Months parts & doorstep replacement warranty</div>
+                <div class="text-xs text-slate-500 mt-1">12 Months parts & doorstep replacement warranty</div>
                 <div class="text-xs font-mono font-bold text-slate-900 mt-3">+₹1,999</div>
                 <div class="absolute inset-0 rounded-2xl border-2 border-transparent peer-checked:border-cyan-500 pointer-events-none"></div>
               </label>
+
+              <!-- Balanced 3rd Card Placeholder -->
+              <div class="hidden sm:flex flex-col justify-center items-center p-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 text-slate-400 text-xs text-center font-mono">
+                <svg class="w-5 h-5 text-slate-300 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span>Enterprise SLA available on request</span>
+              </div>
             </div>
           </div>
 
         </div>
 
         <!-- Live Summary Column (1 col) -->
-        <div class="specular-card p-7 rounded-3xl h-fit sticky top-28 space-y-6">
+        <div class="specular-card p-6 rounded-3xl h-fit sticky top-28 space-y-5">
           <div class="flex items-center gap-3.5">
             <img src="assets/images/real-5530/dell_5530_front_display.jpg" alt="Dell 5530" class="w-16 h-16 rounded-2xl object-cover border border-slate-200 bg-slate-50" />
             <div>
@@ -895,38 +896,39 @@
             </div>
           </div>
 
+          <!-- Usability Fix 15: Consistent 2-column tabular alignment without wide gap -->
           <div class="divide-y divide-slate-100 text-xs text-slate-600">
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Processor:</span>
-              <span class="font-mono text-slate-900 font-medium">Intel Core i7 8th H-Series</span>
+              <span class="font-mono text-slate-900 font-medium text-right sm:text-left">Intel Core i7 8th H-Series</span>
             </div>
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Memory:</span>
-              <span id="config-summary-ram" class="font-mono text-cyan-700 font-bold">8GB DDR4</span>
+              <span id="config-summary-ram" class="font-mono text-cyan-700 font-bold text-right sm:text-left">8GB DDR4</span>
             </div>
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Storage:</span>
-              <span id="config-summary-ssd" class="font-mono text-cyan-700 font-bold">256GB NVMe SSD</span>
+              <span id="config-summary-ssd" class="font-mono text-cyan-700 font-bold text-right sm:text-left">256GB NVMe SSD</span>
             </div>
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Dedicated GPU:</span>
-              <span class="font-mono text-slate-900 font-medium">4GB NVIDIA Dedicated</span>
+              <span class="font-mono text-slate-900 font-medium text-right sm:text-left">4GB NVIDIA Dedicated</span>
             </div>
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Screen:</span>
-              <span class="font-mono text-slate-900 font-medium">15.6" 4K UHD UltraSharp</span>
+              <span class="font-mono text-slate-900 font-medium text-right sm:text-left">15.6" 4K UHD UltraSharp</span>
             </div>
-            <div class="py-2.5 flex justify-between">
+            <div class="py-2 grid grid-cols-[105px_1fr] items-baseline gap-2">
               <span class="text-slate-500">Warranty:</span>
-              <span id="config-summary-warranty" class="font-mono text-emerald-700 font-bold">6 Months Certified</span>
+              <span id="config-summary-warranty" class="font-mono text-emerald-700 font-bold text-right sm:text-left">6 Months Certified</span>
             </div>
           </div>
 
-          <!-- Total Calculation -->
-          <div class="pt-4 border-t border-slate-100">
+          <!-- Total Calculation (Usability Fix 16: Reduced vertical spacing) -->
+          <div class="pt-3 mt-3 border-t border-slate-200">
             <div class="text-xs text-slate-500 font-mono">Calculated Price:</div>
-            <div id="config-total-price" class="text-3xl font-black text-slate-900 font-mono mt-1">₹34,999</div>
-            <p class="text-[11px] text-emerald-700 mt-1 font-medium">✓ GST Invoice included • Free Doorstep Shipping</p>
+            <div id="config-total-price" class="text-3xl font-black text-slate-900 font-mono mt-0.5">₹34,999</div>
+            <p class="text-xs text-emerald-700 mt-1 font-medium">✓ GST Invoice included • Free Doorstep Shipping</p>
           </div>
 
           <!-- Action Buttons -->
@@ -949,165 +951,187 @@
        8. DEDICATED STORE GATEWAY & HIGHLIGHTED CATALOG
        =================================================== -->
   <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <!-- Usability Fix 29: Aligned Section Header with Grid Right-Edge -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-slate-200/80">
       <div>
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200/80 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-xs">
-          <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
           <span>CERTIFIED WORKSTATION INVENTORY</span>
         </div>
         <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">More Refurbished Laptops & Desktops</h2>
         <p class="text-sm text-slate-600 mt-2">Every device is inspected across 30 checkpoints and covered by our 6-month lab warranty.</p>
       </div>
 
-      <a href="products.html" class="apple-action-btn px-6 py-3 text-xs flex items-center gap-2 whitespace-nowrap self-start md:self-auto shadow-md">
-        <span>View Full Store Catalog (8 Machines) →</span>
+      <a href="products.html" class="btn-primary self-start sm:self-end px-5 py-2.5 text-xs font-mono font-bold flex items-center gap-2 shadow-xs whitespace-nowrap">
+        <span>Full Catalog (8 Machines) →</span>
       </a>
     </div>
 
-    <!-- 4 Standout Models Preview -->
+    <!-- 4 Standout Models Preview (Usability Fix 26: Full Card Affordance & Fix 27: Clean Hardware Photos) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       
       <!-- Card 1: ThinkPad T480 -->
-      <div class="specular-card p-5 flex flex-col justify-between">
+      <div class="specular-card p-5 flex flex-col justify-between relative group cursor-pointer">
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200 font-bold">BUSINESS LEGEND</span>
             <span class="text-emerald-700 text-[10px] font-mono font-bold">Grade A+</span>
           </div>
           <div class="h-40 rounded-xl overflow-hidden mb-3 bg-slate-100">
-            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80" alt="ThinkPad T480" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80" alt="ThinkPad T480" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </div>
-          <h3 class="text-base font-bold text-slate-900">ThinkPad T480 Ultrabook</h3>
+          <h3 class="text-base font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
+            <a href="products.html?category=business" class="after:absolute after:inset-0 focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-2xl">
+              ThinkPad T480 Ultrabook
+            </a>
+          </h3>
           <p class="text-xs text-slate-600 mt-1">Core i7 8th Gen • 16GB RAM • 512GB SSD • Dual Hot-Swap Battery</p>
         </div>
         <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
           <div class="text-xl font-bold font-mono text-slate-900">₹23,499</div>
-          <a href="products.html?category=business" class="text-xs text-cyan-600 hover:underline font-mono font-bold">View Specs →</a>
+          <span class="btn-secondary px-3 py-1 text-xs font-mono font-bold text-cyan-700 pointer-events-none group-hover:border-cyan-400 group-hover:bg-cyan-50/50">View Specs →</span>
         </div>
       </div>
 
-      <!-- Card 2: HP EliteBook 840 G6 -->
-      <div class="specular-card p-5 flex flex-col justify-between">
+      <!-- Card 2: HP EliteBook 840 G6 (Usability Fix 27: Clean Hardware Shot) -->
+      <div class="specular-card p-5 flex flex-col justify-between relative group cursor-pointer">
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200 font-bold">ALUMINUM ULTRABOOK</span>
             <span class="text-emerald-700 text-[10px] font-mono font-bold">Grade A+</span>
           </div>
           <div class="h-40 rounded-xl overflow-hidden mb-3 bg-slate-100">
-            <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=80" alt="HP EliteBook" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80" alt="HP EliteBook 840 G6 Aluminum Hardware" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </div>
-          <h3 class="text-base font-bold text-slate-900">HP EliteBook 840 G6</h3>
+          <h3 class="text-base font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
+            <a href="products.html?brand=hp" class="after:absolute after:inset-0 focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-2xl">
+              HP EliteBook 840 G6
+            </a>
+          </h3>
           <p class="text-xs text-slate-600 mt-1">Core i7 8th Gen • 16GB RAM • 512GB SSD • Bang & Olufsen Sound</p>
         </div>
         <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
           <div class="text-xl font-bold font-mono text-slate-900">₹24,999</div>
-          <a href="products.html?brand=hp" class="text-xs text-cyan-600 hover:underline font-mono font-bold">View Specs →</a>
+          <span class="btn-secondary px-3 py-1 text-xs font-mono font-bold text-cyan-700 pointer-events-none group-hover:border-cyan-400 group-hover:bg-cyan-50/50">View Specs →</span>
         </div>
       </div>
 
       <!-- Card 3: MacBook Pro 15 Retina -->
-      <div class="specular-card p-5 flex flex-col justify-between">
+      <div class="specular-card p-5 flex flex-col justify-between relative group cursor-pointer">
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200 font-bold">CREATIVE PRO</span>
             <span class="text-emerald-700 text-[10px] font-mono font-bold">Grade A+</span>
           </div>
           <div class="h-40 rounded-xl overflow-hidden mb-3 bg-slate-100">
-            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80" alt="MacBook Pro" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80" alt="MacBook Pro" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </div>
-          <h3 class="text-base font-bold text-slate-900">MacBook Pro 15 Retina</h3>
+          <h3 class="text-base font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
+            <a href="products.html?brand=apple" class="after:absolute after:inset-0 focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-2xl">
+              MacBook Pro 15 Retina
+            </a>
+          </h3>
           <p class="text-xs text-slate-600 mt-1">Core i7 • 16GB RAM • 512GB SSD • 4GB Radeon Graphics</p>
         </div>
         <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
           <div class="text-xl font-bold font-mono text-slate-900">₹38,999</div>
-          <a href="products.html?brand=apple" class="text-xs text-cyan-600 hover:underline font-mono font-bold">View Specs →</a>
+          <span class="btn-secondary px-3 py-1 text-xs font-mono font-bold text-cyan-700 pointer-events-none group-hover:border-cyan-400 group-hover:bg-cyan-50/50">View Specs →</span>
         </div>
       </div>
 
       <!-- Card 4: Dell OptiPlex 7070 Micro -->
-      <div class="specular-card p-5 flex flex-col justify-between">
+      <div class="specular-card p-5 flex flex-col justify-between relative group cursor-pointer">
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200 font-bold">TINY POWERHOUSE</span>
             <span class="text-emerald-700 text-[10px] font-mono font-bold">Grade A+</span>
           </div>
           <div class="h-40 rounded-xl overflow-hidden mb-3 bg-slate-100">
-            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&auto=format&fit=crop&q=80" alt="Dell OptiPlex" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&auto=format&fit=crop&q=80" alt="Dell OptiPlex" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
           </div>
-          <h3 class="text-base font-bold text-slate-900">OptiPlex 7070 Micro PC</h3>
+          <h3 class="text-base font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">
+            <a href="products.html?category=desktop" class="after:absolute after:inset-0 focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-2xl">
+              OptiPlex 7070 Micro PC
+            </a>
+          </h3>
           <p class="text-xs text-slate-600 mt-1">Core i7 9th Gen • 16GB RAM • 512GB SSD • 1-Liter Compact Footprint</p>
         </div>
         <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
           <div class="text-xl font-bold font-mono text-slate-900">₹18,999</div>
-          <a href="products.html?category=desktop" class="text-xs text-cyan-600 hover:underline font-mono font-bold">View Specs →</a>
+          <span class="btn-secondary px-3 py-1 text-xs font-mono font-bold text-cyan-700 pointer-events-none group-hover:border-cyan-400 group-hover:bg-cyan-50/50">View Specs →</span>
         </div>
       </div>
+
+    </div>
 
     </div>
   </section>
 
   <!-- ===================================================
-       9. AI ASSISTANT CHAT WIDGET
+       9. AI ASSISTANT CHAT WIDGET (USABILITY FIXES 10, 17, 22, 28, 30, 31)
        =================================================== -->
   
-  <!-- Floating Trigger Button -->
-  <button id="ai-assistant-toggle" class="ai-floating-trigger apple-action-btn px-4 py-3 flex items-center gap-2.5 shadow-xl">
-    <div class="w-6 h-6 rounded-full bg-white text-cyan-700 flex items-center justify-center text-xs font-bold">
+  <!-- Floating Trigger Button (Usability Fix 28: Sleek FAB instead of full-width saturated blue bar) -->
+  <button id="ai-assistant-toggle" class="fixed bottom-6 right-6 z-40 px-3.5 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 text-slate-800 shadow-lg hover:shadow-xl hover:border-cyan-400 flex items-center gap-2.5 transition-all" aria-label="Open AI Hardware Assistant" aria-expanded="false">
+    <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-xs" aria-hidden="true">
       ✦
     </div>
-    <span class="text-xs font-mono font-bold">Ask Classic AI</span>
+    <span class="text-xs font-mono font-bold text-slate-800">Ask Classic AI</span>
   </button>
 
-  <!-- AI Chat Drawer -->
-  <div id="ai-assistant-drawer" class="ai-assistant-drawer">
+  <!-- AI Chat Drawer (Usability Fix 22: Dismissible Off-Screen Overlay Drawer) -->
+  <div id="ai-assistant-drawer" class="ai-assistant-drawer" aria-hidden="true">
     
     <!-- Drawer Header -->
-    <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-white/80">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs">
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-white/90">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs" aria-hidden="true">
           ✦
         </div>
         <div>
-          <h4 class="text-xs font-bold text-slate-900">Classic AI Hardware Matchmaker</h4>
-          <span class="text-[9px] font-mono text-cyan-700 font-semibold">120 FPS Real-time Advisor</span>
+          <h3 class="text-xs font-bold text-slate-900">Classic AI Hardware Matchmaker</h3>
+          <!-- Usability Fix 10: 12px accessible subtext -->
+          <span class="text-xs font-mono text-cyan-700 font-medium">120 FPS Real-time Advisor</span>
         </div>
       </div>
-      <button id="ai-drawer-close" class="w-7 h-7 rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900">
-        ✕
+      <!-- Usability Fix 30: WCAG 44x44px accessible touch target -->
+      <button id="ai-drawer-close" class="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors" aria-label="Close AI Assistant">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <!-- Messages Container -->
-    <div id="ai-messages-container" class="flex-grow overflow-y-auto p-4 space-y-3 text-xs font-mono">
-      <div class="p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200 text-slate-800">
+    <!-- Messages Container (Usability Fix 17: Compact vertical footprint) -->
+    <div id="ai-messages-container" class="flex-grow overflow-y-auto p-3.5 space-y-2.5 text-xs font-mono">
+      <div class="p-3 rounded-2xl bg-cyan-50 border border-cyan-200 text-slate-800">
         <span class="text-cyan-800 font-bold block mb-1">✦ Classic AI Assistant:</span>
-        Hello Kashan! I can help you pick the best certified refurbished laptop for your workload, compare processors, or explain our 30-point lab certification. Try tapping a question below:
+        Hello! I can help you pick the best certified refurbished workstation for your workload, compare processors, or explain our 30-point lab certification. Try tapping a question below:
       </div>
 
       <!-- Quick Prompt Pills -->
-      <div class="space-y-1.5 pt-2">
-        <button onclick="askAiQuestion('Why choose Dell 5530 over MacBook Pro 15?')" class="w-full text-left p-2.5 rounded-xl bg-white border border-slate-200 text-[11px] text-cyan-700 hover:border-cyan-500 transition-colors shadow-sm">
+      <div class="space-y-1.5 pt-1">
+        <button onclick="askAiQuestion('Why choose Dell 5530 over MacBook Pro 15?')" class="w-full text-left px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-cyan-700 hover:border-cyan-500 transition-colors shadow-xs">
           ✦ Why choose Dell 5530 over MacBook Pro 15?
         </button>
-        <button onclick="askAiQuestion('Best laptop for 3D CAD, AutoCAD & SolidWorks?')" class="w-full text-left p-2.5 rounded-xl bg-white border border-slate-200 text-[11px] text-cyan-700 hover:border-cyan-500 transition-colors shadow-sm">
+        <button onclick="askAiQuestion('Best laptop for 3D CAD, AutoCAD & SolidWorks?')" class="w-full text-left px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-cyan-700 hover:border-cyan-500 transition-colors shadow-xs">
           ✦ Best laptop for 3D CAD, AutoCAD & SolidWorks?
         </button>
-        <button onclick="askAiQuestion('What is Certified Grade A+ condition?')" class="w-full text-left p-2.5 rounded-xl bg-white border border-slate-200 text-[11px] text-cyan-700 hover:border-cyan-500 transition-colors shadow-sm">
+        <button onclick="askAiQuestion('What is Certified Grade A+ condition?')" class="w-full text-left px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs text-cyan-700 hover:border-cyan-500 transition-colors shadow-xs">
           ✦ What is Certified Grade A+ condition?
         </button>
       </div>
     </div>
 
-    <!-- Input Bar -->
-    <div class="p-3 border-t border-slate-200 bg-white flex gap-2">
+    <!-- Input Bar (Usability Fix 31: Primary h-11 height input and button) -->
+    <div class="p-3.5 border-t border-slate-200 bg-white flex items-center gap-2">
       <input 
         type="text" 
         id="ai-user-input" 
         placeholder="Ask anything about laptops, specs, warranty..." 
-        class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-900 focus:outline-none focus:border-cyan-500"
+        class="flex-1 h-11 px-3.5 rounded-xl bg-slate-50 border border-slate-300 text-xs font-mono text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600"
+        aria-label="Ask hardware question"
       />
-      <button id="ai-send-btn" class="apple-action-btn px-4 py-2 text-xs font-bold font-mono">
-        Ask
+      <button id="ai-send-btn" class="h-11 px-5 rounded-xl btn-primary text-xs font-bold font-mono flex items-center justify-center">
+        <span>Ask</span>
       </button>
     </div>
 
@@ -1122,8 +1146,8 @@
     <div class="relative w-full max-w-5xl rounded-3xl overflow-hidden bg-white border border-slate-200 shadow-2xl flex flex-col max-h-[92vh]">
       <div class="p-4 border-b border-slate-200 flex items-center justify-between">
         <span id="lightbox-caption" class="text-xs font-mono text-cyan-700 font-bold"></span>
-        <button onclick="closePhotoLightbox()" class="w-8 h-8 rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-700 hover:text-slate-950">
-          ✕
+        <button onclick="closePhotoLightbox()" aria-label="Close Photo Lightbox" class="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-700 hover:text-slate-950">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="flex-grow overflow-auto p-4 flex items-center justify-center bg-slate-50">
@@ -1140,8 +1164,8 @@
           <svg class="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
           <h3 class="text-base font-bold text-slate-900">Your Shopping Bag</h3>
         </div>
-        <button data-action="close-cart" class="w-8 h-8 rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900">
-          ✕
+        <button data-action="close-cart" aria-label="Close Shopping Bag" class="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -1192,8 +1216,8 @@
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">EXPRESS DELIVERY CHECKOUT</span>
           <h3 class="text-xl font-bold text-slate-900 mt-0.5">Shipping & Payment</h3>
         </div>
-        <button data-action="close-checkout" class="w-8 h-8 rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900">
-          ✕
+        <button data-action="close-checkout" aria-label="Close Checkout Modal" class="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -1221,20 +1245,20 @@
           <div class="grid grid-cols-3 gap-2">
             <label class="p-2.5 rounded-xl bg-slate-50 border border-cyan-400 text-center cursor-pointer flex flex-col items-center">
               <input type="radio" name="payment" value="upi" checked class="accent-cyan-600">
-              <span class="mt-1 font-bold text-slate-900 text-[11px]">UPI Instant</span>
+              <span class="mt-1 font-bold text-slate-900 text-xs">UPI Instant</span>
             </label>
             <label class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer flex flex-col items-center">
               <input type="radio" name="payment" value="card" class="accent-cyan-600">
-              <span class="mt-1 font-bold text-slate-900 text-[11px]">Cards / EMI</span>
+              <span class="mt-1 font-bold text-slate-900 text-xs">Cards / EMI</span>
             </label>
             <label class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center cursor-pointer flex flex-col items-center">
               <input type="radio" name="payment" value="cod" class="accent-cyan-600">
-              <span class="mt-1 font-bold text-slate-900 text-[11px]">Part COD</span>
+              <span class="mt-1 font-bold text-slate-900 text-xs">Part COD</span>
             </label>
           </div>
         </div>
 
-        <button type="submit" class="w-full apple-action-btn py-3 mt-4 text-xs font-bold tracking-wider">
+        <button type="submit" class="w-full btn-primary py-3 mt-4 text-xs font-bold tracking-wider">
           CONFIRM & PLACE ORDER NOW
         </button>
       </form>
@@ -1249,8 +1273,8 @@
           <span class="text-[10px] font-mono text-cyan-700 uppercase font-bold">MEMBER & WARRANTY HUB</span>
           <h3 class="text-xl font-bold text-slate-900 mt-0.5">Classic Computer Account</h3>
         </div>
-        <button data-action="close-auth" class="w-8 h-8 rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900">
-          ✕
+        <button data-action="close-auth" aria-label="Close Account Modal" class="w-9 h-9 min-w-[44px] min-h-[44px] rounded-full apple-secondary-glass-btn flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
