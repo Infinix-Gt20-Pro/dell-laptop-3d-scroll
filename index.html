@@ -42,53 +42,60 @@
 </head>
 <body class="min-h-screen text-slate-900 bg-[#f8fafc] flex flex-col selection:bg-cyan-500 selection:text-white">
 
+  <!-- Refined Desktop Custom Cursor Elements (Active on desktop only) -->
+  <div id="custom-cursor-dot"></div>
+  <div id="custom-cursor-ring"></div>
+
   <!-- Ambient Dynamic Cursor Spotlight -->
   <div id="cursor-spotlight"></div>
 
   <!-- ===================================================
-       1. APPLE ULTRA-GLASS FLOATING HEADER (LIGHT THEME)
+       1. EDITORIAL ARCHITECTURAL HEADER
        =================================================== -->
   <header class="sticky top-0 z-50 apple-nav-glass w-full px-4 sm:px-8 py-3.5 transition-all">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand Logo -->
+      <!-- Brand Architectural Mark -->
       <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-600 to-slate-900 p-[1.5px] shadow-sm group-hover:scale-105 transition-transform duration-300">
           <div class="w-full h-full bg-white rounded-2xl flex items-center justify-center">
-            <span class="text-cyan-600 font-extrabold text-lg tracking-tighter font-mono">CC</span>
+            <span class="text-cyan-700 font-extrabold text-base tracking-tighter font-mono">CC</span>
           </div>
         </div>
         <div class="flex flex-col">
-          <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-600 transition-colors">
+          <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-700 transition-colors">
             CLASSIC COMPUTER
           </span>
-          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-600 uppercase -mt-0.5 font-bold">
-            CERTIFIED REFURBISHED HUB
+          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-700 uppercase -mt-0.5 font-bold">
+            CERTIFIED WORKSTATION HUB
           </span>
         </div>
       </a>
 
-      <!-- Navigation Links (Desktop) -->
+      <!-- Navigation Links (Desktop Architectural) -->
       <nav class="apple-desktop-nav hidden items-center gap-1 text-xs font-semibold font-mono">
-        <a href="#hero-scroll-container" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#hero-scroll-container" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Flagship 5530
         </a>
-        <a href="#display-simulator" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
-          4K Simulator
+        <a href="#display-simulator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          4K Optical Lab
         </a>
-        <a href="#benchmarks" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#benchmarks" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Benchmarks
         </a>
-        <a href="#showcase" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="#refurb-process" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          Certification
+        </a>
+        <a href="#showcase" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Photo Lab
         </a>
-        <a href="#configurator" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
-          Studio
+        <a href="#configurator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          Configurator
         </a>
         <!-- Separate Products Page Link -->
-        <a href="products.html" class="px-3 py-1.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-sm font-bold">
+        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 hover:bg-cyan-100 transition-all flex items-center gap-1.5 shadow-sm font-bold">
           <span>All 8 Models</span>
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse"></span>
         </a>
       </nav>
 
@@ -109,7 +116,7 @@
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
+        <button data-action="open-cart" class="magnetic-btn apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono">
           <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
@@ -118,7 +125,7 @@
         </button>
 
         <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
+        <button data-action="open-auth" class="magnetic-btn apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
           <div class="w-5 h-5 rounded-full bg-white text-cyan-700 flex items-center justify-center text-[10px] font-bold font-mono">
             KA
           </div>
@@ -135,17 +142,17 @@
   </header>
 
   <!-- ===================================================
-       MOBILE NAVIGATION DRAWER OVERLAY (LIGHT FROSTED GLASS)
+       MOBILE NAVIGATION DRAWER OVERLAY (VECTOR ICONS ONLY)
        =================================================== -->
-  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl p-5 overflow-y-auto lg:hidden">
+  <div id="mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/98 backdrop-blur-2xl p-5 overflow-y-auto lg:hidden">
     <div class="flex items-center justify-between pb-5 border-b border-slate-200">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-xs">
+        <div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-xs font-mono">
           CC
         </div>
         <div>
-          <div class="text-sm font-black text-slate-900">CLASSIC COMPUTER</div>
-          <div class="text-[9px] font-mono text-cyan-600 font-bold">CERTIFIED REFURBISHED HUB</div>
+          <div class="text-sm font-black text-slate-900 tracking-tight">CLASSIC COMPUTER</div>
+          <div class="text-[9px] font-mono text-cyan-700 font-bold">CERTIFIED WORKSTATION HUB</div>
         </div>
       </div>
       <button id="mobile-menu-close-btn" class="apple-secondary-glass-btn w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-900">
@@ -153,94 +160,119 @@
       </button>
     </div>
 
-    <!-- Mobile Nav Links -->
+    <!-- Mobile Nav Links with Vector SVG Icons (No Emojis) -->
     <div class="py-5 space-y-2.5 font-mono text-xs">
       <a href="products.html" class="flex items-center justify-between p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200 text-cyan-800 font-bold shadow-sm">
-        <div class="flex items-center gap-2.5">
-          <span class="text-lg">🛒</span>
+        <div class="flex items-center gap-3">
+          <div class="w-7 h-7 rounded-lg bg-cyan-600 text-white flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
           <div class="text-left">
             <div class="text-sm font-black text-slate-900">ALL 8 PRODUCTS CATALOG</div>
             <div class="text-[10px] text-cyan-700">Explore Laptops, 4K & Desktops</div>
           </div>
         </div>
-        <span class="text-[10px] bg-cyan-600 text-white px-2 py-0.5 rounded-full font-black">VIEW →</span>
+        <span class="text-[10px] bg-cyan-700 text-white px-2.5 py-1 rounded-full font-black">VIEW →</span>
       </a>
 
       <a href="#hero-scroll-container" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
-        <span class="text-base text-cyan-600">✦</span>
+        <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
         <span>Dell 5530 3D Scroll Video</span>
       </a>
       <a href="#display-simulator" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
-        <span class="text-base text-blue-600">🖥️</span>
+        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         <span>4K vs 1080p Display Simulator</span>
       </a>
       <a href="#benchmarks" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
-        <span class="text-base text-amber-600">⚡</span>
-        <span>Astra Benchmarks (i7 + NVIDIA)</span>
+        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>Hardware Benchmarks (i7 + NVIDIA)</span>
+      </a>
+      <a href="#refurb-process" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
+        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>5-Stage Refurbishment Story</span>
       </a>
       <a href="#showcase" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
-        <span class="text-base text-purple-600">📸</span>
+        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         <span>100% Real Hardware Photo Lab</span>
       </a>
       <a href="#configurator" class="mobile-nav-link flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-700 font-medium">
-        <span class="text-base text-emerald-600">⚙️</span>
-        <span>RAM & SSD Studio Configurator</span>
+        <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+        <span>Studio RAM & SSD Configurator</span>
       </a>
     </div>
 
     <!-- Quick Support & Account on Mobile -->
     <div class="pt-4 border-t border-slate-200 space-y-2.5">
-      <a href="https://wa.me/919876543210?text=Hi%2C%20I%20am%20interested%20in%20Dell%20Precision%205530%204K%20Workstation" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-300 text-xs font-mono font-bold">
-        <span>💬</span>
-        <span>WhatsApp Expert Order (1-Click)</span>
+      <a href="https://wa.me/919876543210?text=Hi%2C%20I%20am%20interested%20in%20Dell%20Precision%205530%204K%20Workstation" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-mono font-bold">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+        <span>WhatsApp Expert Order (Direct)</span>
       </a>
       <div class="flex items-center gap-2">
         <button data-action="open-auth" class="flex-1 py-2.5 rounded-xl apple-secondary-glass-btn text-xs font-mono text-center font-bold">
-          👤 Member Login
+          Member Login
         </button>
         <button data-action="open-cart" class="flex-1 py-2.5 rounded-xl apple-action-btn text-xs font-mono text-center font-bold">
-          🛍️ Bag (<span class="cart-badge-count">0</span>)
+          Bag (<span class="cart-badge-count">0</span>)
         </button>
       </div>
     </div>
   </div>
 
   <!-- ===================================================
-       2. MOTIONSITES-STYLE LUXURY HERO TITLE INTRO (LIGHT)
+       2. CINEMATIC PRODUCT SHOWROOM HERO (EDITORIAL STAGE)
        =================================================== -->
-  <section class="pt-8 sm:pt-14 pb-4 sm:pb-6 text-center max-w-5xl mx-auto px-4 relative z-10 w-full max-w-full overflow-hidden">
-    <div class="inline-flex items-center gap-2 mb-2 sm:mb-3">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-mono font-bold shadow-sm">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-pulse"></span>
-        <span>CERTIFIED REFURBISHED HUB</span>
+  <section class="pt-10 sm:pt-16 pb-6 sm:pb-8 text-center max-w-6xl mx-auto px-4 relative z-10 w-full max-w-full overflow-hidden">
+    
+    <!-- Architectural Lab Badge -->
+    <div class="inline-flex items-center gap-2 mb-3 sm:mb-4 motion-fade-up delay-1">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 text-white text-[11px] font-mono font-semibold shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span>HARDWARE LAB SPECIFICATION // 2026 AUDITED EDITION</span>
       </span>
     </div>
     
-    <h1 class="text-3xl sm:text-5xl lg:text-7xl font-black uppercase tracking-tight text-slate-900 leading-[1.12]">
-      THE APEX OF <em class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600">Certified</em>
+    <!-- Editorial Display Headline -->
+    <h1 class="editorial-headline uppercase tracking-tight motion-fade-up delay-2">
+      THE APEX OF <span class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-slate-900">Certified</span>
       <div class="mt-1 block">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-cyan-800 to-blue-900">
-          WORKSTATIONS
+        <span class="text-slate-900">
+          4K WORKSTATIONS
         </span>
       </div>
     </h1>
 
-    <p class="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto mt-3 sm:mt-4 leading-relaxed font-sans px-2">
-      Featuring the <strong>Dell Latitude / Precision 5530 4K Mobile Workstation</strong> — lab-audited Intel® Core™ i7 H-Series power, dedicated NVIDIA® graphics, CNC aluminum unibody, and genuine Windows 11 Pro.
+    <!-- Hardware Curated Telemetry Strip -->
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono font-bold text-slate-700 motion-fade-up delay-3">
+      <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">45W INTEL® i7 H-SERIES</span>
+      <span class="text-slate-300">•</span>
+      <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">4GB DEDICATED NVIDIA®</span>
+      <span class="text-slate-300">•</span>
+      <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">100% AdobeRGB 4K UHD</span>
+      <span class="text-slate-300">•</span>
+      <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200/80 shadow-xs">CNC ALUMINUM UNIBODY</span>
+    </div>
+
+    <!-- Editorial Lead Copy -->
+    <p class="editorial-subheadline text-slate-600 max-w-2xl mx-auto mt-4 leading-relaxed font-sans px-2 motion-fade-up delay-4">
+      Featuring the <strong>Dell Precision 5530 4K Mobile Workstation</strong> — lab-audited 6-core processing speed, professional ISV-certified graphics, and borderless InfinityEdge clarity. Inspected with zero defect tolerance.
     </p>
 
-    <!-- Interactive Navigation Pills -->
-    <div class="mt-4 sm:mt-6 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar w-full max-w-full px-2">
-      <div class="motionsites-tab-bar shrink-0 mx-auto">
-        <a href="#hero-scroll-container" class="motionsites-tab active">✦ 3D Video Scroll</a>
-        <a href="#display-simulator" class="motionsites-tab">4K Simulator</a>
-        <a href="#benchmarks" class="motionsites-tab">Benchmarks</a>
-        <a href="#showcase" class="motionsites-tab">Lab Photos</a>
-        <a href="products.html" class="motionsites-tab font-bold text-cyan-600" style="background: rgba(2, 132, 199, 0.08); border-color: rgba(2, 132, 199, 0.25);">
-          Explore All 8 Machines →
-        </a>
-      </div>
+    <!-- Editorial Action Group -->
+    <div class="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3 motion-fade-up delay-5">
+      <a href="#hero-scroll-container" class="magnetic-btn apple-action-btn px-6 py-3 text-xs font-mono font-bold flex items-center gap-2 shadow-lg">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        <span>Explore 3D Architecture ↓</span>
+      </a>
+
+      <a href="#configurator" class="magnetic-btn apple-secondary-glass-btn px-5 py-3 text-xs font-mono font-bold">
+        <span>Studio Configurator</span>
+      </a>
+
+      <a href="products.html" class="magnetic-btn px-5 py-3 text-xs font-mono font-bold text-cyan-700 hover:text-cyan-800 flex items-center gap-1.5 transition-colors">
+        <span>View All 8 Machines →</span>
+      </a>
     </div>
+
   </section>
 
   <!-- ===================================================
@@ -345,8 +377,9 @@
        =================================================== -->
   <section id="display-simulator" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-14">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-sm">
-        🖥️ INTERACTIVE DISPLAY SIMULATOR
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200/80 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-xs">
+        <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <span>OPTICAL LAB // 4K UHD vs 1080p FHD</span>
       </div>
       <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
         Witness the 4K UltraSharp Advantage
@@ -540,12 +573,143 @@
   </section>
 
   <!-- ===================================================
+       5B. 5-STAGE REFURBISHED ENGINEERING CERTIFICATION STORY
+       INSPECTED • TESTED • CLEANED • VERIFIED • READY
+       =================================================== -->
+  <section id="refurb-process" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-200">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900 text-white text-[11px] font-mono font-bold mb-3 shadow-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>ZERO DEFECT TOLERANCE // 30-POINT LAB AUDIT</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        Engineered For Precision. Restored Without Compromise.
+      </h2>
+      <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+        At Classic Computer, refurbishment is not cosmetic. It is an exacting five-stage laboratory restoration process ensuring each workstation operates at peak factory thermal and silicon benchmarks.
+      </p>
+    </div>
+
+    <!-- 5-Stage Editorial Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      
+      <!-- Stage 01: Inspected -->
+      <div class="refurb-stage-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="refurb-numeral">01</span>
+            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-700">CHASSIS AUDIT</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-2">INSPECTED</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Micrometer physical measurement of CNC aluminum chassis, hinge tension torque, and ultrasonic port continuity.
+          </p>
+        </div>
+        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Hinge torque tension test</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Thunderbolt 3 port check</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 100% OEM structure pass</li>
+        </ul>
+      </div>
+
+      <!-- Stage 02: Tested -->
+      <div class="refurb-stage-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="refurb-numeral">02</span>
+            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-amber-50 text-amber-800">STRESS LAB</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-2">TESTED</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            24-hour continuous AIDA64 multi-core burn-in, FurMark GPU thermal dissipation, and battery discharge telemetry.
+          </p>
+        </div>
+        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 24hr AIDA64 stress test</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 4GB NVIDIA CUDA load</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Battery health verified</li>
+        </ul>
+      </div>
+
+      <!-- Stage 03: Cleaned -->
+      <div class="refurb-stage-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="refurb-numeral">03</span>
+            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-cyan-50 text-cyan-800">THERMAL SPEC</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-2">CLEANED</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Ultrasonic acoustic dust evacuation, heatsink copper de-oxidation, and fresh Arctic MX-6 high-conductivity compound.
+          </p>
+        </div>
+        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Arctic MX-6 thermal repaste</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Dual fan acoustic tuning</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ UV sanitized keyboard deck</li>
+        </ul>
+      </div>
+
+      <!-- Stage 04: Verified -->
+      <div class="refurb-stage-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="refurb-numeral">04</span>
+            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-800">CALIBRATION</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-2">VERIFIED</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            100% AdobeRGB sub-pixel 4K optical calibration, zero-dead-pixel certification, and digital Windows 11 Pro activation.
+          </p>
+        </div>
+        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 4K sub-pixel screen audit</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 0 Dead pixel guarantee</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Genuine Win 11 Pro license</li>
+        </ul>
+      </div>
+
+      <!-- Stage 05: Ready -->
+      <div class="refurb-stage-card group">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="refurb-numeral">05</span>
+            <span class="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-800">LAB SEALED</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-2">READY</h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Sealed in anti-static hermetic packaging with signed inspector QC pass card, 6-month lab warranty, and doorstep dispatch.
+          </p>
+        </div>
+        <ul class="text-[11px] font-mono text-slate-600 space-y-1.5 pt-3 border-t border-slate-100">
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Signed QC inspection card</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ 6 Months full warranty</li>
+          <li class="flex items-center gap-1.5 text-emerald-700">✓ Free doorstep shipping</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Assurance Banner -->
+    <div class="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-slate-700">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span><strong>CERTIFIED GRADE A+ GUARANTEE:</strong> Every workstation meets strict hardware tolerance levels prior to dispatch.</span>
+      </div>
+      <a href="https://wa.me/919876543210?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20your%2030-point%20lab%20inspection%20process" target="_blank" class="text-cyan-700 hover:text-cyan-800 font-bold whitespace-nowrap">
+        Talk to an Engineer →
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================================================
        6. REAL PHOTOS SHOWCASE & MARKETING VIDEO SPOTLIGHT
        =================================================== -->
   <section id="showcase" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-sm">
-        📸 100% AUTHENTIC IN-STOCK UNIT PHOTOS
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200/80 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-xs">
+        <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span>PHYSICAL LAB INSPECTION // UNEDITED 4K CAPTURE</span>
       </div>
       <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">Real Dell Precision 5530 In Our Lab</h2>
       <p class="text-sm text-slate-600 mt-3 leading-relaxed">
@@ -787,8 +951,9 @@
   <section class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
       <div>
-        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-sm">
-          🛒 CERTIFIED INVENTORY SHOWCASE
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-50 border border-cyan-200/80 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-xs">
+          <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          <span>CERTIFIED WORKSTATION INVENTORY</span>
         </div>
         <h2 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">More Refurbished Laptops & Desktops</h2>
         <p class="text-sm text-slate-600 mt-2">Every device is inspected across 30 checkpoints and covered by our 6-month lab warranty.</p>

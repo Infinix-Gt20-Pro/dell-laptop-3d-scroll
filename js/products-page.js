@@ -163,7 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <!-- Quick specs overlay -->
               <div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-cyan-300">
                 <span class="flex items-center gap-1 text-white font-bold">
-                  ⭐ ${product.rating} <span class="text-slate-300 font-normal">(${product.reviewsCount})</span>
+                  <svg class="w-3.5 h-3.5 text-amber-400 inline -mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  <span>${product.rating}</span>
+                  <span class="text-slate-300 font-normal">(${product.reviewsCount})</span>
                 </span>
                 <span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-sm text-[10px] text-white border border-white/20 font-bold">
                   ${product.brand}
@@ -224,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="grid grid-cols-2 gap-2">
               <button 
                 onclick="storeEngine.addToCart(PRODUCTS.find(p=>p.id==='${product.id}'))" 
-                class="apple-action-btn py-2.5 px-3 text-xs flex items-center justify-center gap-1.5 shadow-md font-bold"
+                class="magnetic-btn apple-action-btn py-2.5 px-3 text-xs flex items-center justify-center gap-1.5 shadow-md font-bold"
               >
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 <span>Add to Bag</span>
@@ -232,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
               
               <button 
                 onclick="window.buyOnWhatsApp('${product.id}')" 
-                class="apple-secondary-glass-btn py-2.5 px-3 text-xs flex items-center justify-center gap-1.5 text-emerald-700 hover:text-emerald-800 border-emerald-300 font-bold"
+                class="magnetic-btn apple-secondary-glass-btn py-2.5 px-3 text-xs flex items-center justify-center gap-1.5 text-emerald-700 hover:text-emerald-800 border-emerald-300 font-bold"
               >
                 <span>WhatsApp</span>
               </button>
@@ -502,6 +504,65 @@ document.addEventListener('DOMContentLoaded', () => {
       selector: '.ultra-glass, .specular-card, .apple-action-btn, .apple-secondary-glass-btn, .liquid-glass',
       gradientBlur: false,
       blurSize: 28
+    });
+  }
+
+  // Refined Desktop Custom Cursor & Magnetic Interactions
+  const cursorDot = document.getElementById('custom-cursor-dot');
+  const cursorRing = document.getElementById('custom-cursor-ring');
+
+  if (cursorDot && cursorRing && window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches) {
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+    let isMoving = false;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      if (!isMoving) {
+        isMoving = true;
+        cursorDot.style.opacity = '1';
+        cursorRing.style.opacity = '1';
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+      cursorDot.style.opacity = '0';
+      cursorRing.style.opacity = '0';
+    });
+
+    function cursorLoop() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      requestAnimationFrame(cursorLoop);
+    }
+    requestAnimationFrame(cursorLoop);
+
+    const interactiveSelectors = 'a, button, input, select, textarea, .specular-card, .catalog-product-card, [data-action]';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveSelectors)) {
+        document.body.classList.add('cursor-active');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveSelectors)) {
+        document.body.classList.remove('cursor-active');
+      }
+    });
+
+    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const pullX = (e.clientX - rect.left - rect.width / 2) * 0.28;
+        const pullY = (e.clientY - rect.top - rect.height / 2) * 0.28;
+        btn.style.transform = `translate3d(${pullX}px, ${pullY}px, 0)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate3d(0, 0, 0)';
+      });
     });
   }
 });

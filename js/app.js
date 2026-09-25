@@ -512,6 +512,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 11. Refined Desktop Custom Cursor & Magnetic Interactions
+  const cursorDot = document.getElementById('custom-cursor-dot');
+  const cursorRing = document.getElementById('custom-cursor-ring');
+
+  if (cursorDot && cursorRing && window.matchMedia('(min-width: 1024px) and (pointer: fine)').matches) {
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+    let isMoving = false;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      if (!isMoving) {
+        isMoving = true;
+        cursorDot.style.opacity = '1';
+        cursorRing.style.opacity = '1';
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+      cursorDot.style.opacity = '0';
+      cursorRing.style.opacity = '0';
+    });
+
+    // Smooth Lerp loop for ring
+    function cursorLoop() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      requestAnimationFrame(cursorLoop);
+    }
+    requestAnimationFrame(cursorLoop);
+
+    // Hover detection for interactive targets
+    const interactiveSelectors = 'a, button, input, select, textarea, .specular-card, .refurb-stage-card, .motionsites-tab, [data-action]';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveSelectors)) {
+        document.body.classList.add('cursor-active');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveSelectors)) {
+        document.body.classList.remove('cursor-active');
+      }
+    });
+
+    // Subtle Magnetic Buttons
+    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const pullX = (e.clientX - rect.left - rect.width / 2) * 0.28;
+        const pullY = (e.clientY - rect.top - rect.height / 2) * 0.28;
+        btn.style.transform = `translate3d(${pullX}px, ${pullY}px, 0)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate3d(0, 0, 0)';
+      });
+    });
+  }
+
   // Keyboard escape listeners for modals
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {

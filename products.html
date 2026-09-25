@@ -42,51 +42,55 @@
 </head>
 <body class="min-h-screen text-slate-900 bg-[#f8fafc] flex flex-col selection:bg-cyan-500 selection:text-white">
 
+  <!-- Refined Desktop Custom Cursor Elements (Active on desktop only) -->
+  <div id="custom-cursor-dot"></div>
+  <div id="custom-cursor-ring"></div>
+
   <!-- Ambient Dynamic Cursor Spotlight -->
   <div id="cursor-spotlight"></div>
 
   <!-- ===================================================
-       1. APPLE ULTRA-GLASS FLOATING HEADER (LIGHT THEME)
+       1. EDITORIAL ARCHITECTURAL HEADER
        =================================================== -->
   <header class="sticky top-0 z-50 apple-nav-glass w-full px-4 sm:px-8 py-3.5 transition-all">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
       <!-- Brand Logo -->
       <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-600 to-slate-900 p-[1.5px] shadow-sm group-hover:scale-105 transition-transform duration-300">
           <div class="w-full h-full bg-white rounded-2xl flex items-center justify-center">
-            <span class="text-cyan-600 font-extrabold text-lg tracking-tighter font-mono">CC</span>
+            <span class="text-cyan-700 font-extrabold text-base tracking-tighter font-mono">CC</span>
           </div>
         </div>
         <div class="flex flex-col">
-          <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-600 transition-colors">
+          <span class="text-base font-black tracking-tight text-slate-900 group-hover:text-cyan-700 transition-colors">
             CLASSIC COMPUTER
           </span>
-          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-600 uppercase -mt-0.5 font-bold">
-            CERTIFIED STORE
+          <span class="header-brand-subtitle text-[10px] font-mono tracking-widest text-cyan-700 uppercase -mt-0.5 font-bold">
+            CERTIFIED WORKSTATION HUB
           </span>
         </div>
       </a>
 
       <!-- Navigation Links -->
       <nav class="apple-desktop-nav hidden items-center gap-1 text-xs font-semibold font-mono">
-        <a href="index.html" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="index.html" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Home
         </a>
-        <a href="index.html#hero-scroll-container" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="index.html#hero-scroll-container" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Flagship 5530
         </a>
-        <a href="index.html#display-simulator" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
-          4K Simulator
+        <a href="index.html#display-simulator" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          4K Optical Lab
         </a>
-        <a href="index.html#benchmarks" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
+        <a href="index.html#benchmarks" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
           Benchmarks
         </a>
-        <a href="products.html" class="px-3 py-1.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 shadow-sm font-bold">
-          All Products
+        <a href="index.html#refurb-process" class="px-3.5 py-1.5 rounded-full text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all">
+          Certification
         </a>
-        <a href="index.html#showcase" class="px-3 py-1.5 rounded-full text-slate-700 hover:text-cyan-600 hover:bg-slate-100 transition-all">
-          Lab Photos
+        <a href="products.html" class="px-3.5 py-1.5 rounded-full bg-cyan-50/80 text-cyan-800 border border-cyan-200/80 shadow-sm font-bold">
+          All 8 Models
         </a>
       </nav>
 
@@ -107,7 +111,7 @@
         </button>
 
         <!-- Shopping Cart Trigger -->
-        <button data-action="open-cart" class="apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono text-slate-800">
+        <button data-action="open-cart" class="magnetic-btn apple-secondary-glass-btn relative px-2.5 sm:px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold font-mono text-slate-800">
           <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
           </svg>
@@ -116,7 +120,7 @@
         </button>
 
         <!-- Member Hub / Account -->
-        <button data-action="open-auth" class="apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
+        <button data-action="open-auth" class="magnetic-btn apple-action-btn px-2 sm:px-2.5 py-1.5 text-xs flex items-center gap-1.5 shadow-sm">
           <div class="w-5 h-5 rounded-full bg-white text-cyan-700 flex items-center justify-center text-[10px] font-bold font-mono">
             KA
           </div>
@@ -126,7 +130,7 @@
         <!-- Mobile & Tablet Menu Toggle Button -->
         <button id="products-mobile-menu-btn" class="apple-mobile-menu-trigger apple-secondary-glass-btn w-9 h-9 flex items-center justify-center text-slate-700 hover:text-cyan-600" aria-label="Open Mobile Menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
 
@@ -135,15 +139,15 @@
   </header>
 
   <!-- Mobile Navigation Drawer Overlay (Apple Ultra Glass Light) -->
-  <div id="products-mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/95 backdrop-blur-2xl p-5 overflow-y-auto lg:hidden">
+  <div id="products-mobile-nav-drawer" class="hidden fixed inset-0 z-50 bg-white/98 backdrop-blur-2xl p-5 overflow-y-auto lg:hidden">
     <div class="flex items-center justify-between pb-5 border-b border-slate-200">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-xs">
+        <div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-xs font-mono">
           CC
         </div>
         <div>
-          <div class="text-sm font-black text-slate-900">CLASSIC COMPUTER</div>
-          <div class="text-[9px] font-mono text-cyan-600 font-bold">CERTIFIED STORE</div>
+          <div class="text-sm font-black text-slate-900 tracking-tight">CLASSIC COMPUTER</div>
+          <div class="text-[9px] font-mono text-cyan-700 font-bold">CERTIFIED WORKSTATION HUB</div>
         </div>
       </div>
       <button id="products-mobile-menu-close" class="apple-secondary-glass-btn w-8 h-8 flex items-center justify-center text-slate-500 hover:text-slate-900">
@@ -151,44 +155,50 @@
       </button>
     </div>
 
-    <!-- Mobile Nav Links -->
+    <!-- Mobile Nav Links with Vector SVG Icons -->
     <div class="py-5 space-y-2.5 font-mono text-xs">
       <a href="index.html" class="flex items-center justify-between p-3.5 rounded-2xl bg-cyan-50 border border-cyan-200 text-cyan-800 font-bold shadow-sm">
-        <div class="flex items-center gap-2.5">
-          <span class="text-lg">⚡</span>
+        <div class="flex items-center gap-3">
+          <div class="w-7 h-7 rounded-lg bg-cyan-600 text-white flex items-center justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
+          </div>
           <div>
             <div class="text-sm font-black text-slate-900">FLAGSHIP DELL 5530 4K</div>
             <div class="text-[10px] text-cyan-700">120 FPS 3D Unboxing & Video Experience</div>
           </div>
         </div>
-        <span class="text-[10px] bg-cyan-600 text-white px-2 py-0.5 rounded-full font-black">HOME →</span>
+        <span class="text-[10px] bg-cyan-700 text-white px-2.5 py-1 rounded-full font-black">HOME →</span>
       </a>
 
       <a href="index.html#display-simulator" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-800">
-        <span class="text-base text-blue-600">🖥️</span>
+        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         <span>4K Display Simulator</span>
       </a>
       <a href="index.html#benchmarks" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-800">
-        <span class="text-base text-amber-500">⚡</span>
-        <span>Astra Hardware Benchmarks</span>
+        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>Hardware Benchmarks</span>
+      </a>
+      <a href="index.html#refurb-process" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-800">
+        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>5-Stage Refurbishment Story</span>
       </a>
       <a href="index.html#configurator" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 text-slate-800">
-        <span class="text-base text-emerald-600">⚙️</span>
+        <svg class="w-4 h-4 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
         <span>Studio RAM & SSD Configurator</span>
       </a>
     </div>
 
     <div class="pt-4 border-t border-slate-200 space-y-2.5">
-      <a href="https://wa.me/919999999999?text=Hi%2C%20I%20want%20to%20buy%20a%20certified%20laptop" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-300 text-xs font-mono font-bold">
-        <span>💬</span>
-        <span>WhatsApp Order Assist (1-Click)</span>
+      <a href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20buy%20a%20certified%20laptop" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-mono font-bold">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2z"/></svg>
+        <span>WhatsApp Order Assist (Direct)</span>
       </a>
       <div class="flex items-center gap-2">
-        <button data-action="open-auth" class="flex-1 py-2.5 rounded-xl apple-secondary-glass-btn text-xs font-mono text-center">
-          👤 Account
+        <button data-action="open-auth" class="flex-1 py-2.5 rounded-xl apple-secondary-glass-btn text-xs font-mono text-center font-bold">
+          Account
         </button>
         <button data-action="open-cart" class="flex-1 py-2.5 rounded-xl apple-action-btn text-xs font-mono text-center font-bold">
-          🛍️ Bag
+          Bag
         </button>
       </div>
     </div>
@@ -211,8 +221,9 @@
     <!-- Store Hero Banner -->
     <div class="relative rounded-3xl overflow-hidden p-6 sm:p-12 mb-8 sm:mb-10 ultra-glass border border-slate-200 bg-white/80 shadow-md">
       <div class="relative z-10 max-w-3xl">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold bg-cyan-50 text-cyan-700 border border-cyan-200">
-          ⭐ CERTIFIED GRADE A+ (LIKE NEW) INVENTORY
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold bg-slate-900 text-white shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>CERTIFIED GRADE A+ (LIKE NEW) INVENTORY</span>
         </span>
         <h1 class="text-2xl sm:text-5xl font-black text-slate-900 tracking-tight mt-2 sm:mt-3 leading-tight">
           Refurbished Laptops & Workstations Hub
