@@ -241,22 +241,22 @@ class ClassicStoreEngine {
     if (footer) footer.classList.remove('hidden');
 
     cartList.innerHTML = this.cart.map(item => `
-      <div class="flex items-center gap-4 py-4 border-b border-slate-800/80 group">
-        <img src="${item.thumbnail}" alt="${item.shortName}" class="w-16 h-16 object-cover rounded-lg border border-slate-700/60 bg-slate-900" />
+      <div class="flex items-center gap-4 py-3.5 px-3 bg-white rounded-2xl border border-slate-200/90 shadow-sm group">
+        <img src="${item.thumbnail}" alt="${item.shortName}" class="w-16 h-16 object-cover rounded-xl border border-slate-200 bg-slate-50" />
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between">
-            <h4 class="text-sm font-semibold text-slate-100 truncate">${item.shortName}</h4>
-            <button onclick="storeEngine.removeFromCart('${item.cartId}')" class="text-slate-500 hover:text-rose-400 p-1 transition-colors">
+            <h4 class="text-sm font-bold text-slate-900 truncate">${item.shortName}</h4>
+            <button onclick="storeEngine.removeFromCart('${item.cartId}')" class="text-slate-400 hover:text-rose-500 p-1 transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
           </div>
-          <p class="text-xs text-cyan-400/90 font-mono mt-0.5">${item.customSpecs.ram} | ${item.customSpecs.storage}</p>
+          <p class="text-xs text-cyan-700 font-mono mt-0.5">${item.customSpecs.ram} | ${item.customSpecs.storage}</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="text-sm font-bold text-white font-mono">₹${item.price.toLocaleString('en-IN')}</span>
-            <div class="flex items-center gap-2 border border-slate-700/80 rounded-md bg-slate-900/80 px-2 py-0.5">
-              <button onclick="storeEngine.updateQuantity('${item.cartId}', -1)" class="text-slate-400 hover:text-white font-bold text-sm leading-none px-1">−</button>
-              <span class="text-xs font-mono text-slate-200">${item.quantity}</span>
-              <button onclick="storeEngine.updateQuantity('${item.cartId}', 1)" class="text-slate-400 hover:text-white font-bold text-sm leading-none px-1">+</button>
+            <span class="text-sm font-bold text-slate-900 font-mono">₹${item.price.toLocaleString('en-IN')}</span>
+            <div class="flex items-center gap-2 border border-slate-200 rounded-lg bg-slate-50 px-2 py-0.5">
+              <button onclick="storeEngine.updateQuantity('${item.cartId}', -1)" class="text-slate-600 hover:text-slate-900 font-bold text-sm leading-none px-1">−</button>
+              <span class="text-xs font-mono font-bold text-slate-800">${item.quantity}</span>
+              <button onclick="storeEngine.updateQuantity('${item.cartId}', 1)" class="text-slate-600 hover:text-slate-900 font-bold text-sm leading-none px-1">+</button>
             </div>
           </div>
         </div>
@@ -446,37 +446,37 @@ class ClassicStoreEngine {
 
     container.innerHTML = `
       <div class="space-y-6">
-        <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-          <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold font-mono">
+        <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold font-mono">
             ${this.user.name.split(' ').map(n=>n[0]).join('')}
           </div>
           <div>
-            <h3 class="text-lg font-bold text-white">${this.user.name}</h3>
-            <p class="text-xs text-slate-400">${this.user.phone} • ${this.user.email}</p>
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mt-2 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Verified Classic Member
+            <h3 class="text-lg font-bold text-slate-900">${this.user.name}</h3>
+            <p class="text-xs text-slate-500">${this.user.phone} • ${this.user.email}</p>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mt-2 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified Classic Member
             </span>
           </div>
         </div>
 
         <div>
-          <h4 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Order History & Warranty Certificates</h4>
+          <h4 class="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-3">Order History & Warranty Certificates</h4>
           <div class="space-y-3">
             ${this.user.orders.map(ord => `
-              <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-cyan-400 font-mono">${ord.orderId}</span>
-                    <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300">${ord.date}</span>
-                    <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium">${ord.status}</span>
+                    <span class="text-sm font-bold text-cyan-700 font-mono">${ord.orderId}</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 font-mono">${ord.date}</span>
+                    <span class="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">${ord.status}</span>
                   </div>
-                  <p class="text-xs text-slate-300 mt-1 font-medium">${ord.items.join(', ')}</p>
-                  <p class="text-[11px] text-slate-500 mt-0.5">🛡️ 6-Month Warranty active till: <span class="text-slate-300 font-medium">${ord.warrantyValidTill}</span></p>
+                  <p class="text-xs text-slate-800 mt-1 font-medium">${ord.items.join(', ')}</p>
+                  <p class="text-[11px] text-slate-500 mt-0.5">🛡️ 6-Month Warranty active till: <span class="text-slate-800 font-medium">${ord.warrantyValidTill}</span></p>
                 </div>
                 <div class="text-right">
-                  <span class="text-base font-bold text-white font-mono">₹${ord.total.toLocaleString('en-IN')}</span>
+                  <span class="text-base font-bold text-slate-900 font-mono">₹${ord.total.toLocaleString('en-IN')}</span>
                   <div class="mt-1">
-                    <button onclick="window.print()" class="text-xs text-cyan-400 hover:underline">Download Invoice</button>
+                    <button onclick="window.print()" class="text-xs text-cyan-700 hover:text-cyan-800 font-bold hover:underline">Download Invoice</button>
                   </div>
                 </div>
               </div>

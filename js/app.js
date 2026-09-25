@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scrubber = new HeroVideoScrubber({
     canvasId: 'hero-canvas',
     containerId: 'hero-scroll-container',
-    totalFrames: 250
+    totalFrames: 240
   });
 
   // Expose globally

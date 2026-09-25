@@ -1,13 +1,13 @@
 /**
- * Classic Computer - Google Flow & Astra Grade 10-Second Cinematic Video Scroll Engine
- * Dell Precision 5530 4K Workstation Unboxing & Digital Marketing Experience
+ * Classic Computer - High-Performance 120 FPS Fluid Physics Video Scroll Engine
+ * Dell Latitude / Precision 5530 4K Workstation Cinematic Scroll Experience
  * 
- * Timeline Architecture (10.00 Seconds Total Duration / 250 High-Res Frames):
- * - 0.00s - 2.10s : 01 // UNBOXING CEREMONY (Factory Sealed Stealth Vault & Tamper-Proof Audit Seal)
- * - 2.10s - 3.80s : 02 // VELVET LEVITATION (Precision 5530 ascends from micro-suede cradle)
- * - 3.80s - 5.70s : 03 // 4K INFINITYEDGE & 3D CHASSIS (100% AdobeRGB, Carbon Fiber, CNC Aluminum)
- * - 5.70s - 7.60s : 04 // DIGITAL MARKETING SILICON X-RAY (45W Intel Core i7 H-Series, 4GB NVIDIA Quadro GPU)
- * - 7.60s - 10.00s: 05 // ASSEMBLED & CERTIFIED HERO (30-Point Audited, Grade A+, Win 11 Pro, ₹34,999)
+ * Synchronized to 16.00-Second Apple-Style Video ("product review.mp4" - 240 Frames)
+ * - 0.00s - 3.20s : 01 // THE MONOLITH (CNC Aluminum Unibody & Precision Hinge)
+ * - 3.20s - 7.20s : 02 // INFINITYEDGE AWAKENING (15.6" 4K UHD PremierColor Display)
+ * - 7.20s - 10.40s: 03 // TACTILE CRAFTSMANSHIP (Aerospace Woven Carbon Fiber Deck & Backlit Keys)
+ * - 10.40s - 13.60s: 04 // RAW SILICON TEARDOWN (Intel Core i7 45W H-Series + 4GB NVIDIA GPU)
+ * - 13.60s - 16.00s: 05 // ASSEMBLED MASTERPIECE (Precision Future of Power & Certified ₹34,999)
  */
 
 class HeroVideoScrubber {
@@ -21,25 +21,24 @@ class HeroVideoScrubber {
     this.timeIndicator = document.getElementById('scrub-time-indicator');
     this.playBtn = document.getElementById('hero-play-toggle-btn');
     
-    // Exact 10.00s duration at 25 fps = 250 frames
-    this.totalDuration = 10.00;
-    this.totalFrames = options.totalFrames || 250;
+    // Exact 16.00s duration at 15 fps = 240 high-performance WebP frames
+    this.totalDuration = 16.00;
+    this.totalFrames = options.totalFrames || 240;
     
     this.isMobile = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024);
     this.basePath = this.isMobile ? 'assets/frames/mobile/' : 'assets/frames/desktop/';
     
-    // Frame store for 250 sequential frames
+    // Frame store for 240 sequential frames
     this.frames = new Array(this.totalFrames);
     this.loadedFramesCount = 0;
     
-    // Master high-definition keyframes for instant rendering during fast scrubs
+    // Master HD keyframe assets for instant fallback
     this.keyframeAssets = {
       stage1: null,
       stage2: null,
       stage3: null,
       stage4: null,
-      stage5: null,
-      stage6: null
+      stage5: null
     };
 
     this.currentProgress = 0;
@@ -48,7 +47,7 @@ class HeroVideoScrubber {
     this.playInterval = null;
     this.userInteracting = false;
     
-    // 120 FPS Frame-Rate Independent Physics State
+    // 120 FPS High-Precision Physics State
     this.lastTime = performance.now();
     this.touchVelocity = 0;
     this.lastTouchX = 0;
@@ -68,57 +67,57 @@ class HeroVideoScrubber {
       }
     }
 
-    // 5 Stages synchronized to the 10.00-second timeline
+    // 5 Stages synchronized to the 16.00-second timeline
     this.stages = [
       { 
         id: 0,
         start: 0.00, 
-        end: 0.18, 
+        end: 0.20, 
         startTime: "0.00s",
-        endTime: "1.80s",
-        name: "01 // UNBOXING CEREMONY", 
-        badge: "SEALED WORKSTATION VAULT",
-        desc: "Factory sealed matte-black vault with tamper-proof holographic audit certification."
+        endTime: "3.20s",
+        name: "01 // THE MONOLITH", 
+        badge: "CNC ALUMINUM UNIBODY",
+        desc: "Sculpted from a single block of aerospace-grade aluminum with diamond-cut chamfered edges."
       },
       { 
         id: 1,
-        start: 0.18, 
-        end: 0.34, 
-        startTime: "1.80s",
-        endTime: "3.40s",
-        name: "02 // VELVET LEVITATION", 
-        badge: "CNC UNIBODY REVEAL",
-        desc: "The Dell Precision 5530 ascends gracefully from its laser-molded micro-suede cradle."
+        start: 0.20, 
+        end: 0.45, 
+        startTime: "3.20s",
+        endTime: "7.20s",
+        name: "02 // INFINITYEDGE AWAKENING", 
+        badge: "15.6\" 4K UHD PREMIERCOLOR",
+        desc: "Borderless 4K display packing 8.29 million pixels with 100% Adobe RGB emerald color gamut."
       },
       { 
         id: 2,
-        start: 0.34, 
-        end: 0.68, 
-        startTime: "3.40s",
-        endTime: "6.80s",
-        name: "03 // 4K INFINITYEDGE & 3D CHASSIS", 
-        badge: "3840×2160 UHD IGZO DISPLAY",
-        desc: "Borderless 4K PremierColor display, tactile backlit keyboard, and aerospace aluminum lid."
+        start: 0.45, 
+        end: 0.65, 
+        startTime: "7.20s",
+        endTime: "10.40s",
+        name: "03 // TACTILE CRAFTSMANSHIP", 
+        badge: "CARBON FIBER COMPOSITE",
+        desc: "Tactile woven composite palm rest, soft white backlit chiclet keys, and oversized glass trackpad."
       },
       { 
         id: 3,
-        start: 0.68, 
-        end: 0.82, 
-        startTime: "6.80s",
-        endTime: "8.20s",
-        name: "04 // DIGITAL MARKETING X-RAY", 
-        badge: "45W SILICON & THERMAL BLUEPRINT",
-        desc: "High-voltage 45W Intel Core i7 H-Series CPU, 4GB dedicated NVIDIA Quadro GPU, and dual copper heatpipes."
+        start: 0.65, 
+        end: 0.85, 
+        startTime: "10.40s",
+        endTime: "13.60s",
+        name: "04 // RAW SILICON TEARDOWN", 
+        badge: "INTEL i7 H-SERIES + 4GB NVIDIA",
+        desc: "45W high-voltage Intel Core i7 processor, dedicated NVIDIA graphics, and dual cooling vapor turbines."
       },
       { 
         id: 4,
-        start: 0.82, 
+        start: 0.85, 
         end: 1.00, 
-        startTime: "8.20s",
-        endTime: "10.00s",
-        name: "05 // ASSEMBLED & CERTIFIED HERO", 
-        badge: "GRADE A+ ENTERPRISE WORKSTATION",
-        desc: "30-Point laboratory audited with 90%+ battery health, genuine Windows 11 Pro, and 6-month warranty."
+        startTime: "13.60s",
+        endTime: "16.00s",
+        name: "05 // ASSEMBLED MASTERPIECE", 
+        badge: "PRECISION // FUTURE OF POWER",
+        desc: "Certified Refurbished enterprise workstation. 30-Point audited, Win 11 Pro, ready at ₹34,999."
       }
     ];
 
@@ -132,10 +131,10 @@ class HeroVideoScrubber {
     window.addEventListener('resize', this.handleResize, { passive: true });
     this.resize();
 
-    // 1. Preload unboxing keyframes immediately
+    // 1. Preload HD keyframes immediately
     this.preloadKeyframes();
 
-    // 2. Preload 250 frames with prioritized progressive loading & GPU texture decoding
+    // 2. Preload 240 sequential frames with progressive loading & GPU texture decoding
     this.preloadFrames();
 
     // 3. Scroll listener with passive high-priority updates
@@ -184,12 +183,11 @@ class HeroVideoScrubber {
 
   preloadKeyframes() {
     const keyframes = [
-      { key: 'stage1', src: 'assets/unboxing/01_sealed_box.jpg' },
-      { key: 'stage2', src: 'assets/unboxing/02_box_opening.jpg' },
-      { key: 'stage3', src: 'assets/unboxing/03_laptop_levitate.jpg' },
-      { key: 'stage4', src: 'assets/unboxing/04_orbit_display.jpg' },
-      { key: 'stage5', src: 'assets/unboxing/05_exploded_xray.jpg' },
-      { key: 'stage6', src: 'assets/unboxing/06_certified_hero.jpg' }
+      { key: 'stage1', src: 'assets/images/keyframe_stage1.jpg' },
+      { key: 'stage2', src: 'assets/images/keyframe_stage2.jpg' },
+      { key: 'stage3', src: 'assets/images/keyframe_stage3.jpg' },
+      { key: 'stage4', src: 'assets/images/keyframe_stage4.jpg' },
+      { key: 'stage5', src: 'assets/images/keyframe_stage5.jpg' }
     ];
 
     keyframes.forEach(item => {
@@ -243,7 +241,7 @@ class HeroVideoScrubber {
   }
 
   loadRemainingFrames() {
-    // Staggered loading: first load every 4th frame for instant scrub response across all 10s
+    // Staggered loading: first load every 4th frame for instant scrub response across all 16s
     const priorityIndices = [];
     for (let i = 4; i < this.totalFrames; i += 4) priorityIndices.push(i);
     for (let i = 1; i < this.totalFrames; i++) {
@@ -320,21 +318,17 @@ class HeroVideoScrubber {
     const onPointerMove = (clientX) => {
       if (!this.isDragging) return;
       const now = performance.now();
-      const dt = Math.max(1, now - this.lastTouchTime);
+      const dt = Math.max((now - this.lastTouchTime) / 1000, 0.008);
       const deltaX = clientX - this.lastTouchX;
       
-      // Calculate smoothed momentum velocity
-      const instantVelocity = deltaX / (window.innerWidth * 1.5);
-      this.touchVelocity = (this.touchVelocity * 0.4) + (instantVelocity * 0.6);
+      this.touchVelocity = deltaX / (window.innerWidth * dt);
       this.lastTouchX = clientX;
       this.lastTouchTime = now;
 
-      // 1:1 direct tactile scrub responsiveness
       const totalDelta = clientX - this.dragStartX;
-      const sensitivity = this.isMobile ? 0.0024 : 0.0018;
-      let newP = this.dragStartProgress - (totalDelta * sensitivity);
-      newP = Math.max(0, Math.min(1, newP));
-      this.targetProgress = newP;
+      const progressChange = (totalDelta / window.innerWidth) * 0.85;
+      
+      this.targetProgress = Math.max(0, Math.min(1, this.dragStartProgress + progressChange));
     };
 
     const onPointerUp = () => {
@@ -346,50 +340,30 @@ class HeroVideoScrubber {
       }, 500);
     };
 
-    targetEl.addEventListener('mousedown', (e) => {
-      if (e.target.closest('button') || e.target.closest('.hotspot-pin') || e.target.closest('.hero-stage-card') || e.target.closest('input')) return;
-      onPointerDown(e.clientX);
-    });
+    // Mouse events
+    targetEl.addEventListener('mousedown', (e) => onPointerDown(e.clientX));
+    window.addEventListener('mousemove', (e) => onPointerMove(e.clientX), { passive: true });
+    window.addEventListener('mouseup', onPointerUp);
 
-    window.addEventListener('mousemove', (e) => {
-      if (this.isDragging) onPointerMove(e.clientX);
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (this.isDragging) onPointerUp();
-    });
-
-    // Touch event handling with 120 FPS high polling rate
+    // Touch events for mobile
     targetEl.addEventListener('touchstart', (e) => {
-      if (e.target.closest('button') || e.target.closest('.hotspot-pin') || e.target.closest('.hero-stage-card') || e.target.closest('input')) return;
-      if (e.touches.length === 1) {
-        onPointerDown(e.touches[0].clientX);
-      }
+      if (e.touches.length === 1) onPointerDown(e.touches[0].clientX);
     }, { passive: true });
 
-    targetEl.addEventListener('touchmove', (e) => {
-      if (this.isDragging && e.touches.length === 1) {
-        onPointerMove(e.touches[0].clientX);
-      }
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1 && this.isDragging) onPointerMove(e.touches[0].clientX);
     }, { passive: true });
 
-    targetEl.addEventListener('touchend', () => {
-      if (this.isDragging) onPointerUp();
-    });
+    window.addEventListener('touchend', onPointerUp);
   }
 
   resize() {
     if (!this.canvas) return;
-    const rect = this.canvas.getBoundingClientRect();
-    // 1.5 max DPR on mobile to guarantee constant 120 FPS without GPU bandwidth bottleneck
-    const maxDpr = this.isMobile ? 1.5 : Math.min(window.devicePixelRatio || 1, 2);
+    const rect = this.canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, this.isMobile ? 1.5 : 2);
     
-    const displayWidth = rect.width || window.innerWidth;
-    const displayHeight = rect.height || window.innerHeight;
-
-    this.canvas.width = Math.round(displayWidth * maxDpr);
-    this.canvas.height = Math.round(displayHeight * maxDpr);
-
+    this.canvas.width = Math.floor(rect.width * dpr);
+    this.canvas.height = Math.floor(rect.height * dpr);
     this.render();
   }
 
@@ -454,7 +428,7 @@ class HeroVideoScrubber {
     this.ctx.imageSmoothingEnabled = true;
     this.ctx.imageSmoothingQuality = isMoving ? 'medium' : 'high';
 
-    // Map progress directly to the 250 frames (0 to 249)
+    // Map progress directly to the 240 frames (0 to 239)
     const frameIndex = Math.min(
       this.totalFrames - 1,
       Math.max(0, Math.floor(p * (this.totalFrames - 1)))
@@ -476,14 +450,13 @@ class HeroVideoScrubber {
       }
     }
 
-    // High-resolution keyframe fallback based on 10s timeline stage
+    // High-resolution keyframe fallback based on 16s timeline stage
     if (!img) {
-      if (p < 0.21) img = this.keyframeAssets.stage1;
-      else if (p < 0.38) img = this.keyframeAssets.stage2;
-      else if (p < 0.57) img = this.keyframeAssets.stage3;
-      else if (p < 0.76) img = this.keyframeAssets.stage4;
-      else if (p < 0.90) img = this.keyframeAssets.stage5;
-      else img = this.keyframeAssets.stage6;
+      if (p < 0.20) img = this.keyframeAssets.stage1;
+      else if (p < 0.45) img = this.keyframeAssets.stage2;
+      else if (p < 0.65) img = this.keyframeAssets.stage3;
+      else if (p < 0.85) img = this.keyframeAssets.stage4;
+      else img = this.keyframeAssets.stage5;
     }
 
     if (img) {
@@ -523,7 +496,7 @@ class HeroVideoScrubber {
     }
 
     if (this.timeIndicator) {
-      this.timeIndicator.textContent = `${currentTimeSec}s / 10.00s`;
+      this.timeIndicator.textContent = `${currentTimeSec}s / 16.00s`;
     }
 
     const currentStage = this.stages.find(s => progress >= s.start && progress <= s.end) || this.stages[0];
@@ -535,9 +508,9 @@ class HeroVideoScrubber {
     // Highlight active stage pill
     document.querySelectorAll('.stage-pill-btn').forEach((btn, idx) => {
       if (this.stages[idx] === currentStage) {
-        btn.classList.add('border-cyan-400', 'text-cyan-300', 'bg-cyan-500/15', 'shadow-sm');
+        btn.classList.add('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
       } else {
-        btn.classList.remove('border-cyan-400', 'text-cyan-300', 'bg-cyan-500/15', 'shadow-sm');
+        btn.classList.remove('border-cyan-500', 'text-cyan-600', 'bg-cyan-50', 'shadow-sm', 'font-bold');
       }
     });
 
@@ -554,21 +527,21 @@ class HeroVideoScrubber {
       }
     });
 
-    // Hotspot pins reactive mapping across 10-second timeline
+    // Hotspot pins reactive mapping across 16-second timeline
     const hotspots = document.querySelectorAll('.hotspot-pin');
     hotspots.forEach(hotspot => {
       const targetStageProgress = parseFloat(hotspot.getAttribute('data-target-progress') || '0');
       const stageDistance = Math.abs(progress - targetStageProgress);
 
-      if (progress >= 0.35 && progress <= 0.58) {
-        // Stage 3: Display & Chassis Hotspots
-        if (stageDistance < 0.12) {
+      if (progress >= 0.25 && progress <= 0.60) {
+        // Stage 2 & 3: Display & Chassis Hotspots
+        if (stageDistance < 0.14) {
           hotspot.style.opacity = '1';
           hotspot.style.pointerEvents = 'auto';
         } else {
           hotspot.style.opacity = '0.35';
         }
-      } else if (progress >= 0.58 && progress <= 0.78 && hotspot.classList.contains('xray-hotspot')) {
+      } else if (progress >= 0.65 && progress <= 0.85 && hotspot.classList.contains('xray-hotspot')) {
         // Stage 4: Silicon & GPU X-Ray Hotspots
         hotspot.style.opacity = '1';
         hotspot.style.pointerEvents = 'auto';
@@ -590,65 +563,65 @@ class HeroVideoScrubber {
 
     if (!chipTL || !chipTR || !chipBL || !chipBR) return;
 
-    if (progress < 0.18) {
-      // Stage 1 (0.00s - 1.80s): Unboxing Ceremony
-      chipTL.querySelector('.tele-title').textContent = "PACKAGING CEREMONY";
-      chipTL.querySelector('.tele-val').textContent = "Mil-Spec Vault Enclosure";
-      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • Tamper Seal`;
+    if (progress < 0.20) {
+      // Stage 1 (0.00s - 3.20s): The Monolith
+      chipTL.querySelector('.tele-title').textContent = "UNIBODY ARCHITECTURE";
+      chipTL.querySelector('.tele-val').textContent = "CNC Anodized Aluminum";
+      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • 1.78kg Chassis`;
 
       chipTR.querySelector('.tele-title').textContent = "LAB INTEGRITY";
-      chipTR.querySelector('.tele-val').textContent = "30-Point Audit Passed";
+      chipTR.querySelector('.tele-val').textContent = "30-Point Audit Certified";
       chipTR.querySelector('.tele-sub').textContent = "Pristine Zero-Blemish Grade A+";
 
-      chipBL.querySelector('.tele-title').textContent = "SECURITY BADGE";
-      chipBL.querySelector('.tele-val').textContent = "Holographic Tamper Seal";
-      chipBL.querySelector('.tele-sub').textContent = "Verified Classic Computers Hub";
-
-      chipBR.querySelector('.tele-title').textContent = "PACKAGING STATUS";
-      chipBR.querySelector('.tele-val').textContent = "Cleanroom Packaged";
-      chipBR.querySelector('.tele-sub').textContent = "Shockproof Transit Shell";
-    } else if (progress < 0.34) {
-      // Stage 2 (1.80s - 3.40s): Velvet Levitation
-      chipTL.querySelector('.tele-title').textContent = "CHASSIS ASCENSION";
-      chipTL.querySelector('.tele-val').textContent = "Monolithic CNC Aluminum";
-      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • 1.78kg Unibody`;
-
-      chipTR.querySelector('.tele-title').textContent = "MICRO-SUEDE CRADLE";
-      chipTR.querySelector('.tele-val').textContent = "Anti-Static Protection";
-      chipTR.querySelector('.tele-sub').textContent = "Precision Molded Recess";
-
-      chipBL.querySelector('.tele-title').textContent = "EDGE FINISH";
-      chipBL.querySelector('.tele-val').textContent = "Diamond-Cut Chamfers";
-      chipBL.querySelector('.tele-sub').textContent = "Anodized Aerospace Alloy";
+      chipBL.querySelector('.tele-title').textContent = "PRECISION HINGE";
+      chipBL.querySelector('.tele-val').textContent = "Fluid One-Finger Rise";
+      chipBL.querySelector('.tele-sub').textContent = "Diamond-Cut Beveled Chamfers";
 
       chipBR.querySelector('.tele-title').textContent = "BATTERY HEALTH";
       chipBR.querySelector('.tele-val').textContent = "92% Tested Capacity";
       chipBR.querySelector('.tele-sub').textContent = "97Wh High-Capacity Cell";
-    } else if (progress < 0.68) {
-      // Stage 3 (3.40s - 6.80s): 4K Display & 3D Chassis
+    } else if (progress < 0.45) {
+      // Stage 2 (3.20s - 7.20s): InfinityEdge Awakening
       chipTL.querySelector('.tele-title').textContent = "DISPLAY PANEL";
       chipTL.querySelector('.tele-val').textContent = "15.6\" 4K UHD PremierColor";
       chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • 3840×2160`;
 
       chipTR.querySelector('.tele-title').textContent = "COLOR ACCURACY";
       chipTR.querySelector('.tele-val').textContent = "100% Adobe RGB Gamut";
-      chipTR.querySelector('.tele-sub').textContent = "400 Nits • IGZO IPS Glass";
+      chipTR.querySelector('.tele-sub').textContent = "400 Nits • IGZO Anti-Glare IPS";
 
-      chipBL.querySelector('.tele-title').textContent = "DECK MATERIAL";
-      chipBL.querySelector('.tele-val').textContent = "Woven Carbon Fiber";
-      chipBL.querySelector('.tele-sub').textContent = "Soft-Touch Thermal Isolation";
+      chipBL.querySelector('.tele-title').textContent = "BEZEL PROFILE";
+      chipBL.querySelector('.tele-val').textContent = "4mm Razor InfinityEdge";
+      chipBL.querySelector('.tele-sub').textContent = "Edge-to-Edge Immersion";
 
-      chipBR.querySelector('.tele-title').textContent = "INPUT INTERFACE";
-      chipBR.querySelector('.tele-val').textContent = "Backlit Precision Keyboard";
-      chipBR.querySelector('.tele-sub').textContent = "Glass Touchpad with Windows Precision";
-    } else if (progress < 0.82) {
-      // Stage 4 (6.80s - 8.20s): Digital Marketing Silicon X-Ray
+      chipBR.querySelector('.tele-title').textContent = "PIXEL DENSITY";
+      chipBR.querySelector('.tele-val').textContent = "282 PPI Retina Clarity";
+      chipBR.querySelector('.tele-sub').textContent = "8.29 Million Pixels";
+    } else if (progress < 0.65) {
+      // Stage 3 (7.20s - 10.40s): Tactile Craftsmanship
+      chipTL.querySelector('.tele-title').textContent = "DECK MATERIAL";
+      chipTL.querySelector('.tele-val').textContent = "Aerospace Woven Carbon";
+      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • Soft-Touch Matte`;
+
+      chipTR.querySelector('.tele-title').textContent = "KEYBOARD TRAVEL";
+      chipTR.querySelector('.tele-val').textContent = "Backlit Chiclet Keys";
+      chipTR.querySelector('.tele-sub').textContent = "Precision 1.3mm Travel";
+
+      chipBL.querySelector('.tele-title').textContent = "TRACKPAD INTERFACE";
+      chipBL.querySelector('.tele-val').textContent = "Oversized Precision Glass";
+      chipBL.querySelector('.tele-sub').textContent = "Multi-Gesture Windows Precision";
+
+      chipBR.querySelector('.tele-title').textContent = "THERMAL ISOLATION";
+      chipBR.querySelector('.tele-val').textContent = "Cool-to-Touch Palmrest";
+      chipBR.querySelector('.tele-sub').textContent = "Aeronautic Heat Resistance";
+    } else if (progress < 0.85) {
+      // Stage 4 (10.40s - 13.60s): Raw Silicon Teardown
       chipTL.querySelector('.tele-title').textContent = "HIGH-VOLTAGE SILICON";
-      chipTL.querySelector('.tele-val').textContent = "Intel Core i7-8850H (45W)";
-      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • 6C/12T 4.30GHz`;
+      chipTL.querySelector('.tele-val').textContent = "Intel Core i7 8th Gen H-Series";
+      chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • 45W 6C/12T`;
 
       chipTR.querySelector('.tele-title').textContent = "DEDICATED GRAPHICS";
-      chipTR.querySelector('.tele-val').textContent = "4GB NVIDIA Quadro GPU";
+      chipTR.querySelector('.tele-val').textContent = "4GB Dedicated NVIDIA GPU";
       chipTR.querySelector('.tele-sub').textContent = "CUDA Accelerated 4K CAD / Premiere";
 
       chipBL.querySelector('.tele-title').textContent = "THERMAL ARCHITECTURE";
@@ -657,73 +630,80 @@ class HeroVideoScrubber {
 
       chipBR.querySelector('.tele-title').textContent = "MEMORY & STORAGE";
       chipBR.querySelector('.tele-val').textContent = "8GB RAM + 256GB NVMe SSD";
-      chipBR.querySelector('.tele-sub').textContent = "3,400 MB/s Read Bandwidth";
+      chipBR.querySelector('.tele-sub').textContent = "Upgradable Dual Channel Slots";
     } else {
-      // Stage 5 (8.20s - 10.00s): Assembled & Certified Hero
-      chipTL.querySelector('.tele-title').textContent = "ENTERPRISE DEPLOYMENT";
-      chipTL.querySelector('.tele-val').textContent = "Grade A+ Certified Pass";
+      // Stage 5 (13.60s - 16.00s): Assembled Masterpiece
+      chipTL.querySelector('.tele-title').textContent = "CERTIFIED DEPLOYMENT";
+      chipTL.querySelector('.tele-val').textContent = "Grade A+ Enterprise Ready";
       chipTL.querySelector('.tele-sub').textContent = `Timeline: ${currentTimeSec}s • Ready to Ship`;
 
       chipTR.querySelector('.tele-title').textContent = "OPERATING SYSTEM";
       chipTR.querySelector('.tele-val').textContent = "Windows 11 Pro 64-Bit";
-      chipTR.querySelector('.tele-sub').textContent = "Digital License Activated";
+      chipTR.querySelector('.tele-sub').textContent = "Digital OEM License Active";
 
       chipBL.querySelector('.tele-title').textContent = "WARRANTY PROTECTION";
       chipBL.querySelector('.tele-val').textContent = "6 Months Pan-India";
       chipBL.querySelector('.tele-sub').textContent = "Direct Technician Replacement";
 
       chipBR.querySelector('.tele-title').textContent = "PRICE ADVANTAGE";
-      chipBR.querySelector('.tele-val').textContent = "₹34,999 (MRP ₹1,65,000)";
-      chipBR.querySelector('.tele-sub').textContent = "Save ₹1,30,001 (78% Discount)";
+      chipBR.querySelector('.tele-val').textContent = "₹34,999 (MRP ₹1,85,000)";
+      chipBR.querySelector('.tele-sub').textContent = "Save ₹1,50,001 (81% Discount)";
     }
+  }
+
+  jumpToProgress(target) {
+    this.targetProgress = Math.max(0, Math.min(1, target));
+    if (!this.container) return;
+    const containerHeight = this.container.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const maxScroll = containerHeight - windowHeight;
+    const targetScrollY = this.container.offsetTop + (this.targetProgress * maxScroll);
+    
+    window.scrollTo({
+      top: targetScrollY,
+      behavior: 'smooth'
+    });
   }
 
   togglePlay() {
+    this.isPlaying = !this.isPlaying;
+    if (this.playBtn) {
+      this.playBtn.innerHTML = this.isPlaying ? `
+        <svg class="w-4 h-4 text-cyan-600" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        <span class="text-[10px] font-bold font-mono text-cyan-700">PAUSE</span>
+      ` : `
+        <svg class="w-4 h-4 text-cyan-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <span class="text-[10px] font-bold font-mono text-cyan-700">AUTO TOUR</span>
+      `;
+    }
+
     if (this.isPlaying) {
-      clearInterval(this.playInterval);
-      this.isPlaying = false;
-      if (this.playBtn) {
-        this.playBtn.innerHTML = `
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          <span>Auto Tour</span>
-        `;
-      }
-      return false;
-    } else {
-      this.isPlaying = true;
-      this.userInteracting = true;
-      if (this.playBtn) {
-        this.playBtn.innerHTML = `
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-          <span>Pause 10s Tour</span>
-        `;
-      }
-      
-      // Auto-play advances through 10.00 seconds in exactly 10 seconds (100 steps of 100ms = 10s)
-      this.playInterval = setInterval(() => {
-        let next = this.targetProgress + 0.004; // 10s smooth loop
-        if (next > 1.0) next = 0;
-        this.targetProgress = next;
-      }, 40);
-      return true;
-    }
-  }
+      if (this.currentProgress >= 0.99) this.currentProgress = 0;
+      const stepDuration = this.totalDuration * 1000;
+      const startTime = performance.now();
+      const startP = this.currentProgress;
 
-  jumpToStage(stageIndex) {
-    if (stageIndex >= 0 && stageIndex < this.stages.length) {
-      const target = this.stages[stageIndex].start + 0.02;
-      this.targetProgress = target;
-      if (this.container && !this.isPlaying) {
-        const top = this.container.offsetTop + (target * (this.container.offsetHeight - window.innerHeight));
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
+      const animatePlay = (now) => {
+        if (!this.isPlaying) return;
+        const elapsed = now - startTime;
+        const p = startP + (elapsed / stepDuration);
+        if (p >= 1) {
+          this.targetProgress = 1;
+          this.togglePlay();
+          return;
+        }
+        this.targetProgress = p;
+        requestAnimationFrame(animatePlay);
+      };
+      requestAnimationFrame(animatePlay);
     }
-  }
-
-  jumpToProgress(progress) {
-    this.targetProgress = Math.max(0, Math.min(1, progress));
   }
 }
 
-// Global instance helper
+// Global initialization
 window.HeroVideoScrubber = HeroVideoScrubber;
+document.addEventListener('DOMContentLoaded', () => {
+  window.heroScrubber = new HeroVideoScrubber({
+    totalFrames: 240
+  });
+});

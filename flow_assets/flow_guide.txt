@@ -1,0 +1,64 @@
+================================================================================
+DELL LATITUDE / PRECISION 5530 - GOOGLE FLOW VIDEO CREATION GUIDE
+================================================================================
+
+Folder on your PC:
+C:\Users\Kashan Ahmad\Desktop\laptop\flow_assets\
+
+Files inside folder:
+1. 1_dell_lid.jpg        (Closed Aluminum Lid)
+2. 2_dell_screen.jpg     (Open 4K Screen with Emerald Lake)
+3. 3_dell_keyboard.jpg   (Carbon Fiber Deck & Backlit Keys)
+4. 4_dell_internals.jpg  (Intel i7 & NVIDIA GPU Exploded View)
+5. 5_dell_hero_final.jpg (Final 360 Hero Posture on Glass)
+
+--------------------------------------------------------------------------------
+OPTION A: SINGLE PROMPT (EASIEST & FASTEST - 1 IMAGE SE POORI VIDEO)
+--------------------------------------------------------------------------------
+Upload File: 1_dell_lid.jpg  (OR 5_dell_hero_final.jpg)
+Copy-Paste This Prompt into Flow:
+
+Ultra-realistic Apple keynote commercial of the silver Dell laptop. The laptop opens smoothly to reveal the vibrant 4K InfinityEdge screen, transitions into a close-up macro of the carbon-fiber keyboard, followed by a quick 3D exploded view of Intel i7 and NVIDIA GPU, snapping back into an elegant 360 hero spin on dark reflective glass, 4K 60fps cinematic studio lighting.
+
+--------------------------------------------------------------------------------
+OPTION B: MULTI-SCENE STEP-BY-STEP (BEST 100% ACCURACY & QUALITY)
+--------------------------------------------------------------------------------
+
+[SCENE 1: LID OPENING TO 4K SCREEN]
+Start Image: 1_dell_lid.jpg
+End Image:   2_dell_screen.jpg
+Prompt:
+Slow smooth cinematic camera push-in toward the floating silver Dell laptop. The laptop lid smoothly opens upward with damped mechanical hinge motion to reveal the 15.6 inch 4K display glowing with a vibrant green lake wallpaper. Dark studio lighting with clean silver rim reflections, luxury tech commercial, 4K, 60fps.
+
+--------------------------------------------------------------------------------
+
+[SCENE 2: SCREEN TO CARBON FIBER KEYBOARD]
+Start Image: 2_dell_screen.jpg
+End Image:   3_dell_keyboard.jpg
+Prompt:
+Continuous macro camera swoop dipping down from the glowing 4K screen onto the tactile black woven carbon fiber palm rest and glowing white backlit chiclet keys. Shallow depth of field, blue studio light reflections on the glass trackpad, Apple commercial cinematography.
+
+--------------------------------------------------------------------------------
+
+[SCENE 3: KEYBOARD TO 3D EXPLODED CHIPS & FANS]
+Start Image: 3_dell_keyboard.jpg
+End Image:   4_dell_internals.jpg
+Prompt:
+The laptop keyboard deck lifts upward smoothly in a futuristic 3D exploded view CAD animation. Inside the motherboard, dual cooling fans spin with glowing blue air trails, the central Intel processor chip radiates cobalt blue light, and the dedicated NVIDIA GPU glows neon green. Dark high-tech studio environment, octane render.
+
+--------------------------------------------------------------------------------
+
+[SCENE 4: REASSEMBLY TO FINAL HERO STANCE]
+Start Image: 4_dell_internals.jpg
+End Image:   5_dell_hero_final.jpg
+Prompt:
+The floating internal components of the laptop magnetically snap together with zero-tolerance precision into a solid silver Dell workstation. The laptop rotates smoothly 360 degrees and settles firmly onto a dark reflective glass table in a dramatic hero three-quarter angle. Pristine studio rim lighting, Apple keynote finale shot.
+
+--------------------------------------------------------------------------------
+AFTER VIDEO IS DOWNLOADED:
+--------------------------------------------------------------------------------
+Save the downloaded MP4 file into:
+C:\Users\Kashan Ahmad\Desktop\laptop\
+(For example: dell_commercial.mp4)
+Then tell me, and I will extract the 120 FPS frames and update the website automatically!
+================================================================================
