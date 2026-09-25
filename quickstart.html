@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Liquid Glass UI Engine | Universal Quickstart</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Apple Liquid Glass Universal UI Engine -->
+  <link rel="stylesheet" href="css/liquid-glass.css">
+  <script src="js/liquid-glass.js"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at 50% 20%, #e0f2fe 0%, #f8fafc 60%, #e2e8f0 100%);
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    }
+    .mesh-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image: 
+        radial-gradient(at 10% 20%, rgba(2, 132, 199, 0.25) 0px, transparent 50%),
+        radial-gradient(at 80% 30%, rgba(147, 51, 234, 0.2) 0px, transparent 50%),
+        radial-gradient(at 30% 80%, rgba(16, 185, 129, 0.2) 0px, transparent 50%),
+        radial-gradient(at 90% 85%, rgba(245, 158, 11, 0.25) 0px, transparent 50%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="p-4 sm:p-8 text-slate-800 relative flex flex-col items-center">
+
+  <div class="mesh-background"></div>
+
+  <!-- Header -->
+  <div class="relative z-10 max-w-4xl w-full text-center mt-6 mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-100/80 border border-cyan-300 text-cyan-800 text-xs font-mono font-bold mb-3 shadow-sm">
+      <span class="w-2 h-2 rounded-full bg-cyan-600 animate-pulse"></span>
+      <span>UNIVERSAL DROP-IN UI ENGINE</span>
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+      Apple Liquid Glass UI Engine
+    </h1>
+    <p class="text-sm sm:text-base text-slate-600 mt-2 max-w-xl mx-auto">
+      Pure web standards optical refraction based on Snell's Law, SVG filters, and progressive 8-layer gradient blurs. Works natively in any framework or website.
+    </p>
+
+    <!-- Installation 1-Liner Banner -->
+    <div class="mt-6 p-4 rounded-2xl liquid-glass max-w-2xl mx-auto text-left flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+      <code class="text-xs font-mono text-cyan-900 truncate">
+        &lt;link rel="stylesheet" href="liquid-glass.css"&gt; &lt;script src="liquid-glass.js"&gt;&lt;/script&gt;
+      </code>
+      <button id="btn-copy-tags" class="liquid-glass-btn text-xs font-mono font-bold py-1.5 px-3 flex-shrink-0">
+        Copy Tags
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Components Grid -->
+  <div class="relative z-10 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+
+    <!-- Component 1: Liquid Glass Container Card -->
+    <div class="liquid-glass p-6 sm:p-8 flex flex-col justify-between shadow-2xl min-h-[280px]">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold uppercase text-cyan-700 tracking-wider">01 // CONTAINER</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[10px] font-mono font-bold">Progressive Blur</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Liquid Glass Container</h3>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Feathered 8-layer directional gradient blur with specular top curve lighting and dynamic SVG optical refraction. Drop any content inside.
+        </p>
+      </div>
+
+      <div class="mt-6 flex items-center gap-3">
+        <button class="liquid-glass-btn liquid-glass-btn-primary text-xs font-bold font-mono">
+          Primary Action
+        </button>
+        <button class="liquid-glass-btn text-xs font-bold font-mono text-slate-700">
+          Secondary Glass
+        </button>
+      </div>
+    </div>
+
+    <!-- Component 2: Interactive Liquid Switch -->
+    <div class="liquid-glass p-6 sm:p-8 flex flex-col justify-between shadow-2xl min-h-[280px]">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold uppercase text-emerald-700 tracking-wider">02 // TACTILE SWITCH</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold">Interactive</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Liquid Refractive Switch</h3>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Physical fluid toggle with refractive glass lens thumb, spring inertia, and optical light refraction.
+        </p>
+      </div>
+
+      <div class="mt-6 flex items-center gap-4">
+        <liquid-glass-switch id="demo-switch" checked></liquid-glass-switch>
+        <span id="switch-status" class="text-xs font-mono font-bold text-emerald-700">STATUS: ACTIVE</span>
+      </div>
+    </div>
+
+    <!-- Component 3: Liquid Glass Search Bar -->
+    <div class="liquid-glass p-6 sm:p-8 flex flex-col justify-between shadow-2xl min-h-[280px]">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold uppercase text-purple-700 tracking-wider">03 // SEARCH LENS</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-mono font-bold">Lens Refraction</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Expanding Search Pill</h3>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Liquid glass search bar with physical magnifying glass lens distortion and fluid expansion animation.
+        </p>
+      </div>
+
+      <div class="mt-6">
+        <div class="liquid-glass flex items-center gap-2 px-3 py-2 rounded-full border border-white/80 shadow-md">
+          <span class="text-sm">🔍</span>
+          <input type="text" placeholder="Search workstation specs..." class="bg-transparent text-xs font-mono text-slate-800 focus:outline-none w-full placeholder:text-slate-400">
+          <button class="liquid-glass-btn text-[10px] py-1 px-2.5 font-mono">Filter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Component 4: Liquid Glass Floating Navigation Dock -->
+    <div class="liquid-glass p-6 sm:p-8 flex flex-col justify-between shadow-2xl min-h-[280px]">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-mono font-bold uppercase text-amber-700 tracking-wider">04 // FLOATING DOCK</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-mono font-bold">Fluid Indicator</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Fluid Bottom Dock</h3>
+        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+          Floating dock with gliding refractive lens indicator that morphs and slides between navigation items.
+        </p>
+      </div>
+
+      <div class="mt-6 flex justify-center">
+        <div class="liquid-glass inline-flex items-center p-1.5 rounded-full shadow-lg gap-1 border border-white/90">
+          <button class="px-3 py-1.5 rounded-full bg-white/90 text-cyan-800 font-bold text-xs font-mono shadow-sm">Home</button>
+          <button class="px-3 py-1.5 rounded-full text-slate-600 hover:text-slate-900 font-bold text-xs font-mono">Specs</button>
+          <button class="px-3 py-1.5 rounded-full text-slate-600 hover:text-slate-900 font-bold text-xs font-mono">Studio</button>
+          <button class="px-3 py-1.5 rounded-full text-slate-600 hover:text-slate-900 font-bold text-xs font-mono">Order</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How to Use in ANY Application -->
+  <div class="relative z-10 max-w-4xl w-full p-6 sm:p-8 rounded-3xl liquid-glass mb-12 shadow-2xl">
+    <h2 class="text-2xl font-black text-slate-900 mb-4">How to Set as DEFAULT in ANY Application</h2>
+    
+    <div class="space-y-4 text-xs font-mono">
+      <div class="p-4 rounded-xl bg-slate-900/90 text-slate-100 overflow-x-auto">
+        <div class="text-cyan-400 font-bold mb-2">// 1. Include in HTML Head:</div>
+        <code>&lt;link rel="stylesheet" href="path/to/liquid-glass.css"&gt;</code><br>
+        <code>&lt;script src="path/to/liquid-glass.js"&gt;&lt;/script&gt;</code>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-900/90 text-slate-100 overflow-x-auto">
+        <div class="text-emerald-400 font-bold mb-2">// 2. Use the Class or Web Component Anywhere:</div>
+        <code>&lt;div class="liquid-glass"&gt;Your Content&lt;/div&gt;</code><br>
+        <code>&lt;liquid-glass-container&gt;Your Cards&lt;/liquid-glass-container&gt;</code><br>
+        <code>&lt;liquid-glass-switch checked&gt;&lt;/liquid-glass-switch&gt;</code>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-900/90 text-slate-100 overflow-x-auto">
+        <div class="text-purple-400 font-bold mb-2">// 3. In React / Vue / Svelte:</div>
+        <code>import { LiquidGlass } from './liquid-glass.js';</code><br>
+        <code>useEffect(() => { LiquidGlass.init(); }, []);</code>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Live Switch Listener
+    const demoSwitch = document.getElementById('demo-switch');
+    const switchStatus = document.getElementById('switch-status');
+    if (demoSwitch && switchStatus) {
+      demoSwitch.addEventListener('change', (e) => {
+        if (e.detail.checked) {
+          switchStatus.textContent = 'STATUS: ACTIVE';
+          switchStatus.className = 'text-xs font-mono font-bold text-emerald-700';
+        } else {
+          switchStatus.textContent = 'STATUS: INACTIVE';
+          switchStatus.className = 'text-xs font-mono font-bold text-slate-500';
+        }
+      });
+    }
+
+    // Copy Tags Button
+    const btnCopy = document.getElementById('btn-copy-tags');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', () => {
+        const snippet = '<link rel="stylesheet" href="css/liquid-glass.css">\n<script src="js/liquid-glass.js"><' + '/script>';
+        navigator.clipboard.writeText(snippet).then(() => {
+          btnCopy.textContent = 'Copied!';
+          setTimeout(() => { btnCopy.textContent = 'Copy Tags'; }, 2000);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

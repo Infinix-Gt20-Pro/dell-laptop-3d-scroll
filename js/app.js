@@ -475,6 +475,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 10. Apple Liquid Glass UI Engine Init (Snell's Law Optical Refraction + Progressive Blurs)
+  if (window.LiquidGlass && typeof window.LiquidGlass.init === 'function') {
+    window.LiquidGlass.init({
+      selector: '.scrubber-hud-island, .telemetry-chip, .hero-stage-card, .apple-action-btn, .apple-secondary-glass-btn, .liquid-glass',
+      gradientBlur: true,
+      blurSize: 32
+    });
+  }
+
   // Keyboard escape listeners for modals
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {

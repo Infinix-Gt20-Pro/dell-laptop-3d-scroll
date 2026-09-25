@@ -474,4 +474,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   renderCatalog();
+
+  // Apple Liquid Glass UI Engine Init
+  if (window.LiquidGlass && typeof window.LiquidGlass.init === 'function') {
+    window.LiquidGlass.init({
+      selector: '.ultra-glass, .specular-card, .apple-action-btn, .apple-secondary-glass-btn, .liquid-glass',
+      gradientBlur: true,
+      blurSize: 28
+    });
+  }
 });

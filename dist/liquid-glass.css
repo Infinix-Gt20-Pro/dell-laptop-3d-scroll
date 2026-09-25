@@ -1,0 +1,286 @@
+/**
+ * Apple-Inspired Liquid Glass UI Engine (Universal CSS)
+ * Adapted from https://github.com/mkj0kjay/vue-web-liquid-glass
+ * Provides progressive gradient blur, optical specular highlights, and physical refraction.
+ * Usable across ANY web application, framework, or website.
+ */
+
+:root {
+  --lg-glass-rgb: 255, 255, 255;
+  --lg-glass-bg-alpha: 0.72;
+  --lg-glass-border-rgb: 255, 255, 255;
+  --lg-glass-border-alpha: 0.85;
+  --lg-glass-shadow-ambient: rgba(0, 0, 0, 0.16);
+  --lg-glass-shadow-deep: rgba(0, 0, 0, 0.28);
+  --lg-specular-sheen: rgba(255, 255, 255, 0.45);
+  --lg-radius-default: 24px;
+}
+
+/* Base Liquid Glass container */
+.liquid-glass,
+.liquid-glass-card,
+[data-liquid-glass] {
+  position: relative;
+  background: rgba(var(--lg-glass-rgb), var(--lg-glass-bg-alpha));
+  backdrop-filter: blur(40px) saturate(220%) contrast(106%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%) contrast(106%);
+  border: 1px solid rgba(var(--lg-glass-border-rgb), var(--lg-glass-border-alpha));
+  border-radius: var(--lg-radius-default);
+  box-shadow: 
+    0 24px 50px -12px var(--lg-glass-shadow-deep),
+    0 8px 24px -4px var(--lg-glass-shadow-ambient),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.28s ease;
+  transform: translateZ(0);
+}
+
+/* Top specular reflection curve */
+.liquid-glass::before,
+.liquid-glass-card::before,
+[data-liquid-glass]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, var(--lg-specular-sheen) 0%, rgba(255, 255, 255, 0.04) 42%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Optical refraction modifier (applied when SVG filter is active) */
+.liquid-glass-optic {
+  backdrop-filter: var(--lg-optic-filter, blur(40px) saturate(220%) contrast(106%));
+  -webkit-backdrop-filter: var(--lg-optic-filter, blur(40px) saturate(220%) contrast(106%));
+}
+
+/* Progressive 8-Layer Gradient Blur Component */
+.lg-gradient-blur {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.lg-gradient-blur > div,
+.lg-gradient-blur::before,
+.lg-gradient-blur::after {
+  position: absolute;
+  inset: 0;
+}
+
+.lg-gradient-blur-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--lg-blur-size, 50px);
+  --mask-dir: to top;
+}
+
+.lg-gradient-blur-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--lg-blur-size, 50px);
+  --mask-dir: to bottom;
+}
+
+.lg-gradient-blur-left {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--lg-blur-size, 50px);
+  --mask-dir: to left;
+}
+
+.lg-gradient-blur-right {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--lg-blur-size, 50px);
+  --mask-dir: to right;
+}
+
+.lg-gradient-blur::before {
+  content: "";
+  z-index: 1;
+  backdrop-filter: blur(0.5px);
+  -webkit-backdrop-filter: blur(0.5px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12.5%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 37.5%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12.5%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 37.5%);
+}
+
+.lg-gradient-blur > div:nth-of-type(1) {
+  z-index: 2;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 12.5%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 1) 37.5%, rgba(0, 0, 0, 0) 50%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 12.5%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 1) 37.5%, rgba(0, 0, 0, 0) 50%);
+}
+
+.lg-gradient-blur > div:nth-of-type(2) {
+  z-index: 3;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 1) 37.5%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 62.5%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 1) 37.5%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 62.5%);
+}
+
+.lg-gradient-blur > div:nth-of-type(3) {
+  z-index: 4;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 37.5%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 62.5%, rgba(0, 0, 0, 0) 75%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 37.5%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 62.5%, rgba(0, 0, 0, 0) 75%);
+}
+
+.lg-gradient-blur > div:nth-of-type(4) {
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 62.5%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 87.5%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 62.5%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 87.5%);
+}
+
+.lg-gradient-blur > div:nth-of-type(5) {
+  z-index: 6;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 62.5%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 1) 87.5%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 62.5%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 1) 87.5%, rgba(0, 0, 0, 0) 100%);
+}
+
+.lg-gradient-blur > div:nth-of-type(6) {
+  z-index: 7;
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 1) 87.5%, rgba(0, 0, 0, 1) 100%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 1) 87.5%, rgba(0, 0, 0, 1) 100%);
+}
+
+.lg-gradient-blur::after {
+  content: "";
+  z-index: 8;
+  backdrop-filter: blur(64px);
+  -webkit-backdrop-filter: blur(64px);
+  mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 87.5%, rgba(0, 0, 0, 1) 100%);
+  -webkit-mask: linear-gradient(var(--mask-dir), rgba(0, 0, 0, 0) 87.5%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* Interactive Liquid Glass Pill Buttons */
+.liquid-glass-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.4rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 10px 25px -4px rgba(0, 0, 0, 0.12),
+    inset 0 1px 1.5px rgba(255, 255, 255, 1),
+    inset 0 -1px 1.5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.liquid-glass-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.liquid-glass-btn:hover {
+  transform: translateY(-1.5px);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 
+    0 16px 32px -6px rgba(0, 0, 0, 0.18),
+    inset 0 1.5px 2px rgba(255, 255, 255, 1);
+}
+
+.liquid-glass-btn:active {
+  transform: scale(0.96) translateY(0);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 
+    0 4px 12px -2px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Cyan/Blue Liquid Glass Button */
+.liquid-glass-btn-primary {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.92) 0%, rgba(2, 132, 199, 0.95) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 
+    0 12px 30px -4px rgba(2, 132, 199, 0.45),
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.6);
+}
+
+.liquid-glass-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.95) 0%, rgba(14, 165, 233, 0.98) 100%);
+  box-shadow: 
+    0 18px 36px -4px rgba(2, 132, 199, 0.6),
+    inset 0 2px 2.5px rgba(255, 255, 255, 0.8);
+}
+
+/* Liquid Glass Interactive Switch */
+.liquid-glass-switch-track {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 9999px;
+  background: rgba(200, 200, 205, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-glass-switch-track.active {
+  background: rgba(14, 165, 233, 0.88);
+  box-shadow: 
+    0 4px 16px rgba(14, 165, 233, 0.35),
+    inset 0 1px 3px rgba(255, 255, 255, 0.4);
+}
+
+.liquid-glass-switch-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.18),
+    inset 0 1.5px 2px #fff,
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.2s ease;
+}
+
+/* Liquid Glass Custom Elements Defaults */
+liquid-glass-container,
+liquid-glass-card {
+  display: block;
+  position: relative;
+  border-radius: var(--lg-radius-default);
+  overflow: hidden;
+}
