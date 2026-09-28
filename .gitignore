@@ -10,3 +10,45 @@ assets/test_frames/
 # Loose raw video generation files
 Dell_laptop_product_video_*.mp4
 Laptop_video_generation_storyboard_*.mp4
+
+# ================================================
+# SECURITY — Never commit these
+# ================================================
+
+# InsForge credentials & project config (contains API keys)
+.insforge/
+.insforge.json
+
+# Environment variable files (contain secrets)
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Local database (user data — private)
+data/
+data/database.json
+
+# Vercel deployment secrets
+.vercel/
+
+# Editor / OS artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# InsForge & AI agent skills
+.insforge
+.agent
+.agents
+.augment
+.claude
+.cline
+.github/copilot*
+.kilocode
+.qoder
+.qwen
+.roo
+.trae
+.windsurf

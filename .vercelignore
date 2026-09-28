@@ -1,3 +1,30 @@
 server.js
 start.bat
 payload.json
+
+# ================================================
+# SECURITY — Never deploy these to Vercel
+# ================================================
+
+# InsForge credentials & API keys
+.insforge/
+.insforge.json
+
+# Environment variable secrets
+.env
+.env.local
+.env.production
+.env.*.local
+
+# User database (private data)
+data/
+scripts/db.js
+scripts/server.js
+scripts/inspect-insforge.js
+
+# Node modules
+node_modules/
+
+# Dev/test artifacts
+*.log
+.playwright-mcp/
