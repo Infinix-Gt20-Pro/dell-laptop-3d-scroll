@@ -455,14 +455,6 @@
 
           <!-- Menu links -->
           <div class="py-1">
-            ${isAdmin ? `
-            <a href="admin.html" class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-cyan-50/70 hover:text-cyan-800 transition-colors">
-              <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
-              </svg>
-              <span>Admin & Database Backend</span>
-              <span class="ml-auto text-[9px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded font-mono font-bold">LIVE</span>
-            </a>` : ''}
             <a href="products.html" class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-cyan-50/70 hover:text-cyan-800 transition-colors">
               <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
