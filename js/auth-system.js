@@ -138,44 +138,115 @@
     setTimeout(() => window.location.reload(), 600);
   };
 
-  // ── Google OAuth ──────────────────────────────────────────────────────────
-  window.submitGoogleAuth = async function () {
-    // Build return URL with hash so the callback handler knows to grab the token
-    const returnUrl = encodeURIComponent(window.location.href);
-    const oauthUrl  = `${INSFORGE_HOST}/api/auth/oauth/google?redirect_uri=${returnUrl}`;
+  // ── PKCE Helpers for OAuth 2.0 ───────────────────────────────────────────
+  function generatePkceVerifier(length = 64) {
+    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+    const randomBytes = new Uint8Array(length);
+    (window.crypto || window.msCrypto).getRandomValues(randomBytes);
+    return Array.from(randomBytes).map(b => charset[b % charset.length]).join('');
+  }
 
-    showLucidToast('Redirecting to Google…', 'info');
-    // Small delay so toast is visible
-    await new Promise(r => setTimeout(r, 400));
-    window.location.href = oauthUrl;
+  async function generatePkceChallenge(verifier) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(verifier);
+    const hash = await (window.crypto || window.msCrypto).subtle.digest('SHA-256', data);
+    const bytes = new Uint8Array(hash);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  }
+
+  // ── Google OAuth with PKCE ────────────────────────────────────────────────
+  window.submitGoogleAuth = async function () {
+    try {
+      showLucidToast('Connecting to Google…', 'info');
+
+      // 1. Generate PKCE verifier and SHA-256 challenge
+      const codeVerifier = generatePkceVerifier();
+      const codeChallenge = await generatePkceChallenge(codeVerifier);
+
+      // 2. Save verifier in sessionStorage to exchange upon redirect return
+      sessionStorage.setItem('cc_oauth_verifier', codeVerifier);
+      sessionStorage.setItem('cc_oauth_return_url', window.location.href);
+
+      // 3. Exact matching redirect URI
+      let redirectUri = window.location.origin + window.location.pathname;
+      if (!redirectUri.endsWith('/') && !redirectUri.includes('.html')) {
+        redirectUri += '/';
+      }
+
+      // 4. Request Google OAuth authorization URL from InsForge
+      const initiateUrl = `${INSFORGE_HOST}/api/auth/oauth/google?redirect_uri=${encodeURIComponent(redirectUri)}&code_challenge=${encodeURIComponent(codeChallenge)}`;
+      
+      const res = await fetch(initiateUrl);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Failed to initiate OAuth (HTTP ${res.status})`);
+      }
+
+      const data = await res.json();
+      if (!data.authUrl) {
+        throw new Error('Google authorization URL not returned by server.');
+      }
+
+      // 5. Navigate to Google's official login screen
+      window.location.href = data.authUrl;
+    } catch (err) {
+      console.error('Google OAuth initiation failed:', err);
+      showLucidToast(`Google Auth Error: ${err.message}`, 'error');
+    }
   };
 
   // Handle OAuth callback — InsForge redirects back with ?insforge_code=...
-  function handleOAuthCallback() {
+  async function handleOAuthCallback() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('insforge_code');
     if (!code) return;
 
-    // Remove the query param from URL immediately
+    // Remove query param from browser address bar immediately
     const cleanUrl = window.location.pathname + window.location.hash;
     history.replaceState(null, '', cleanUrl);
 
     showLucidToast('Completing Google sign-in…', 'info');
 
-    // PKCE not needed for redirect flow (server-side exchange)
-    apiFetch(`/api/auth/oauth/exchange`, {
-      method: 'POST',
-      body: JSON.stringify({ code, code_verifier: '' })
-    })
-    .then(data => {
-      if (data.accessToken && data.user) {
-        saveSession(data.accessToken, normaliseUser(data.user, 'google'));
-        showLucidToast(`✨ Signed in with Google as ${data.user.email}!`);
+    // Retrieve the saved PKCE code_verifier
+    const codeVerifier = sessionStorage.getItem('cc_oauth_verifier') || '';
+
+    try {
+      const exchangeRes = await fetch(`${INSFORGE_HOST}/api/auth/oauth/exchange`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          code: code,
+          code_verifier: codeVerifier
+        })
+      });
+
+      if (!exchangeRes.ok) {
+        const err = await exchangeRes.json().catch(() => ({}));
+        throw new Error(err.message || `Exchange failed (HTTP ${exchangeRes.status})`);
       }
-    })
-    .catch(err => {
+
+      const data = await exchangeRes.json();
+      if (data.accessToken && data.user) {
+        sessionStorage.removeItem('cc_oauth_verifier');
+        saveSession(data.accessToken, normaliseUser(data.user, 'google'));
+        window.closeLucidAuthModal();
+        showLucidToast(`✨ Signed in with Google as ${data.user.name || data.user.email}!`);
+      } else {
+        throw new Error('Authentication succeeded but no access token was returned.');
+      }
+    } catch (err) {
+      console.error('OAuth exchange error:', err);
       showLucidToast(`Google sign-in failed: ${err.message}`, 'error');
-    });
+    }
   }
 
   // ── Email Sign-In ─────────────────────────────────────────────────────────
