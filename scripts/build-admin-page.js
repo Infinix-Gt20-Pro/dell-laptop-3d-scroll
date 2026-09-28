@@ -280,33 +280,73 @@ function buildAdminPage() {
     let allUsers = [];
 
     async function fetchBackendData() {
+      let apiLoaded = false;
       try {
-        // 1. Fetch Stats
         const statsRes = await fetch('/api/admin/stats');
-        const statsData = await statsRes.json();
-        if (statsData.success) {
-          document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
-          document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
-          document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
-          document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          if (statsData.success) {
+            document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
+            document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
+            document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
+            document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
+          }
         }
 
-        // 2. Fetch Users
         const usersRes = await fetch('/api/admin/users');
-        const usersData = await usersRes.json();
-        if (usersData.success) {
-          allUsers = usersData.users;
-          renderUsersTable(allUsers);
+        if (usersRes.ok) {
+          const usersData = await usersRes.json();
+          if (usersData.success) {
+            allUsers = usersData.users;
+            renderUsersTable(allUsers);
+            apiLoaded = true;
+          }
         }
 
-        // 3. Fetch Logs
         const logsRes = await fetch('/api/admin/logs');
-        const logsData = await logsRes.json();
-        if (logsData.success) {
-          renderLoginLogs(logsData.logs);
+        if (logsRes.ok) {
+          const logsData = await logsRes.json();
+          if (logsData.success) {
+            renderLoginLogs(logsData.logs);
+          }
         }
       } catch (err) {
-        console.error('Error fetching admin data:', err);
+        console.warn('API route unavailable, using static database.json fallback');
+      }
+
+      if (!apiLoaded) {
+        try {
+          const staticRes = await fetch('data/database.json');
+          if (staticRes.ok) {
+            const dbData = await staticRes.json();
+            allUsers = (dbData.users || []).map(({ password, ...u }) => u);
+
+            try {
+              const localReg = JSON.parse(localStorage.getItem('cc_registered_users') || '[]');
+              localReg.forEach(lu => {
+                if (!allUsers.some(u => u.email === lu.email)) {
+                  const { password: _, ...safe } = lu;
+                  allUsers.unshift(safe);
+                }
+              });
+            } catch (e) {}
+
+            const totalUsers = allUsers.length;
+            const googleUsers = allUsers.filter(u => u.provider === 'google').length;
+            const dbUsers = allUsers.filter(u => u.provider === 'database').length;
+            const totalLogins = (dbData.loginLogs || []).length;
+
+            document.getElementById('stat-total-users').textContent = totalUsers;
+            document.getElementById('stat-google-users').textContent = googleUsers;
+            document.getElementById('stat-db-users').textContent = dbUsers;
+            document.getElementById('stat-total-logins').textContent = totalLogins;
+
+            renderUsersTable(allUsers);
+            renderLoginLogs(dbData.loginLogs || []);
+          }
+        } catch (staticErr) {
+          console.error('Static database load error:', staticErr);
+        }
       }
     }
 
