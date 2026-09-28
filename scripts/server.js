@@ -98,15 +98,15 @@ function setSecurityHeaders(res) {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), camera=(), microphone=()');
-  // Relaxed CSP — allows inline scripts needed for the liquid-glass UI
+  // Relaxed CSP — allows modern assets & InsForge backend connectivity
   res.setHeader('Content-Security-Policy',
-    "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com; " +
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-    "font-src 'self' https://fonts.gstatic.com; " +
-    "img-src 'self' data: https://api.dicebear.com https://lh3.googleusercontent.com; " +
-    "connect-src 'self' https://accounts.google.com; " +
-    "frame-src https://accounts.google.com;"
+    "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://accounts.google.com https://apis.google.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
+    "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
+    "img-src 'self' data: blob: https://images.unsplash.com https://api.dicebear.com https://lh3.googleusercontent.com https://*.insforge.app; " +
+    "connect-src 'self' https://accounts.google.com https://*.insforge.app https://nsr7uvah.us-east.insforge.app; " +
+    "frame-src 'self' https://accounts.google.com;"
   );
 }
 

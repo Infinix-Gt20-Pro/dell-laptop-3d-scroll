@@ -224,147 +224,275 @@
   </div>
 
   
-  <!-- Lucid Glass Auth Modal Overlay -->
-  <div id="lucid-auth-overlay" class="lucid-glass-overlay">
-    <div class="lucid-glass-modal p-6 sm:p-8">
+  <!-- =========================================================================
+       LOGIN FORM V7 — LUXURY DARK GLASS AUTHENTICATION SYSTEM
+       Exact replication from Instagram Reel (code.xr Login Page V7)
+       ========================================================================= -->
+  <div id="lucid-auth-overlay" class="auth-v7-overlay" onclick="if(event.target === this) window.closeLucidAuthModal()">
+    
+    <div class="auth-v7-container">
       
-      <!-- Close Button -->
-      <button onclick="window.closeLucidAuthModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-200/60 hover:bg-slate-300/80 text-slate-700 flex items-center justify-center transition-all hover:rotate-90 z-20" aria-label="Close Modal">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+      <!-- Ambient Fluid Ribbon Waves behind Card -->
+      <div class="auth-v7-ambient-waves"></div>
 
-      <!-- Modal Header with Logo -->
-      <div class="flex items-center gap-3 mb-5">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-md flex items-center justify-center shrink-0">
-          <img src="assets/images/logo.png" class="w-full h-full object-cover rounded-[14px]">
-        </div>
-        <div>
-          <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-            <span>Classic Computers</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono font-bold">SECURE</span>
-          </h3>
-          <p class="text-[11px] font-mono text-slate-500 uppercase tracking-wider">Account Portal & Verification</p>
-        </div>
-      </div>
+      <!-- Floating Signature Glass Brackets (V7 Shards) -->
+      <div class="auth-v7-bracket auth-v7-bracket-tl"></div>
+      <div class="auth-v7-bracket auth-v7-bracket-br"></div>
 
-      <!-- Tab Switcher -->
-      <div class="lucid-tab-track mb-5">
-        <button id="tab-btn-google" class="lucid-tab-btn active" onclick="window.switchLucidTab('google')">
-          <span class="inline-flex items-center gap-1.5 justify-center">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+      <!-- Center Radiant Golden Energy Orb / Lens Flare -->
+      <div id="auth-v7-orb" class="auth-v7-energy-orb"></div>
+
+      <!-- Chamfered Outer Glowing Border Polygon -->
+      <div class="auth-v7-card-border">
+        
+        <!-- Inner Frosted Glass Card -->
+        <div class="auth-v7-card-inner">
+          
+          <!-- Close Button ('X') -->
+          <button type="button" onclick="window.closeLucidAuthModal()" class="auth-v7-close-btn" aria-label="Close modal">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
-            Google 1-Tap
-          </span>
-        </button>
-        <button id="tab-btn-database" class="lucid-tab-btn" onclick="window.switchLucidTab('database')">
-          Database Sign In
-        </button>
-        <button id="tab-btn-register" class="lucid-tab-btn" onclick="window.switchLucidTab('register')">
-          New Account
-        </button>
-      </div>
+          </button>
 
-      <!-- Panel 1: Google Fast Sign-In -->
-      <div id="tab-panel-google" class="space-y-4">
-        <div class="p-3.5 rounded-2xl bg-cyan-50/80 border border-cyan-200/70 text-center">
-          <p class="text-xs text-cyan-950 font-medium leading-relaxed">
-            One-tap authentication with your Google Account. Saved securely to our live backend database.
-          </p>
-        </div>
+          <!-- ==============================================
+               PANE 1: WELCOME BACK (SIGN IN)
+               ============================================== -->
+          <div id="auth-v7-pane-signin" class="auth-v7-form-pane pane-visible">
+            
+            <h2 class="auth-v7-title">
+              Welcome <span class="highlight">Back</span>
+            </h2>
+            <p class="auth-v7-subtitle">
+              Enter your credentials to access your secure account
+            </p>
 
-        <button onclick="window.submitGoogleAuth()" class="lucid-btn-google lucid-shimmer-sweep group">
-          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          <span>Continue with Google</span>
-        </button>
+            <form onsubmit="window.submitV7Login(event)">
+              
+              <!-- Email Field -->
+              <div class="auth-v7-field-group">
+                <label class="auth-v7-label" for="v7-login-email">Email Address</label>
+                <div class="auth-v7-input-box">
+                  <svg class="auth-v7-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  <input type="email" id="v7-login-email" required placeholder="name@domain.com" class="auth-v7-input" autocomplete="email">
+                </div>
+              </div>
 
-        <div class="pt-1">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 text-center mb-2">Instant Demo Profiles:</div>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="window.submitGoogleAuth({ name: 'Kashan Ahmad', email: 'kashan@classiccomputers.in', avatar: 'https://api.dicebear.com/7.x/shapes/svg?seed=KashanAdmin' })" 
-                    class="p-2 rounded-xl bg-white/90 border border-slate-200 text-left hover:border-cyan-400 transition-all text-xs font-semibold text-slate-700 flex items-center gap-2 shadow-sm">
-              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-[10px]">KA</span>
-              <span class="truncate">Kashan (Admin)</span>
-            </button>
-            <button onclick="window.submitGoogleAuth({ name: 'Arjun Verma', email: 'arjun.verma.tech@gmail.com', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ArjunVerma' })" 
-                    class="p-2 rounded-xl bg-white/90 border border-slate-200 text-left hover:border-cyan-400 transition-all text-xs font-semibold text-slate-700 flex items-center gap-2 shadow-sm">
-              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">AV</span>
-              <span class="truncate">Arjun (Client)</span>
-            </button>
+              <!-- Password Field with Eye Toggle -->
+              <div class="auth-v7-field-group">
+                <label class="auth-v7-label" for="v7-login-password">Password</label>
+                <div class="auth-v7-input-box">
+                  <svg class="auth-v7-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                  <input type="password" id="v7-login-password" required placeholder="••••••••••••" class="auth-v7-input" autocomplete="current-password">
+                  <button type="button" class="auth-v7-eye-btn" onclick="window.toggleAuthV7Password('v7-login-password', this)" aria-label="Toggle password visibility">
+                    <svg class="w-4 h-4 eye-show" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    <svg class="w-4 h-4 eye-hide hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Options: Remember Me & Forgot Password -->
+              <div class="auth-v7-row-opts">
+                <label class="auth-v7-checkbox-label">
+                  <input type="checkbox" id="v7-login-remember" checked class="hidden" onchange="this.nextElementSibling.classList.toggle('opacity-30', !this.checked)">
+                  <span class="auth-v7-custom-check">
+                    <svg class="w-3 h-3 text-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <span>Remember me</span>
+                </label>
+                <a href="javascript:void(0)" onclick="window.authV7ForgotPassword()" class="auth-v7-forgot-link">
+                  Forgot password?
+                </a>
+              </div>
+
+              <!-- Primary Submit CTA Button: Sign In -> -->
+              <button type="submit" id="v7-btn-signin" class="auth-v7-btn-submit">
+                <span>Sign In</span>
+                <svg class="w-4 h-4 ml-1 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+
+              <!-- Divider -->
+              <div class="auth-v7-divider">
+                <div class="auth-v7-divider-line"></div>
+                <span class="auth-v7-divider-text">OR CONTINUE WITH</span>
+                <div class="auth-v7-divider-line"></div>
+              </div>
+
+              <!-- Social Login Grid (Google & Apple) -->
+              <div class="auth-v7-social-grid">
+                <button type="button" onclick="window.submitGoogleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                  </svg>
+                  <span>Google</span>
+                </button>
+                <button type="button" onclick="window.submitAppleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.06 1.72-.93 2.74 1 .08 2.02-.49 2.64-1.24z"/>
+                  </svg>
+                  <span>Apple</span>
+                </button>
+              </div>
+
+              <!-- Switch to Register -->
+              <div class="auth-v7-switch-footer">
+                <span>Don't have an account?</span>
+                <button type="button" onclick="window.switchAuthV7Mode('register')" class="auth-v7-switch-btn">Sign Up</button>
+              </div>
+
+            </form>
           </div>
-        </div>
-      </div>
 
-      <!-- Panel 2: Database Email Login -->
-      <form id="tab-panel-database" class="space-y-3 hidden" onsubmit="window.submitDbLogin(event)">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-          <input type="email" id="login-email" required placeholder="you@example.com" class="lucid-glass-input" value="kashan@classiccomputers.in">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-          <input type="password" id="login-password" required placeholder="••••••••" class="lucid-glass-input" value="admin">
-        </div>
+          <!-- ==============================================
+               PANE 2: CREATE ACCOUNT (SIGN UP)
+               ============================================== -->
+          <div id="auth-v7-pane-register" class="auth-v7-form-pane pane-hidden">
+            
+            <h2 class="auth-v7-title">
+              Create <span class="highlight">Account</span>
+            </h2>
+            <p class="auth-v7-subtitle">
+              Join us today to access your secure account
+            </p>
 
-        <button type="submit" id="btn-db-login-submit" class="lucid-btn-primary lucid-shimmer-sweep mt-2">
-          <span>Sign In to Database →</span>
-        </button>
+            <form onsubmit="window.submitV7Register(event)">
+              
+              <!-- Full Name Field -->
+              <div class="auth-v7-field-group">
+                <label class="auth-v7-label" for="v7-reg-name">Full Name</label>
+                <div class="auth-v7-input-box">
+                  <svg class="auth-v7-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                  <input type="text" id="v7-reg-name" required placeholder="Alex Johnson" class="auth-v7-input" autocomplete="name">
+                </div>
+              </div>
 
-        <div class="text-center pt-2">
-          <span class="text-xs text-slate-500">Need a database account?</span>
-          <button type="button" onclick="window.switchLucidTab('register')" class="text-xs text-cyan-600 font-bold hover:underline ml-1">Register now</button>
-        </div>
-      </form>
+              <!-- Email Address Field -->
+              <div class="auth-v7-field-group">
+                <label class="auth-v7-label" for="v7-reg-email">Email Address</label>
+                <div class="auth-v7-input-box">
+                  <svg class="auth-v7-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  <input type="email" id="v7-reg-email" required placeholder="name@domain.com" class="auth-v7-input" autocomplete="email">
+                </div>
+              </div>
 
-      <!-- Panel 3: Account Registration -->
-      <form id="tab-panel-register" class="space-y-2.5 hidden" onsubmit="window.submitDbRegister(event)">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-0.5">Full Name</label>
-          <input type="text" id="reg-name" required placeholder="e.g. Vikram Malhotra" class="lucid-glass-input">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-0.5">Email Address</label>
-          <input type="email" id="reg-email" required placeholder="vikram@example.com" class="lucid-glass-input">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-0.5">Phone</label>
-            <input type="tel" id="reg-phone" placeholder="+91 98765 43210" class="lucid-glass-input">
+              <!-- Two Column: Password & Confirm Password -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-1">
+                <div class="auth-v7-field-group !mb-2 sm:!mb-3">
+                  <label class="auth-v7-label" for="v7-reg-password">Password</label>
+                  <div class="auth-v7-input-box !px-3">
+                    <svg class="auth-v7-input-icon !mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <input type="password" id="v7-reg-password" required placeholder="••••••••" class="auth-v7-input !ml-0 text-xs sm:text-sm" autocomplete="new-password">
+                    <button type="button" class="auth-v7-eye-btn" onclick="window.toggleAuthV7Password('v7-reg-password', this)" aria-label="Toggle password visibility">
+                      <svg class="w-3.5 h-3.5 eye-show" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                      </svg>
+                      <svg class="w-3.5 h-3.5 eye-hide hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="auth-v7-field-group !mb-2 sm:!mb-3">
+                  <label class="auth-v7-label" for="v7-reg-confirm-password">Confirm Password</label>
+                  <div class="auth-v7-input-box !px-3">
+                    <svg class="auth-v7-input-icon !mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    <input type="password" id="v7-reg-confirm-password" required placeholder="••••••••" class="auth-v7-input !ml-0 text-xs sm:text-sm" autocomplete="new-password">
+                    <button type="button" class="auth-v7-eye-btn" onclick="window.toggleAuthV7Password('v7-reg-confirm-password', this)" aria-label="Toggle password visibility">
+                      <svg class="w-3.5 h-3.5 eye-show" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                      </svg>
+                      <svg class="w-3.5 h-3.5 eye-hide hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terms & Privacy Agreement Checkbox -->
+              <div class="auth-v7-row-opts !mt-1 !mb-4">
+                <label class="auth-v7-checkbox-label">
+                  <input type="checkbox" id="v7-reg-agree" required class="hidden" onchange="this.nextElementSibling.classList.toggle('opacity-30', !this.checked)">
+                  <span class="auth-v7-custom-check">
+                    <svg class="w-3 h-3 text-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <span>I agree to the Terms & Privacy Policy</span>
+                </label>
+              </div>
+
+              <!-- Primary Submit CTA Button: Create Account -> -->
+              <button type="submit" id="v7-btn-signup" class="auth-v7-btn-submit">
+                <span>Create Account</span>
+                <svg class="w-4 h-4 ml-1 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+
+              <!-- Divider -->
+              <div class="auth-v7-divider">
+                <div class="auth-v7-divider-line"></div>
+                <span class="auth-v7-divider-text">OR SIGN UP WITH</span>
+                <div class="auth-v7-divider-line"></div>
+              </div>
+
+              <!-- Social Login Grid (Google & Apple) -->
+              <div class="auth-v7-social-grid">
+                <button type="button" onclick="window.submitGoogleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                  </svg>
+                  <span>Google</span>
+                </button>
+                <button type="button" onclick="window.submitAppleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.06 1.72-.93 2.74 1 .08 2.02-.49 2.64-1.24z"/>
+                  </svg>
+                  <span>Apple</span>
+                </button>
+              </div>
+
+              <!-- Switch to Sign In -->
+              <div class="auth-v7-switch-footer">
+                <span>Already have an account?</span>
+                <button type="button" onclick="window.switchAuthV7Mode('signin')" class="auth-v7-switch-btn">Sign In</button>
+              </div>
+
+            </form>
           </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-0.5">City</label>
-            <input type="text" id="reg-city" placeholder="e.g. Lucknow, UP" class="lucid-glass-input">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-0.5">Choose Password</label>
-          <input type="password" id="reg-password" required placeholder="••••••••" class="lucid-glass-input">
-        </div>
 
-        <button type="submit" id="btn-db-reg-submit" class="lucid-btn-primary lucid-shimmer-sweep mt-2">
-          <span>Create Account & Save to Database →</span>
-        </button>
-      </form>
-
-      <!-- Footer Info & Direct Admin Link -->
-      <div class="mt-5 pt-3 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
-        <span class="flex items-center gap-1.5 font-mono">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>InsForge Auth · 256-Bit SSL Encrypted</span>
-        </span>
-        <span class="text-slate-400 font-mono text-[10px]">
-          Classic Computers
-        </span>
+        </div>
       </div>
 
     </div>
