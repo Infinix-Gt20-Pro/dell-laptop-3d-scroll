@@ -27,7 +27,7 @@ const INITIAL_DATA = {
       password: null,
       role: "customer",
       provider: "google",
-      avatar: "https://lh3.googleusercontent.com/a/default-user=s96-c",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=ArjunVerma",
       phone: "+91 98123 45678",
       city: "Delhi NCR",
       createdAt: "2026-09-26T14:20:00.000Z",

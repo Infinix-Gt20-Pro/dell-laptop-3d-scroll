@@ -7,7 +7,7 @@
       "password": null,
       "role": "customer",
       "provider": "google",
-      "avatar": "https://lh3.googleusercontent.com/a/demo=s96-c",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=PriyaPatel",
       "phone": "+91 94121 82786",
       "city": "Online Google User",
       "createdAt": "2026-09-28T19:22:06.572Z",
@@ -49,12 +49,12 @@
       "password": null,
       "role": "customer",
       "provider": "google",
-      "avatar": "https://lh3.googleusercontent.com/a/default-user=s96-c",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ArjunVerma",
       "phone": "+91 98123 45678",
       "city": "Delhi NCR",
       "createdAt": "2026-09-26T14:20:00.000Z",
-      "lastLogin": "2026-09-28T19:26:56.576Z",
-      "loginCount": 7
+      "lastLogin": "2026-09-28T19:54:13.927Z",
+      "loginCount": 8
     },
     {
       "id": "usr_db_003",
@@ -72,6 +72,17 @@
     }
   ],
   "loginLogs": [
+    {
+      "id": "log_1790625253927",
+      "userId": "usr_google_002",
+      "userName": "Arjun Verma",
+      "email": "arjun.verma.tech@gmail.com",
+      "provider": "google",
+      "timestamp": "2026-09-28T19:54:13.927Z",
+      "ip": "127.0.0.1",
+      "userAgent": "Google OAuth 2.0 Web Client",
+      "status": "Google Verified Sign-in"
+    },
     {
       "id": "log_1790623616576",
       "userId": "usr_google_002",

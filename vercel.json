@@ -1,5 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "classiscomputer",
+  "alias": [
+    "classic-computers-etah.vercel.app"
+  ],
   "framework": null,
   "outputDirectory": ".",
   "cleanUrls": true,

@@ -280,38 +280,42 @@ function buildAdminPage() {
     let allUsers = [];
 
     async function fetchBackendData() {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       let apiLoaded = false;
-      try {
-        const statsRes = await fetch('/api/admin/stats');
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          if (statsData.success) {
-            document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
-            document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
-            document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
-            document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
-          }
-        }
 
-        const usersRes = await fetch('/api/admin/users');
-        if (usersRes.ok) {
-          const usersData = await usersRes.json();
-          if (usersData.success) {
-            allUsers = usersData.users;
-            renderUsersTable(allUsers);
-            apiLoaded = true;
+      if (isLocal) {
+        try {
+          const statsRes = await fetch('/api/admin/stats');
+          if (statsRes.ok) {
+            const statsData = await statsRes.json();
+            if (statsData.success) {
+              document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
+              document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
+              document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
+              document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
+            }
           }
-        }
 
-        const logsRes = await fetch('/api/admin/logs');
-        if (logsRes.ok) {
-          const logsData = await logsRes.json();
-          if (logsData.success) {
-            renderLoginLogs(logsData.logs);
+          const usersRes = await fetch('/api/admin/users');
+          if (usersRes.ok) {
+            const usersData = await usersRes.json();
+            if (usersData.success) {
+              allUsers = usersData.users;
+              renderUsersTable(allUsers);
+              apiLoaded = true;
+            }
           }
+
+          const logsRes = await fetch('/api/admin/logs');
+          if (logsRes.ok) {
+            const logsData = await logsRes.json();
+            if (logsData.success) {
+              renderLoginLogs(logsData.logs);
+            }
+          }
+        } catch (err) {
+          console.warn('API route unavailable, using static database.json fallback');
         }
-      } catch (err) {
-        console.warn('API route unavailable, using static database.json fallback');
       }
 
       if (!apiLoaded) {
@@ -334,15 +338,20 @@ function buildAdminPage() {
             const totalUsers = allUsers.length;
             const googleUsers = allUsers.filter(u => u.provider === 'google').length;
             const dbUsers = allUsers.filter(u => u.provider === 'database').length;
-            const totalLogins = (dbData.loginLogs || []).length;
+            
+            let allLogs = [...(dbData.loginLogs || [])];
+            try {
+              const localLogs = JSON.parse(localStorage.getItem('cc_audit_logs') || '[]');
+              allLogs = [...localLogs, ...allLogs];
+            } catch (e) {}
 
             document.getElementById('stat-total-users').textContent = totalUsers;
             document.getElementById('stat-google-users').textContent = googleUsers;
             document.getElementById('stat-db-users').textContent = dbUsers;
-            document.getElementById('stat-total-logins').textContent = totalLogins;
+            document.getElementById('stat-total-logins').textContent = allLogs.length;
 
             renderUsersTable(allUsers);
-            renderLoginLogs(dbData.loginLogs || []);
+            renderLoginLogs(allLogs);
           }
         } catch (staticErr) {
           console.error('Static database load error:', staticErr);
@@ -469,21 +478,36 @@ function buildAdminPage() {
     async function deleteUserFromDb(userId, userName) {
       if (!confirm(\`Are you sure you want to delete user "\${userName}" from the database?\`)) return;
 
-      try {
-        const res = await fetch('/api/admin/delete-user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId })
-        });
-        const data = await res.json();
-        if (data.success) {
-          fetchBackendData();
-        } else {
-          alert(data.message || 'Error deleting user');
-        }
-      } catch (err) {
-        alert('Server communication error');
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocal) {
+        try {
+          const res = await fetch('/api/admin/delete-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+              fetchBackendData();
+              return;
+            }
+          }
+        } catch (err) {}
       }
+
+      // Local storage deletion fallback
+      allUsers = allUsers.filter(u => u.id !== userId);
+      try {
+        const localReg = JSON.parse(localStorage.getItem('cc_registered_users') || '[]');
+        const updated = localReg.filter(u => u.id !== userId);
+        localStorage.setItem('cc_registered_users', JSON.stringify(updated));
+      } catch (e) {}
+
+      renderUsersTable(allUsers);
+      document.getElementById('stat-total-users').textContent = allUsers.length;
+      document.getElementById('stat-google-users').textContent = allUsers.filter(u => u.provider === 'google').length;
+      document.getElementById('stat-db-users').textContent = allUsers.filter(u => u.provider === 'database').length;
     }
 
     function exportUsersJson() {
