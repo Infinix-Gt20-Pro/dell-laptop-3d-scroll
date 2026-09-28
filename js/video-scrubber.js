@@ -686,6 +686,26 @@ class HeroVideoScrubber {
       });
     }
 
+    // Update Flight Radar Nodes in Right Dock
+    const radarNodes = document.querySelectorAll('.radar-node');
+    if (radarNodes.length > 0) {
+      radarNodes.forEach((node, idx) => {
+        if (idx === currentStage.id) {
+          node.classList.add('active');
+        } else {
+          node.classList.remove('active');
+        }
+      });
+    }
+
+    // Trigger sonic feedback on stage boundary shift
+    if (this.lastTriggeredStage !== currentStage.id) {
+      this.lastTriggeredStage = currentStage.id;
+      if (window.soundFX && window.soundFX.playStageTransition) {
+        window.soundFX.playStageTransition(currentStage.id);
+      }
+    }
+
     // Hotspot pins reactive mapping if any in DOM
     const hotspots = document.querySelectorAll('.hotspot-pin');
     if (hotspots.length > 0) {

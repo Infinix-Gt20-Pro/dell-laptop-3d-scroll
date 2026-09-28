@@ -1,21 +1,12 @@
-# Test and temporary artifacts
-*.png
+# Root temporary test captures
+/*.png
 *.log
 *.zip
 WhatsApp*
-test-*.js
-verify-*.js
-audit-*.js
-diagnose*.js
 node_modules/
 .playwright-mcp/
 assets/test_frames/
 
-# Local server and run scripts (not needed for Vercel static hosting)
-server.js
-scripts/
-start.bat
-
-# Loose root media
+# Loose raw video generation files
 Dell_laptop_product_video_*.mp4
 Laptop_video_generation_storyboard_*.mp4

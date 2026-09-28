@@ -1,4 +1,9 @@
-/**
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.resolve('js/products-data.js');
+
+const dataContent = `/**
  * Classic Computers - Certified Refurbished Hub Data Store
  * Catalog of certified refurbished enterprise laptops, workstations, and desktops
  */
@@ -39,14 +44,12 @@ const PRODUCTS = [
     rating: 4.9,
     reviewsCount: 148,
     isFeatured: true,
-    thumbnail: "assets/images/dell-5530/dell_5530_cafe.jpg",
+    thumbnail: "assets/images/real-5530/dell_5530_front_display.jpg",
     images: [
-      "assets/images/dell-5530/dell_5530_cafe.jpg",
-      "assets/images/dell-5530/dell_5530_keyboard.jpg",
-      "assets/images/dell-5530/dell_5530_ports.jpg",
-      "assets/images/dell-5530/dell_5530_dark.jpg",
-      "assets/images/dell-5530/dell_5530_white.jpg",
-      "assets/images/dell-5530/dell_5530_coffee.jpg"
+      "assets/images/real-5530/dell_5530_front_display.jpg",
+      "assets/images/real-5530/dell_5530_aluminium_lid.jpg",
+      "assets/images/real-5530/dell_5530_4k_screen_detail.jpg",
+      "assets/images/real-5530/dell_5530_angled_profile.jpg"
     ],
     bestFor: "4K Video Editing (Premiere Pro, DaVinci Resolve), Adobe Suite, Architectural AutoCAD, 3D Blender Modeling, and Intensive Multi-tasking",
     suitability: ["editing", "cad", "creative", "laptop"],
@@ -420,3 +423,7 @@ const CUSTOMER_REVIEWS = [
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { STORE_CONFIG, PRODUCTS, CUSTOMER_REVIEWS };
 }
+`;
+
+fs.writeFileSync(targetPath, dataContent, 'utf8');
+console.log("Updated js/products-data.js with new phone +91 94121 82786 and store metadata!");

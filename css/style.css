@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import './liquid-glass.css';
+@import './ios27-glass.css';
 
 /* ===================================================
    LENIS BUTTER-SMOOTH KINETIC SCROLL ENGINE STYLES
@@ -552,56 +553,39 @@ body::before {
 }
 
 /* ===================================================
-   APPLE CINEMA SHOWCASE THEATER FOR 3D HERO
+   INTERACTIVE DELL PRECISION 5530 SHOWCASE STAGE
+   Fast, fluid, hardware-accelerated, zero scroll trap
    =================================================== */
-#hero-scroll-container {
-  background: #000000;
-  position: relative;
-}
-
-#hero-pinned-viewport {
-  background: #05070b;
-  height: 100vh;
-  height: 100dvh;
-}
-
-#hero-canvas {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  touch-action: pan-y;
-  image-rendering: auto;
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+#hero-showcase-card {
+  transform-style: preserve-3d;
   will-change: transform;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
-/* ===================================================
-   FULL SCREEN CINEMATIC 3D HERO VIEWPORT & TRANSITIONS
-   =================================================== */
-body.hero-in-view header.apple-nav-glass {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none;
+#hero-showcase-img {
+  will-change: transform, opacity;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 25px 35px rgba(15, 23, 42, 0.14));
 }
 
-body.hero-in-view .mobile-sticky-bar {
-  transform: translateY(120%);
-  opacity: 0;
-  pointer-events: none;
+.hero-view-btn {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body.hero-in-view #cursor-spotlight {
-  opacity: 0;
+.hero-view-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
 }
 
-body.hero-in-view #ai-assistant-toggle {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.8);
+.hero-view-btn.active {
+  border-color: #0284c7 !important;
+  background-color: #f0f9ff !important;
+  color: #075985 !important;
+  box-shadow: 0 0 0 1px #0284c7, 0 4px 14px rgba(2, 132, 199, 0.18) !important;
 }
 
 /* ===================================================
@@ -1187,14 +1171,6 @@ body.hero-in-view.is-scrolling .hero-glass-edge-glow {
    DEEP MOBILE SCREENING & RESPONSIVE POLISH (<= 768px)
    =================================================== */
 @media (max-width: 768px) {
-  #hero-pinned-viewport {
-    height: 100dvh !important;
-    height: 100vh;
-  }
-
-  #hero-scroll-container {
-    height: 320vh !important;
-  }
 
   .motionsites-tab-bar {
     display: flex;
@@ -1244,7 +1220,7 @@ body.hero-in-view.is-scrolling .hero-glass-edge-glow {
     display: none !important;
   }
 
-  section:not(#hero-scroll-container) {
+  section {
     max-width: 100vw !important;
     overflow-x: clip !important;
   }
@@ -1370,3 +1346,804 @@ body.hero-in-view.is-scrolling .hero-glass-edge-glow {
   color: var(--accent-cyan);
 }
 
+/* ===================================================
+   SCROLL-WORLD 3D CINEMATIC MOTION & HUD STYLES
+   =================================================== */
+
+/* Floating Stage Cards (Apple Keynote Sidebar Style) */
+.hero-stage-card {
+  position: absolute;
+  border-radius: 1.75rem !important;
+  color: #0f172a !important;
+  width: 90%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(200%) contrast(105%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 
+    0 24px 60px -15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  z-index: 25;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 1024px) {
+  .hero-stage-card {
+    left: max(2.5rem, 6vw);
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+  }
+  .hero-stage-card.opacity-100 {
+    opacity: 1 !important;
+    transform: translateY(-50%) translateZ(0) scale(1) !important;
+    pointer-events: auto !important;
+  }
+  .hero-stage-card.opacity-0 {
+    opacity: 0 !important;
+    transform: translateY(calc(-50% + 24px)) scale(0.95) !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-stage-card {
+    left: 1rem;
+    right: 1rem;
+    bottom: 5.5rem;
+    margin: 0 auto;
+    max-width: 440px;
+    padding: 1.25rem !important;
+  }
+  .hero-stage-card.opacity-100 {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+  }
+  .hero-stage-card.opacity-0 {
+    opacity: 0 !important;
+    transform: translateY(20px) scale(0.95) !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Interactive Hotspot Pins */
+.hotspot-pin {
+  position: absolute;
+  z-index: 28;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.hotspot-pin:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.hotspot-tooltip {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate(-50%, 0);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(6, 182, 212, 0.3);
+}
+
+.hotspot-pin:hover .hotspot-tooltip {
+  opacity: 1 !important;
+  transform: translate(-50%, -8px) !important;
+  pointer-events: auto !important;
+}
+
+/* Vertical Stage Flight Radar */
+#hero-stage-radar .radar-line {
+  background: linear-gradient(180deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+}
+
+.radar-node {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.radar-node.active .radar-dot {
+  background-color: #0284c7 !important;
+  box-shadow: 0 0 14px #0284c7, 0 0 0 3px rgba(2, 132, 199, 0.25);
+  transform: scale(1.4);
+}
+
+.radar-node.active {
+  color: #0284c7;
+}
+
+/* 3D Card Tilt & Holographic Specular Glare */
+.specular-card, .tilt-card {
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.specular-card::after, .tilt-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 65%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.specular-card:hover::after, .tilt-card:hover::after {
+  opacity: 1;
+}
+
+/* Interactive 4K Magnifier Loupe */
+.magnifier-loupe {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), inset 0 0 25px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 35;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background-repeat: no-repeat;
+  background-size: 250%;
+}
+
+.magnifier-loupe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(6, 182, 212, 0.6);
+  pointer-events: none;
+}
+
+.magnifier-loupe::after {
+  content: '2.5X PIXEL ZOOM';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.magnifier-loupe.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Ambient Audio Equalizer Wave in Header */
+.audio-equalizer {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.audio-equalizer span {
+  width: 2px;
+  background: currentColor;
+  border-radius: 9999px;
+  height: 3px;
+  transition: height 0.15s ease;
+}
+
+.audio-equalizer.playing span:nth-child(1) { animation: eqBar 0.8s ease-in-out infinite alternate; }
+.audio-equalizer.playing span:nth-child(2) { animation: eqBar 0.5s ease-in-out 0.2s infinite alternate; }
+.audio-equalizer.playing span:nth-child(3) { animation: eqBar 0.7s ease-in-out 0.4s infinite alternate; }
+.audio-equalizer.playing span:nth-child(4) { animation: eqBar 0.6s ease-in-out 0.1s infinite alternate; }
+
+@keyframes eqBar {
+  0% { height: 3px; }
+  100% { height: 12px; }
+}
+
+/* Kinetic Animated Counter Numbers */
+.counter-number {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+/* Scroll-World Smooth Atmosphere */
+.sw-glow-sweep {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+/* ===================================================
+   THERMAL RECEIPT PRINTER MOTION COMPONENT
+   Inspired by @susanoo.ui interactive receipt printer
+   =================================================== */
+
+:root {
+  --receipt-bg: #fffdf9;
+  --receipt-paper-grain: #fdfbf7;
+  --receipt-ink: #18181b;
+  --receipt-ink-secondary: #52525b;
+  --receipt-ink-muted: #71717a;
+  --receipt-border-dashed: #d4d4d8;
+  --receipt-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --printer-chassis-bg: #1e293b;
+  --printer-slot-bg: #0f172a;
+}
+
+/* Printer Machine Wrapper */
+.receipt-printer-unit {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1000px;
+}
+
+/* Metallic Printer Head Housing */
+.printer-chassis-head {
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.5rem 1.5rem 0.5rem 0.5rem;
+  padding: 1rem 1.25rem 0.85rem;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  z-index: 10;
+  position: relative;
+}
+
+.printer-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+}
+
+.printer-title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.printer-led-online {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: ledPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.printer-led-online.printing {
+  background-color: #06b6d4;
+  box-shadow: 0 0 10px #06b6d4;
+  animation: ledRapidBlink 0.15s ease infinite alternate;
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes ledRapidBlink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* Mechanical Paper Ejection Slit */
+.printer-ejection-slot {
+  width: 100%;
+  height: 12px;
+  background: #020617;
+  border-radius: 4px;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: visible;
+}
+
+.printer-ejection-slot::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+}
+
+/* Thermal Paper Roll Sheet */
+.thermal-receipt-stage {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin-top: -4px;
+  z-index: 5;
+  overflow: visible;
+}
+
+.thermal-receipt-paper {
+  background-color: var(--receipt-bg);
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0),
+    linear-gradient(180deg, #faf7f2 0%, #fffdf9 4%, #fffdfa 96%, #f5efe6 100%);
+  background-size: 8px 8px, 100% 100%;
+  color: var(--receipt-ink);
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  box-shadow: var(--receipt-shadow);
+  position: relative;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  transform-origin: top center;
+  transition: transform 0.4s var(--ease-editorial);
+  will-change: transform, opacity;
+}
+
+/* Zigzag Tear Edges (Crisp SVG Patterns) */
+.receipt-sawtooth-top,
+.receipt-sawtooth-bottom {
+  width: 100%;
+  height: 10px;
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.receipt-sawtooth-top {
+  margin-bottom: -1px;
+}
+
+.receipt-sawtooth-bottom {
+  margin-top: -1px;
+}
+
+.receipt-sawtooth-top svg,
+.receipt-sawtooth-bottom svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: var(--receipt-bg);
+}
+
+/* Receipt Paper Feed Animation */
+.thermal-receipt-paper.feeding {
+  animation: receiptFeedDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes receiptFeedDown {
+  0% {
+    transform: translateY(-40px) scaleY(0.6);
+    opacity: 0;
+    clip-path: inset(0 0 90% 0);
+  }
+  50% {
+    opacity: 0.95;
+    clip-path: inset(0 0 20% 0);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Receipt Physical Tear-Off Animation */
+.thermal-receipt-paper.tearing {
+  animation: receiptTearRip 0.52s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes receiptTearRip {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(14px) rotate(-1.5deg);
+  }
+  45% {
+    transform: translateY(45px) rotate(3deg) scale(0.98);
+  }
+  100% {
+    transform: translateY(120px) rotate(8deg) scale(0.92);
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+/* Staggered Line-By-Line Printing Feed */
+.receipt-line {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.thermal-receipt-paper.printed .receipt-line,
+.thermal-receipt-paper:not(.feeding) .receipt-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.thermal-receipt-paper.feeding .receipt-line {
+  animation: linePrintFeed 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--line-delay, 0ms);
+}
+
+@keyframes linePrintFeed {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Thermal Monospace Typography & Layout */
+.receipt-content-body {
+  padding: 1.25rem 1.5rem 1.25rem;
+}
+
+.receipt-header-center {
+  text-align: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed var(--receipt-border-dashed);
+}
+
+.receipt-store-logo {
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--receipt-ink);
+}
+
+.receipt-subline {
+  font-size: 0.6875rem;
+  color: var(--receipt-ink-secondary);
+  margin-top: 0.2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.receipt-terminal-id {
+  font-size: 0.625rem;
+  color: var(--receipt-ink-muted);
+  margin-top: 0.35rem;
+}
+
+.receipt-dashed-divider {
+  border: none;
+  border-top: 1px dashed var(--receipt-border-dashed);
+  margin: 0.65rem 0;
+}
+
+.receipt-double-divider {
+  border: none;
+  border-top: 2px dashed var(--receipt-ink);
+  margin: 0.75rem 0;
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--receipt-ink);
+}
+
+.receipt-item-row .item-name {
+  color: var(--receipt-ink-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65%;
+}
+
+.receipt-item-row .item-price {
+  font-weight: 700;
+  color: var(--receipt-ink);
+  white-space: nowrap;
+}
+
+.receipt-item-row.highlight-discount {
+  color: #047857;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.2rem 0.35rem;
+  border-radius: 4px;
+  margin: 0.25rem -0.35rem;
+}
+
+.receipt-item-row.highlight-discount .item-name {
+  color: #065f46;
+}
+
+.receipt-item-row.highlight-discount .item-price {
+  color: #047857;
+}
+
+/* Grand Total Row */
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 900;
+  color: var(--receipt-ink);
+}
+
+.receipt-total-amount {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0284c7;
+  letter-spacing: -0.02em;
+}
+
+/* Rubber Stamp Effect */
+.receipt-rubber-stamp {
+  position: absolute;
+  top: 36%;
+  right: 1.25rem;
+  transform: rotate(-12deg);
+  border: 2px dashed #059669;
+  color: #059669;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 900;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.88;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(circle, black 70%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.receipt-rubber-stamp.discount-stamp {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+/* SVG Barcode & QR Code Section */
+.receipt-barcode-wrap {
+  text-align: center;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px dashed var(--receipt-border-dashed);
+}
+
+.receipt-barcode-svg {
+  width: 75%;
+  height: 38px;
+  margin: 0 auto;
+  display: block;
+}
+
+.receipt-barcode-number {
+  font-size: 0.625rem;
+  letter-spacing: 0.25em;
+  color: var(--receipt-ink-muted);
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+/* Plan Preset Cards (Pricing Table Grid) */
+.plan-preset-card {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid rgba(15, 23, 42, 0.1);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-editorial);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.plan-preset-card:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(2, 132, 199, 0.15);
+}
+
+.plan-preset-card.active,
+.plan-preset-card:has(input:checked) {
+  border-color: var(--accent-cyan);
+  background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+  box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.2), inset 0 0 0 1px var(--accent-cyan);
+}
+
+.plan-badge-popular {
+  position: absolute;
+  top: -10px;
+  right: 1.25rem;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 0.625rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Annual / Billing Switch Toggle */
+.billing-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.billing-mode-btn {
+  padding: 0.45rem 1.15rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.2s var(--ease-editorial);
+  cursor: pointer;
+  color: #64748b;
+  border: none;
+  background: transparent;
+}
+
+.billing-mode-btn.active {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+.discount-save-badge {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Printer Control Buttons Below Receipt */
+.printer-actions-dock {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .thermal-receipt-paper.feeding,
+  .thermal-receipt-paper.tearing,
+  .receipt-line,
+  .printer-led-online {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Print Optimization: Clean Thermal Slip */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #thermal-receipt-paper,
+  #thermal-receipt-paper * {
+    visibility: visible !important;
+  }
+  #thermal-receipt-paper {
+    position: absolute !important;
+    left: 50% !important;
+    top: 20px !important;
+    transform: translateX(-50%) !important;
+    width: 380px !important;
+    box-shadow: none !important;
+    border: 1px solid #18181b !important;
+    background: #ffffff !important;
+  }
+}
+
+
+
+
+
+
+/* ===================================================
+   60 FPS HARDWARE-ACCELERATED INFINITE TICKER
+   =================================================== */
+@keyframes tickerMoveLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ticker-wrapper-60fps {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 1.5rem 0;
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.ticker-track-60fps {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  animation: tickerMoveLeft 36s linear infinite;
+}
+
+.ticker-wrapper-60fps:hover .ticker-track-60fps {
+  animation-play-state: paused;
+}
+
+.vertical-product-card {
+  width: 295px;
+  min-width: 295px;
+  max-width: 295px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateZ(0);
+}
+
+.vertical-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px -10px rgba(6, 182, 212, 0.25), 0 0 0 1px rgba(6, 182, 212, 0.4);
+}
+
+.vertical-product-card:hover .card-img-zoom {
+  transform: scale(1.06);
+}

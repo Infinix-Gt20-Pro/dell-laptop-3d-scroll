@@ -134,6 +134,7 @@ class ClassicStoreEngine {
     this.saveToStorage('cc_cart', this.cart);
     this.updateBadges();
     this.renderCartUI();
+    if (window.soundFX && window.soundFX.playSuccess) window.soundFX.playSuccess();
     this.showToast(`Added "${product.shortName}" to Cart!`);
     this.openCart();
   }
