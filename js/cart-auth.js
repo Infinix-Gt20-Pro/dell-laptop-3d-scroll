@@ -392,22 +392,61 @@ class ClassicStoreEngine {
   }
 
   // --- ONLINE ORDER PROCESSING ---
-  processOrder() {
+  async processOrder() {
+    // Check if user is signed in via InsForge Auth
+    const currentUser = window.classicAuth ? window.classicAuth.getCurrentUser() : null;
+    const token = window.classicAuth ? window.classicAuth.getToken() : null;
+
+    if (!currentUser || !token) {
+      if (window.classicAuth && window.classicAuth.showLucidToast) {
+        window.classicAuth.showLucidToast('Please sign in to place your order!', 'info');
+      }
+      this.closeCheckout();
+      if (window.openLucidAuthModal) window.openLucidAuthModal('database');
+      return;
+    }
+
     const orderId = `CC-${Math.floor(10000 + Math.random() * 90000)}`;
     const total = this.getCartTotal();
     const itemsSummary = this.cart.map(i => `${i.shortName} (${i.quantity})`);
+    const firstItem = this.cart[0];
 
     const newOrder = {
       orderId,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: "Verified & Packed",
+      status: "Confirmed",
       items: itemsSummary,
       total,
       warrantyValidTill: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     };
 
+    // Save locally
     this.user.orders.unshift(newOrder);
     this.saveToStorage('cc_user', this.user);
+
+    // Save to InsForge Postgres backend with user_id (RLS enforced!)
+    try {
+      if (window.insforgeDb) {
+        await window.insforgeDb.insert('orders', [{
+          order_code: orderId,
+          user_id: currentUser.id,
+          customer_name: currentUser.name || currentUser.email,
+          customer_phone: this.user.phone || '+91 94121 82786',
+          product_name: itemsSummary.join(', '),
+          quantity: this.cart.reduce((sum, it) => sum + it.quantity, 0),
+          unit_price_inr: firstItem ? firstItem.price : total,
+          total_inr: total,
+          payment_method: 'Online / COD',
+          status: 'Confirmed',
+          city: this.user.address || 'India'
+        }]);
+        if (window.classicAuth && window.classicAuth.showLucidToast) {
+          window.classicAuth.showLucidToast(`✅ Order ${orderId} saved to InsForge database!`);
+        }
+      }
+    } catch (dbErr) {
+      console.warn('InsForge order sync:', dbErr.message);
+    }
 
     // Empty cart
     this.cart = [];

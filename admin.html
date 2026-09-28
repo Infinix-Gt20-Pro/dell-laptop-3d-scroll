@@ -674,86 +674,146 @@
   </footer>
   
 
+  <!-- InsForge Auth System -->
+  <script src="js/auth-system.js"></script>
+
   <!-- Client-side Admin Dashboard Engine -->
   <script>
     let allUsers = [];
 
     async function fetchBackendData() {
-      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      let apiLoaded = false;
+      // 1. First attempt: Direct from InsForge Postgres API using authenticated token
+      const token = window.classicAuth ? window.classicAuth.getToken() : null;
+      const currentUser = window.classicAuth ? window.classicAuth.getCurrentUser() : null;
 
-      if (isLocal) {
-        try {
-          const statsRes = await fetch('/api/admin/stats');
-          if (statsRes.ok) {
-            const statsData = await statsRes.json();
-            if (statsData.success) {
-              document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
-              document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
-              document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
-              document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
-            }
-          }
-
-          const usersRes = await fetch('/api/admin/users');
-          if (usersRes.ok) {
-            const usersData = await usersRes.json();
-            if (usersData.success) {
-              allUsers = usersData.users;
-              renderUsersTable(allUsers);
-              apiLoaded = true;
-            }
-          }
-
-          const logsRes = await fetch('/api/admin/logs');
-          if (logsRes.ok) {
-            const logsData = await logsRes.json();
-            if (logsData.success) {
-              renderLoginLogs(logsData.logs);
-            }
-          }
-        } catch (err) {
-          console.warn('API route unavailable, using static database.json fallback');
+      // If user is logged in, check role
+      if (currentUser && currentUser.role !== 'admin') {
+        const titleEl = document.querySelector('h1');
+        if (titleEl) {
+          titleEl.innerHTML = `Customer Portal <span class="text-xs px-2 py-0.5 rounded bg-emerald-700 text-white font-mono">YOUR DATA</span>`;
         }
       }
 
-      if (!apiLoaded) {
-        try {
-          const staticRes = await fetch('data/database.json');
-          if (staticRes.ok) {
-            const dbData = await staticRes.json();
-            allUsers = (dbData.users || []).map(({ password, ...u }) => u);
+      let insforgeLoaded = false;
+      const INSFORGE_HOST = 'https://nsr7uvah.us-east.insforge.app';
+      const INSFORGE_ANON = 'anon_340c28e84539db8258bca26b6aef43abda59a48abcb79f25c0efaf6eb3762e18';
+      const authToken = token || INSFORGE_ANON;
 
-            try {
-              const localReg = JSON.parse(localStorage.getItem('cc_registered_users') || '[]');
-              localReg.forEach(lu => {
-                if (!allUsers.some(u => u.email === lu.email)) {
-                  const { password: _, ...safe } = lu;
-                  allUsers.unshift(safe);
-                }
-              });
-            } catch (e) {}
+      try {
+        // Fetch customers table from InsForge (RLS enforced)
+        const custRes = await fetch(`${INSFORGE_HOST}/api/database/records/customers`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
 
+        if (custRes.ok) {
+          const custData = await custRes.json();
+          if (Array.isArray(custData) && custData.length > 0) {
+            allUsers = custData.map(c => ({
+              id: `usr_${c.id}`,
+              name: c.name,
+              email: c.email,
+              phone: c.phone,
+              city: c.city,
+              provider: c.provider || 'database',
+              role: c.role || 'customer',
+              createdAt: c.created_at,
+              loginCount: c.login_count || 1
+            }));
+
+            // Stats from InsForge
             const totalUsers = allUsers.length;
             const googleUsers = allUsers.filter(u => u.provider === 'google').length;
             const dbUsers = allUsers.filter(u => u.provider === 'database').length;
-            
-            let allLogs = [...(dbData.loginLogs || [])];
-            try {
-              const localLogs = JSON.parse(localStorage.getItem('cc_audit_logs') || '[]');
-              allLogs = [...localLogs, ...allLogs];
-            } catch (e) {}
 
             document.getElementById('stat-total-users').textContent = totalUsers;
             document.getElementById('stat-google-users').textContent = googleUsers;
             document.getElementById('stat-db-users').textContent = dbUsers;
-            document.getElementById('stat-total-logins').textContent = allLogs.length;
 
             renderUsersTable(allUsers);
-            renderLoginLogs(allLogs);
+            insforgeLoaded = true;
           }
-        } catch (staticErr) {
-          console.error('Static database load error:', staticErr);
+        }
+
+        // Fetch orders from InsForge (RLS: each user only gets their own records)
+        const ordersRes = await fetch(`${INSFORGE_HOST}/api/database/records/orders`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (ordersRes.ok) {
+          const ordersData = await ordersRes.json();
+          if (Array.isArray(ordersData)) {
+            document.getElementById('stat-total-logins').textContent = ordersData.length;
+            // Render orders into activity logs area
+            renderLoginLogs(ordersData.map(o => ({
+              id: o.order_code,
+              userName: o.customer_name,
+              email: `${o.product_name} (₹${Number(o.total_inr).toLocaleString('en-IN')})`,
+              provider: o.payment_method?.includes('Google') ? 'google' : 'database',
+              status: o.status,
+              timestamp: o.created_at,
+              ip: o.city || 'India'
+            })));
+          }
+        }
+      } catch (insforgeErr) {
+        console.warn('InsForge direct fetch error:', insforgeErr);
+      }
+
+      // 2. Fallback to local server API if running locally and InsForge returned empty
+      if (!insforgeLoaded) {
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        let apiLoaded = false;
+
+        if (isLocal) {
+          try {
+            const statsRes = await fetch('/api/admin/stats');
+            if (statsRes.ok) {
+              const statsData = await statsRes.json();
+              if (statsData.success) {
+                document.getElementById('stat-total-users').textContent = statsData.stats.totalUsers;
+                document.getElementById('stat-google-users').textContent = statsData.stats.googleUsers;
+                document.getElementById('stat-db-users').textContent = statsData.stats.dbUsers;
+                document.getElementById('stat-total-logins').textContent = statsData.stats.totalLogins;
+              }
+            }
+
+            const usersRes = await fetch('/api/admin/users');
+            if (usersRes.ok) {
+              const usersData = await usersRes.json();
+              if (usersData.success) {
+                allUsers = usersData.users;
+                renderUsersTable(allUsers);
+                apiLoaded = true;
+              }
+            }
+
+            const logsRes = await fetch('/api/admin/logs');
+            if (logsRes.ok) {
+              const logsData = await logsRes.json();
+              if (logsData.success) {
+                renderLoginLogs(logsData.logs);
+              }
+            }
+          } catch (err) {
+            console.warn('API route unavailable, using static fallback');
+          }
+        }
+
+        if (!apiLoaded) {
+          try {
+            const staticRes = await fetch('data/database.json');
+            if (staticRes.ok) {
+              const dbData = await staticRes.json();
+              allUsers = (dbData.users || []).map(({ password, ...u }) => u);
+              renderUsersTable(allUsers);
+            }
+          } catch (_) {}
         }
       }
     }

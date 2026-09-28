@@ -296,22 +296,22 @@
               <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
               <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
             </svg>
-            Google 1-Tap
+            Google
           </span>
         </button>
         <button id="tab-btn-database" class="lucid-tab-btn" onclick="window.switchLucidTab('database')">
-          Database Sign In
+          Email Sign In
         </button>
         <button id="tab-btn-register" class="lucid-tab-btn" onclick="window.switchLucidTab('register')">
-          New Account
+          Sign Up
         </button>
       </div>
 
-      <!-- Panel 1: Google Fast Sign-In -->
+      <!-- Panel 1: Google OAuth via InsForge -->
       <div id="tab-panel-google" class="space-y-4">
         <div class="p-3.5 rounded-2xl bg-cyan-50/80 border border-cyan-200/70 text-center">
           <p class="text-xs text-cyan-950 font-medium leading-relaxed">
-            One-tap authentication with your Google Account. Saved securely to our live backend database.
+            Sign in with your Google account — secured by InsForge Auth with row-level data isolation.
           </p>
         </div>
 
@@ -325,45 +325,33 @@
           <span>Continue with Google</span>
         </button>
 
-        <div class="pt-1">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 text-center mb-2">Instant Demo Profiles:</div>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="window.submitGoogleAuth({ name: 'Kashan Ahmad', email: 'kashan@classiccomputers.in', avatar: 'https://api.dicebear.com/7.x/shapes/svg?seed=KashanAdmin' })" 
-                    class="p-2 rounded-xl bg-white/90 border border-slate-200 text-left hover:border-cyan-400 transition-all text-xs font-semibold text-slate-700 flex items-center gap-2 shadow-sm">
-              <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-[10px]">KA</span>
-              <span class="truncate">Kashan (Admin)</span>
-            </button>
-            <button onclick="window.submitGoogleAuth({ name: 'Arjun Verma', email: 'arjun.verma.tech@gmail.com', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ArjunVerma' })" 
-                    class="p-2 rounded-xl bg-white/90 border border-slate-200 text-left hover:border-cyan-400 transition-all text-xs font-semibold text-slate-700 flex items-center gap-2 shadow-sm">
-              <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">AV</span>
-              <span class="truncate">Arjun (Client)</span>
-            </button>
-          </div>
+        <div class="text-center text-[11px] font-mono text-slate-400">
+          You'll be redirected to Google, then right back here.
         </div>
       </div>
 
-      <!-- Panel 2: Database Email Login -->
+      <!-- Panel 2: Email Sign In (InsForge Auth) -->
       <form id="tab-panel-database" class="space-y-3 hidden" onsubmit="window.submitDbLogin(event)">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-          <input type="email" id="login-email" required placeholder="you@example.com" class="lucid-glass-input" value="kashan@classiccomputers.in">
+          <input type="email" id="login-email" required placeholder="you@example.com" class="lucid-glass-input">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-          <input type="password" id="login-password" required placeholder="••••••••" class="lucid-glass-input" value="admin">
+          <input type="password" id="login-password" required placeholder="••••••••" class="lucid-glass-input">
         </div>
 
         <button type="submit" id="btn-db-login-submit" class="lucid-btn-primary lucid-shimmer-sweep mt-2">
-          <span>Sign In to Database →</span>
+          <span>Sign In →</span>
         </button>
 
-        <div class="text-center pt-2">
-          <span class="text-xs text-slate-500">Need a database account?</span>
-          <button type="button" onclick="window.switchLucidTab('register')" class="text-xs text-cyan-600 font-bold hover:underline ml-1">Register now</button>
+        <div class="text-center pt-2 flex items-center justify-center gap-1 text-xs text-slate-500">
+          <span>Don't have an account?</span>
+          <button type="button" onclick="window.switchLucidTab('register')" class="text-cyan-600 font-bold hover:underline">Sign up free</button>
         </div>
       </form>
 
-      <!-- Panel 3: Account Registration -->
+      <!-- Panel 3: Email Sign Up (InsForge Auth) -->
       <form id="tab-panel-register" class="space-y-2.5 hidden" onsubmit="window.submitDbRegister(event)">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-0.5">Full Name</label>
@@ -380,27 +368,32 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-0.5">City</label>
-            <input type="text" id="reg-city" placeholder="e.g. Lucknow, UP" class="lucid-glass-input">
+            <input type="text" id="reg-city" placeholder="e.g. Lucknow" class="lucid-glass-input">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-0.5">Choose Password</label>
+          <label class="block text-xs font-bold text-slate-700 mb-0.5">Password <span class="text-slate-400 font-normal">(min. 6 characters)</span></label>
           <input type="password" id="reg-password" required placeholder="••••••••" class="lucid-glass-input">
         </div>
 
         <button type="submit" id="btn-db-reg-submit" class="lucid-btn-primary lucid-shimmer-sweep mt-2">
-          <span>Create Account & Save to Database →</span>
+          <span>Create Account →</span>
         </button>
+
+        <div class="text-center pt-1 flex items-center justify-center gap-1 text-xs text-slate-500">
+          <span>Already have an account?</span>
+          <button type="button" onclick="window.switchLucidTab('database')" class="text-cyan-600 font-bold hover:underline">Sign in</button>
+        </div>
       </form>
 
-      <!-- Footer Info & Direct Admin Link -->
+      <!-- Footer: InsForge Auth status -->
       <div class="mt-5 pt-3 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
         <span class="flex items-center gap-1.5 font-mono">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Database Online</span>
+          <span>InsForge Auth · Secured</span>
         </span>
         <a href="admin.html" class="text-cyan-700 font-bold hover:underline font-mono">
-          Open Admin Backend →
+          Admin Panel →
         </a>
       </div>
 
