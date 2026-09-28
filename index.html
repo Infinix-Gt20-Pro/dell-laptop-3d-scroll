@@ -401,6 +401,7 @@
   </div>
   
   <script src="js/auth-system.js"></script>
+  <script src="js/storage-system.js"></script>
   
 
   <!-- ===================================================
@@ -1659,9 +1660,39 @@
               </select>
             </div>
 
-            <div class="pt-3">
+            <!-- InsForge Storage File Upload & Record Attachment -->
+            <div>
+              <label class="block text-xs font-mono text-slate-400 mb-1 flex items-center justify-between">
+                <span>Attach Purchase PO / Device Photo / Specs:</span>
+                <span class="text-[10px] text-cyan-400 font-mono font-bold">INSFORGE STORAGE</span>
+              </label>
+              <div id="cfg-upload-dropzone" 
+                   class="border border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-3 bg-slate-900/60 text-center cursor-pointer transition-all">
+                <input type="file" id="cfg-file-input" class="hidden" accept="image/*,.pdf,.doc,.docx,.txt">
+                
+                <div id="cfg-upload-prompt" class="space-y-1 py-1">
+                  <div class="text-sm">📎 <span class="text-xs text-slate-300 font-sans font-medium">Attach PO, spec doc, or photo</span></div>
+                  <div class="text-[9px] text-slate-500 font-mono">Uploads to InsForge Storage bucket <code>attachments</code></div>
+                </div>
+
+                <!-- Attached File Preview -->
+                <div id="cfg-upload-preview" class="hidden flex items-center justify-between gap-2 bg-slate-800 p-2 rounded-lg text-left">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span id="cfg-preview-icon" class="text-lg">📄</span>
+                    <img id="cfg-preview-img" class="w-8 h-8 rounded object-cover border border-slate-600 hidden" alt="Preview">
+                    <div class="min-w-0">
+                      <div id="cfg-file-name" class="text-xs font-mono text-cyan-300 truncate font-bold">document.pdf</div>
+                      <div id="cfg-file-size" class="text-[10px] font-mono text-slate-400">0 KB</div>
+                    </div>
+                  </div>
+                  <button type="button" id="cfg-file-remove" class="text-slate-400 hover:text-red-400 text-xs p-1" title="Remove attachment">✕</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2">
               <button id="reprint-receipt-btn" type="button" class="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-mono font-bold text-xs shadow-lg transition-all flex items-center justify-center gap-2">
-                <span>🖨️ Update & Reprint Receipt Slip</span>
+                <span>🖨️ Update Slip & Attach to Order</span>
               </button>
             </div>
           </div>
@@ -1699,6 +1730,19 @@
               <div class="flex justify-between text-[10px]">
                 <span id="receipt-warranty-label">• 6M Store Warranty</span>
                 <span>FREE</span>
+              </div>
+            </div>
+
+            <!-- Attached Document Line on Receipt Slip -->
+            <div id="receipt-attachment-row" class="hidden py-1.5 border-b border-dashed border-slate-400 text-[10px] bg-amber-100/60 -mx-1 px-1 rounded">
+              <div class="flex items-center justify-between font-bold text-slate-800">
+                <span>• ATTACHED FILE:</span>
+                <span id="receipt-attachment-status" class="text-[9px] px-1 rounded bg-cyan-700 text-white font-mono">READY</span>
+              </div>
+              <div class="flex items-center justify-between pt-0.5">
+                <span id="receipt-attachment-name" class="text-[10px] text-slate-700 truncate max-w-[155px] font-mono">file.pdf</span>
+                <a id="receipt-attachment-link" href="#" target="_blank" rel="noopener noreferrer" 
+                   class="text-cyan-800 font-bold hover:underline text-[9px] ml-1 shrink-0">VIEW ↗</a>
               </div>
             </div>
 
@@ -2112,14 +2156,115 @@
       });
     }
 
-    // Thermal Receipt Calculator Logic
+    // Thermal Receipt & InsForge Storage File Upload Engine
     const ramSelect = document.getElementById('receipt-ram-select');
     const ssdSelect = document.getElementById('receipt-ssd-select');
     const warrantySelect = document.getElementById('receipt-warranty-select');
     const reprintBtn = document.getElementById('reprint-receipt-btn');
     const receiptPaper = document.getElementById('receipt-paper');
 
-    function calculateReceipt() {
+    let selectedCfgFile = null;
+    let uploadedAttachment = null;
+
+    const cfgDropzone = document.getElementById('cfg-upload-dropzone');
+    const cfgFileInput = document.getElementById('cfg-file-input');
+    const cfgPrompt = document.getElementById('cfg-upload-prompt');
+    const cfgPreview = document.getElementById('cfg-upload-preview');
+    const cfgFileName = document.getElementById('cfg-file-name');
+    const cfgFileSize = document.getElementById('cfg-file-size');
+    const cfgPreviewImg = document.getElementById('cfg-preview-img');
+    const cfgPreviewIcon = document.getElementById('cfg-preview-icon');
+    const cfgFileRemove = document.getElementById('cfg-file-remove');
+
+    const receiptAttachmentRow = document.getElementById('receipt-attachment-row');
+    const receiptAttachmentName = document.getElementById('receipt-attachment-name');
+    const receiptAttachmentStatus = document.getElementById('receipt-attachment-status');
+    const receiptAttachmentLink = document.getElementById('receipt-attachment-link');
+
+    if (cfgDropzone && cfgFileInput) {
+      cfgDropzone.addEventListener('click', (e) => {
+        if (e.target !== cfgFileRemove && !cfgFileRemove?.contains(e.target)) {
+          cfgFileInput.click();
+        }
+      });
+
+      cfgFileInput.addEventListener('change', () => {
+        if (cfgFileInput.files && cfgFileInput.files[0]) {
+          setCfgFile(cfgFileInput.files[0]);
+        }
+      });
+
+      // Drag & drop support
+      ['dragenter', 'dragover'].forEach(name => {
+        cfgDropzone.addEventListener(name, (e) => {
+          e.preventDefault();
+          cfgDropzone.classList.add('border-cyan-400', 'bg-cyan-950/20');
+        });
+      });
+      ['dragleave', 'drop'].forEach(name => {
+        cfgDropzone.addEventListener(name, (e) => {
+          e.preventDefault();
+          cfgDropzone.classList.remove('border-cyan-400', 'bg-cyan-950/20');
+        });
+      });
+      cfgDropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          setCfgFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      function setCfgFile(file) {
+        selectedCfgFile = file;
+        uploadedAttachment = null;
+        if (cfgFileName) cfgFileName.textContent = file.name;
+        const fmtSize = window.insforgeStorage ? window.insforgeStorage.formatFileSize(file.size) : `${Math.round(file.size/1024)} KB`;
+        if (cfgFileSize) cfgFileSize.textContent = fmtSize;
+
+        if (file.type && file.type.startsWith('image/')) {
+          const r = new FileReader();
+          r.onload = (e) => {
+            if (cfgPreviewImg) {
+              cfgPreviewImg.src = e.target.result;
+              cfgPreviewImg.classList.remove('hidden');
+            }
+            if (cfgPreviewIcon) cfgPreviewIcon.classList.add('hidden');
+          };
+          r.readAsDataURL(file);
+        } else {
+          if (cfgPreviewImg) cfgPreviewImg.classList.add('hidden');
+          if (cfgPreviewIcon) cfgPreviewIcon.classList.remove('hidden');
+        }
+
+        if (cfgPrompt) cfgPrompt.classList.add('hidden');
+        if (cfgPreview) cfgPreview.classList.remove('hidden');
+
+        // Update receipt slip with attached file preview
+        if (receiptAttachmentRow) receiptAttachmentRow.classList.remove('hidden');
+        if (receiptAttachmentName) receiptAttachmentName.textContent = file.name;
+        if (receiptAttachmentStatus) {
+          receiptAttachmentStatus.textContent = 'READY';
+          receiptAttachmentStatus.className = 'text-[9px] px-1 rounded bg-cyan-700 text-white font-mono';
+        }
+        if (receiptAttachmentLink) {
+          receiptAttachmentLink.textContent = 'UPLOAD 🖨️';
+          receiptAttachmentLink.removeAttribute('href');
+        }
+      }
+
+      if (cfgFileRemove) {
+        cfgFileRemove.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectedCfgFile = null;
+          uploadedAttachment = null;
+          cfgFileInput.value = '';
+          if (cfgPrompt) cfgPrompt.classList.remove('hidden');
+          if (cfgPreview) cfgPreview.classList.add('hidden');
+          if (receiptAttachmentRow) receiptAttachmentRow.classList.add('hidden');
+        });
+      }
+    }
+
+    async function calculateReceipt() {
       let basePrice = 34999;
       let ramCost = 0;
       let ssdCost = 0;
@@ -2151,8 +2296,73 @@
       if (warLabel) warLabel.textContent = '• ' + warVal + 'M ' + (warVal === '12' ? 'Extended Protection' : 'Store Replacement');
       if (totalElem) totalElem.textContent = '₹' + total.toLocaleString('en-IN');
 
+      // ── Handle InsForge Storage File Upload & Record Attachment ──
+      if (selectedCfgFile && !uploadedAttachment && window.insforgeStorage) {
+        const origBtnText = reprintBtn ? reprintBtn.innerHTML : '';
+        if (reprintBtn) reprintBtn.innerHTML = `<span>⏳ Uploading to InsForge Storage...</span>`;
+
+        try {
+          const res = await window.insforgeStorage.uploadFile(selectedCfgFile, 'attachments');
+          uploadedAttachment = res;
+
+          // Update thermal receipt slip with live InsForge CDN link
+          if (receiptAttachmentRow) receiptAttachmentRow.classList.remove('hidden');
+          if (receiptAttachmentName) receiptAttachmentName.textContent = res.name;
+          if (receiptAttachmentStatus) {
+            receiptAttachmentStatus.textContent = 'SAVED';
+            receiptAttachmentStatus.className = 'text-[9px] px-1 rounded bg-emerald-700 text-white font-mono';
+          }
+          if (receiptAttachmentLink) {
+            receiptAttachmentLink.href = res.url;
+            receiptAttachmentLink.textContent = 'VIEW ↗';
+          }
+
+          // Save / Record Order with attachment in InsForge Database
+          const currentUser = window.classicAuth ? window.classicAuth.getCurrentUser() : null;
+          const token = window.classicAuth ? window.classicAuth.getToken() : null;
+          const orderCode = `CC-CFG-${Math.floor(1000 + Math.random() * 9000)}`;
+
+          if (window.insforgeDb) {
+            await window.insforgeDb.insert('orders', [{
+              order_code: orderCode,
+              user_id: currentUser ? currentUser.id : null,
+              customer_name: currentUser ? (currentUser.name || currentUser.email) : 'Store Client (Custom Studio)',
+              customer_phone: '+91 94121 82786',
+              product_name: `Dell Precision 5530 (${ramVal}GB RAM, ${ssdVal}GB NVMe, ${warVal}M Warranty)`,
+              quantity: 1,
+              unit_price_inr: total,
+              total_inr: total,
+              payment_method: 'Custom Quote / WhatsApp',
+              status: 'Pending',
+              city: 'Etah / Pan-India',
+              attachment_url: res.url,
+              attachment_key: res.key,
+              attachment_name: res.name
+            }]);
+          }
+
+          const orderNoEl = document.getElementById('receipt-order-no');
+          if (orderNoEl) orderNoEl.textContent = orderCode;
+
+          if (window.classicAuth && window.classicAuth.showLucidToast) {
+            window.classicAuth.showLucidToast(`✅ "${res.name}" attached to order ${orderCode} in InsForge Storage!`);
+          }
+        } catch (uploadErr) {
+          console.error('Configurator upload error:', uploadErr);
+          if (window.classicAuth && window.classicAuth.showLucidToast) {
+            window.classicAuth.showLucidToast(`Upload error: ${uploadErr.message}`, 'error');
+          }
+        } finally {
+          if (reprintBtn && origBtnText) reprintBtn.innerHTML = origBtnText;
+        }
+      }
+
       if (waLink) {
-        const text = 'Hi Classic Computers, I want to order Dell Precision 5530 with ' + ramVal + 'GB RAM, ' + (ssdVal >= 1024 ? (ssdVal/1024) + 'TB' : ssdVal + 'GB') + ' SSD, and ' + warVal + 'M warranty for Rs ' + total.toLocaleString('en-IN') + '. Please confirm delivery details.';
+        let text = 'Hi Classic Computers, I configured Dell Precision 5530 with ' + ramVal + 'GB RAM, ' + (ssdVal >= 1024 ? (ssdVal/1024) + 'TB' : ssdVal + 'GB') + ' SSD, and ' + warVal + 'M warranty for Rs ' + total.toLocaleString('en-IN') + '.';
+        if (uploadedAttachment) {
+          text += ' I have also attached my document/specs: ' + uploadedAttachment.url;
+        }
+        text += ' Please confirm availability and dispatch!';
         waLink.href = 'https://wa.me/919412182786?text=' + encodeURIComponent(text);
       }
 

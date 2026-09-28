@@ -518,7 +518,144 @@
       </div>
     </div>
 
-    <!-- Section 2: Real-Time Authentication Audit Stream -->
+    <!-- Section 2: Orders & File Attachments (InsForge Storage) -->
+    <div class="mb-14" id="orders-attachments-section">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+            <span>Orders & Document Attachments</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-900/60 border border-cyan-700/60 text-cyan-300 font-mono" id="orders-count-badge">0 Orders</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1 font-mono">File uploads stored securely in InsForge Storage bucket <code>attachments</code></p>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs font-mono">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800 border border-slate-700 text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span>Bucket: <strong>attachments</strong> (Public CDN)</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left: Orders & Attached Files Table (2 Cols) -->
+        <div class="lg:col-span-2">
+          <div class="lucid-table-container !bg-slate-800/80 !border-slate-700/80 overflow-x-auto shadow-2xl">
+            <table class="w-full text-left text-xs font-sans">
+              <thead class="bg-slate-900/90 text-slate-400 font-mono text-[11px] uppercase tracking-wider border-b border-slate-700/80">
+                <tr>
+                  <th class="px-5 py-3.5">Order</th>
+                  <th class="px-5 py-3.5">Customer</th>
+                  <th class="px-5 py-3.5">Device</th>
+                  <th class="px-5 py-3.5">Total</th>
+                  <th class="px-5 py-3.5">Status</th>
+                  <th class="px-5 py-3.5">Attachment (InsForge Storage)</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body" class="divide-y divide-slate-700/60 text-slate-300">
+                <tr>
+                  <td colspan="6" class="px-5 py-8 text-center text-slate-400 font-mono">
+                    <span class="inline-block animate-spin mr-2">⏳</span> Loading orders and attachments...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: File Upload & Attachment Station (1 Col) -->
+        <div>
+          <div class="ios27-glass-card !bg-slate-800/80 !border-slate-700/80 p-5 rounded-3xl space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-700/80 pb-3">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <span>📎 Attach File to Record</span>
+              </h3>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono font-bold">INSFORGE STORAGE</span>
+            </div>
+
+            <!-- Target Record Selector -->
+            <div>
+              <label class="block text-xs font-mono text-slate-300 mb-1 font-semibold">1. Select Target Record:</label>
+              <select id="storage-target-record" class="w-full bg-slate-900 text-white text-xs font-mono p-2.5 rounded-xl border border-slate-700 focus:border-cyan-400 outline-none">
+                <option value="">-- Choose Order to Attach File --</option>
+              </select>
+            </div>
+
+            <!-- Drag & Drop Upload Zone -->
+            <div>
+              <label class="block text-xs font-mono text-slate-300 mb-1 font-semibold">2. Choose or Drop File:</label>
+              <div id="storage-dropzone" 
+                   class="border-2 border-dashed border-slate-700 hover:border-cyan-400/70 rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-900/50 hover:bg-slate-900/80">
+                <input type="file" id="storage-file-input" class="hidden" accept="image/*,.pdf,.doc,.docx,.txt">
+                
+                <div id="dropzone-empty-state" class="space-y-1.5 py-2">
+                  <div class="w-10 h-10 mx-auto rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl">
+                    📁
+                  </div>
+                  <div class="text-xs font-bold text-slate-200">Click or drag & drop file</div>
+                  <div class="text-[10px] text-slate-400 font-mono">Invoice, Receipt, PO, or Device Photo (Max 50MB)</div>
+                </div>
+
+                <!-- Live File Preview inside Dropzone -->
+                <div id="dropzone-file-preview" class="hidden text-left space-y-2">
+                  <div class="flex items-center gap-3 bg-slate-800/90 p-2.5 rounded-xl border border-slate-700">
+                    <!-- Image or Document Icon -->
+                    <div id="preview-thumbnail-container" class="w-12 h-12 rounded-lg bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden border border-slate-700">
+                      <span id="preview-generic-icon" class="text-2xl">📄</span>
+                      <img id="preview-image-elem" class="w-full h-full object-cover hidden" alt="File preview">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <div id="preview-file-name" class="text-xs font-bold text-white truncate font-mono">filename.png</div>
+                      <div id="preview-file-meta" class="text-[10px] text-cyan-400 font-mono mt-0.5">142 KB • image/png</div>
+                    </div>
+                    <button type="button" id="btn-remove-selected-file" class="text-slate-400 hover:text-red-400 p-1 text-sm transition-colors" title="Remove File">
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Upload Action Button -->
+            <button type="button" id="btn-upload-storage" onclick="window.handleStorageUpload()" 
+                    class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-mono font-bold text-xs shadow-lg transition-all flex items-center justify-center gap-2">
+              <span>🚀 Upload to InsForge Storage & Attach</span>
+            </button>
+
+            <!-- Latest Upload UI Display Card -->
+            <div id="latest-upload-card" class="hidden p-3.5 rounded-2xl bg-cyan-950/40 border border-cyan-500/40 space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-mono">
+                <span class="text-emerald-400 font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  Uploaded & Attached!
+                </span>
+                <span id="latest-upload-time" class="text-slate-400">Just now</span>
+              </div>
+              <div class="text-xs font-mono text-white font-bold truncate" id="latest-upload-name">file.pdf</div>
+              <div class="text-[10px] text-slate-400 font-mono truncate" id="latest-upload-key">Key: -</div>
+              
+              <!-- Direct links and copy -->
+              <div class="pt-1 flex items-center gap-2">
+                <a id="latest-upload-view-btn" href="#" target="_blank" rel="noopener noreferrer" 
+                   class="flex-1 py-1.5 px-3 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-mono text-[11px] font-bold text-center transition-all flex items-center justify-center gap-1">
+                  <span>View in Storage ↗</span>
+                </a>
+                <button type="button" id="latest-upload-copy-btn" onclick="window.copyLatestUploadUrl()"
+                        class="py-1.5 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-[11px] border border-slate-700 transition-all">
+                  📋 Copy URL
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section 3: Real-Time Authentication Audit Stream -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
       <!-- Login Activity Log (2 Cols) -->
@@ -674,12 +811,15 @@
   </footer>
   
 
-  <!-- InsForge Auth System -->
+  <!-- InsForge Auth & Storage Systems -->
   <script src="js/auth-system.js"></script>
+  <script src="js/storage-system.js"></script>
 
   <!-- Client-side Admin Dashboard Engine -->
   <script>
     let allUsers = [];
+    let allOrders = [];
+    let selectedUploadFile = null;
 
     async function fetchBackendData() {
       // 1. First attempt: Direct from InsForge Postgres API using authenticated token
@@ -748,7 +888,13 @@
         if (ordersRes.ok) {
           const ordersData = await ordersRes.json();
           if (Array.isArray(ordersData)) {
+            allOrders = ordersData;
             document.getElementById('stat-total-logins').textContent = ordersData.length;
+            
+            // Render Orders & Attachments Table
+            renderOrdersTable(allOrders);
+            populateRecordSelector(allOrders);
+
             // Render orders into activity logs area
             renderLoginLogs(ordersData.map(o => ({
               id: o.order_code,
@@ -991,10 +1137,302 @@
         googleId: 'g_' + Date.now()
       });
 
-      fetchBackendData();
+    // --- Orders & InsForge Storage Attachments Rendering ---
+    function renderOrdersTable(orders) {
+      const tbody = document.getElementById('orders-table-body');
+      const badge = document.getElementById('orders-count-badge');
+      if (badge) badge.textContent = `${orders.length} Orders`;
+      if (!tbody) return;
+
+      if (!orders || orders.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="px-5 py-8 text-center text-slate-400 font-mono">
+              No orders found in database.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => {
+        const hasAttachment = Boolean(o.attachment_url);
+        const attachmentHtml = hasAttachment
+          ? `
+            <div class="flex items-center gap-2">
+              <a href="${o.attachment_url}" target="_blank" rel="noopener noreferrer" 
+                 class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/50 text-cyan-300 font-mono text-[11px] font-bold transition-all shadow-sm group" 
+                 title="View file in InsForge Storage: ${o.attachment_key || ''}">
+                <span class="group-hover:scale-110 transition-transform">📎</span>
+                <span class="max-w-[130px] sm:max-w-[170px] truncate">${o.attachment_name || o.attachment_key || 'Attached File'}</span>
+                <span class="text-[9px] text-cyan-400 font-normal">↗</span>
+              </a>
+              <button onclick="window.selectOrderForAttachment('${o.order_code}')" class="text-[10px] font-mono text-slate-500 hover:text-cyan-400 underline transition-colors" title="Replace file">
+                Change
+              </button>
+            </div>
+          `
+          : `
+            <button onclick="window.selectOrderForAttachment('${o.order_code}')" 
+                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-cyan-300 text-[11px] font-mono transition-all">
+              <span>+ Attach File</span>
+            </button>
+          `;
+
+        const totalFmt = Number(o.total_inr || 0).toLocaleString('en-IN');
+        const statusColors = {
+          'Delivered': 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40',
+          'Dispatched': 'bg-blue-950/60 text-blue-300 border-blue-500/40',
+          'Confirmed': 'bg-cyan-950/60 text-cyan-300 border-cyan-500/40',
+          'Pending': 'bg-amber-950/60 text-amber-300 border-amber-500/40'
+        };
+        const statusClass = statusColors[o.status] || 'bg-slate-800 text-slate-300 border-slate-700';
+
+        return `
+          <tr class="lucid-table-row hover:bg-slate-800/50 transition-colors">
+            <td class="px-5 py-4 font-mono font-bold text-cyan-400">
+              ${o.order_code}
+            </td>
+            <td class="px-5 py-4">
+              <div class="font-bold text-white text-xs">${o.customer_name || 'Customer'}</div>
+              <div class="text-[10px] text-slate-400 font-mono">${o.customer_phone || o.city || 'India'}</div>
+            </td>
+            <td class="px-5 py-4 text-slate-200">
+              <div class="truncate max-w-[200px]" title="${o.product_name}">${o.product_name}</div>
+            </td>
+            <td class="px-5 py-4 font-mono font-bold text-white">
+              ₹${totalFmt}
+            </td>
+            <td class="px-5 py-4">
+              <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-mono font-bold ${statusClass}">
+                ${o.status}
+              </span>
+            </td>
+            <td class="px-5 py-4">
+              ${attachmentHtml}
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    document.addEventListener('DOMContentLoaded', fetchBackendData);
+    function populateRecordSelector(orders) {
+      const select = document.getElementById('storage-target-record');
+      if (!select) return;
+
+      const currentVal = select.value;
+      select.innerHTML = '<option value="">-- Choose Order to Attach File --</option>' + 
+        orders.map(o => `
+          <option value="${o.order_code}">
+            ${o.order_code} • ${o.customer_name || 'Client'} (${o.product_name.slice(0, 28)}...)
+          </option>
+        `).join('');
+
+      if (currentVal) select.value = currentVal;
+    }
+
+    window.selectOrderForAttachment = function(orderCode) {
+      const select = document.getElementById('storage-target-record');
+      if (select) {
+        select.value = orderCode;
+        select.classList.add('border-cyan-400', 'ring-2', 'ring-cyan-500/30');
+        setTimeout(() => select.classList.remove('ring-2', 'ring-cyan-500/30'), 1500);
+      }
+      const section = document.getElementById('orders-attachments-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const dropzone = document.getElementById('storage-dropzone');
+      if (dropzone) dropzone.click();
+    };
+
+    // --- Drag & Drop Uploader Setup ---
+    function setupStorageUploader() {
+      const dropzone = document.getElementById('storage-dropzone');
+      const fileInput = document.getElementById('storage-file-input');
+      const emptyState = document.getElementById('dropzone-empty-state');
+      const previewState = document.getElementById('dropzone-file-preview');
+      const previewImg = document.getElementById('preview-image-elem');
+      const previewIcon = document.getElementById('preview-generic-icon');
+      const fileNameEl = document.getElementById('preview-file-name');
+      const fileMetaEl = document.getElementById('preview-file-meta');
+      const removeBtn = document.getElementById('btn-remove-selected-file');
+
+      if (!dropzone || !fileInput) return;
+
+      dropzone.addEventListener('click', (e) => {
+        if (e.target !== removeBtn && !removeBtn.contains(e.target)) {
+          fileInput.click();
+        }
+      });
+
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files && fileInput.files[0]) {
+          handleFileSelection(fileInput.files[0]);
+        }
+      });
+
+      // Drag & Drop
+      ['dragenter', 'dragover'].forEach(name => {
+        dropzone.addEventListener(name, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('border-cyan-400', 'bg-cyan-950/20');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        dropzone.addEventListener(name, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('border-cyan-400', 'bg-cyan-950/20');
+        });
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        if (dt && dt.files && dt.files[0]) {
+          handleFileSelection(dt.files[0]);
+        }
+      });
+
+      function handleFileSelection(file) {
+        selectedUploadFile = file;
+        fileNameEl.textContent = file.name;
+        const fmtSize = window.insforgeStorage ? window.insforgeStorage.formatFileSize(file.size) : `${Math.round(file.size/1024)} KB`;
+        fileMetaEl.textContent = `${fmtSize} • ${file.type || 'document'}`;
+
+        if (file.type && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            previewImg.classList.remove('hidden');
+            previewIcon.classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        } else {
+          previewImg.classList.add('hidden');
+          previewIcon.classList.remove('hidden');
+        }
+
+        emptyState.classList.add('hidden');
+        previewState.classList.remove('hidden');
+      }
+
+      if (removeBtn) {
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectedUploadFile = null;
+          fileInput.value = '';
+          emptyState.classList.remove('hidden');
+          previewState.classList.add('hidden');
+        });
+      }
+    }
+
+    // --- Main File Upload & Record Attachment Execution ---
+    window.handleStorageUpload = async function() {
+      const select = document.getElementById('storage-target-record');
+      const orderCode = select ? select.value : '';
+      const btn = document.getElementById('btn-upload-storage');
+
+      if (!selectedUploadFile) {
+        if (window.classicAuth) window.classicAuth.showLucidToast('Please select or drop a file to upload.', 'error');
+        return;
+      }
+      if (!orderCode) {
+        if (window.classicAuth) window.classicAuth.showLucidToast('Please select a target order to attach this file to.', 'error');
+        if (select) select.focus();
+        return;
+      }
+
+      if (!window.insforgeStorage) {
+        if (window.classicAuth) window.classicAuth.showLucidToast('Storage engine is still loading. Please try again.', 'error');
+        return;
+      }
+
+      const origBtnHtml = btn.innerHTML;
+      btn.innerHTML = `<span class="animate-spin inline-block mr-1">⏳</span> Uploading to InsForge Storage...`;
+      btn.disabled = true;
+
+      try {
+        // 1. Upload to InsForge Storage bucket 'attachments'
+        const uploadResult = await window.insforgeStorage.uploadFile(selectedUploadFile, 'attachments');
+
+        // 2. Attach to chosen Order record in InsForge Postgres Database
+        const INSFORGE_HOST = 'https://nsr7uvah.us-east.insforge.app';
+        const INSFORGE_ANON = 'anon_340c28e84539db8258bca26b6aef43abda59a48abcb79f25c0efaf6eb3762e18';
+        const token = (window.classicAuth && window.classicAuth.getToken()) || INSFORGE_ANON;
+
+        const patchRes = await fetch(`${INSFORGE_HOST}/api/database/records/orders?order_code=eq.${encodeURIComponent(orderCode)}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            attachment_url: uploadResult.url,
+            attachment_key: uploadResult.key,
+            attachment_name: uploadResult.name
+          })
+        });
+
+        if (!patchRes.ok) {
+          console.warn('Database record patch returned non-200, checking result');
+        }
+
+        // 3. Display the uploaded file in the UI Card
+        const card = document.getElementById('latest-upload-card');
+        const nameEl = document.getElementById('latest-upload-name');
+        const keyEl = document.getElementById('latest-upload-key');
+        const timeEl = document.getElementById('latest-upload-time');
+        const viewBtn = document.getElementById('latest-upload-view-btn');
+
+        if (card && nameEl && keyEl && viewBtn) {
+          nameEl.textContent = `${uploadResult.name} (${window.insforgeStorage.formatFileSize(uploadResult.size)})`;
+          keyEl.textContent = `Attached to ${orderCode} • Key: ${uploadResult.key}`;
+          timeEl.textContent = new Date().toLocaleTimeString();
+          viewBtn.href = uploadResult.url;
+          window._latestUploadUrl = uploadResult.url;
+          card.classList.remove('hidden');
+        }
+
+        if (window.classicAuth) {
+          window.classicAuth.showLucidToast(`✅ "${uploadResult.name}" uploaded to InsForge Storage and attached to order ${orderCode}!`);
+        }
+
+        // 4. Refresh orders list to show the new attachment badge immediately
+        await fetchBackendData();
+
+        // Reset dropzone
+        selectedUploadFile = null;
+        const fileInput = document.getElementById('storage-file-input');
+        if (fileInput) fileInput.value = '';
+        const emptyState = document.getElementById('dropzone-empty-state');
+        const previewState = document.getElementById('dropzone-file-preview');
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (previewState) previewState.classList.add('hidden');
+
+      } catch (err) {
+        console.error('Upload error:', err);
+        if (window.classicAuth) {
+          window.classicAuth.showLucidToast(`Upload failed: ${err.message}`, 'error');
+        }
+      } finally {
+        btn.innerHTML = origBtnHtml;
+        btn.disabled = false;
+      }
+    };
+
+    window.copyLatestUploadUrl = function() {
+      if (window._latestUploadUrl) {
+        navigator.clipboard.writeText(window._latestUploadUrl);
+        if (window.classicAuth) window.classicAuth.showLucidToast('📋 Storage URL copied to clipboard!');
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupStorageUploader();
+      fetchBackendData();
+    });
   </script>
 </body>
 </html>
