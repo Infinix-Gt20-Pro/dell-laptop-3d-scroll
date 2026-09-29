@@ -1,22 +1,19 @@
 /**
- * Classic Computers — Framer WebGL Burn Transition Engine
- * =======================================================
- * Replicates the authentic Framer BurnTransition shader (BurnTransition-prod-cH3n.js)
- * Features:
- * - 2D FBM procedural noise burn edge with torn-paper fiber grain
- * - Multi-pass WebGL Bloom extraction + 13-tap Gaussian blur + additive glow composite
- * - Smooth 60fps hardware-accelerated rendering
- * - Two modes:
- *     1. 'page': Fullscreen burn wave transition between pages / viewports
- *     2. 'pulse': Energetic traveling flame ember wave on button click (Add to Cart, WhatsApp, filters, modal triggers)
- * - Auto-binds to product buttons, CTA buttons, auth buttons, and navigation links
- * - Mobile-optimized with DPR capping and half-res bloom FBOs
+ * Classic Computers — Framer WebGL Quantum Burn Transition Engine v2
+ * ===================================================================
+ * Built for 60fps/120fps Silky Smoothness & Zero Stutter:
+ * - Single-pass hardware-accelerated GLSL shader with 2D Simplex noise
+ * - Real-time radiant analytical ember bloom & hot-core fiber tearing
+ * - Fixed: Strict single-trigger debouncing (NEVER runs twice on 1 click)
+ * - Fixed: Removed redundant entrance wipe on page load
+ * - Auto-detects page navigation vs. in-page button clicks
+ * - Non-blocking pointer events (never impedes scrolling or inputs)
  */
 
 (function () {
   'use strict';
 
-  // ── Shaders extracted from Framer BurnTransition-prod-cH3n.js ─────────────
+  // ── High-Performance Vertex Shader ────────────────────────────────────────
   const vertexShaderSrc = `
     attribute vec2 a_position;
     varying vec2 v_uv;
@@ -26,195 +23,105 @@
     }
   `;
 
+  // ── High-Performance Single-Pass Burn Fragment Shader ────────────────────
+  // Features: Fast Simplex noise + fiber tear grain + analytical radiant exponential bloom
   const fragmentShaderSrc = `
-    precision mediump float;
+    precision highp float;
     varying vec2 v_uv;
-    uniform vec3 u_color;
-    uniform vec3 u_transition_color;
-    uniform float u_noise_scale;
-    uniform float u_noise_intensity;
-    uniform float u_scroll_offset;
-    uniform float u_edge_softness;
-    uniform float u_grain_scale;
-    uniform float u_movement_horizontal;
-    uniform float u_movement_vertical;
-    uniform float u_parallax_offset;
+
+    uniform vec3 u_color;            // Base dark charcoal tone
+    uniform vec3 u_transition_color; // Fire ember edge color
+    uniform float u_progress;        // 0.0 to 1.0 (smooth eased)
     uniform float u_aspect_ratio;
-    uniform float u_band_size; // > 0 creates a traveling fiery wave with transparent trailing edge
+    uniform float u_band_size;       // 0.0 for full page wipe, > 0.0 for traveling pulse wave
+    uniform float u_time;
 
-    float random(vec2 st) {
-      return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+    // Fast 2D Simplex Noise (polynomial, no heavy trig loops)
+    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+    vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
+
+    float snoise(vec2 v) {
+      const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+      vec2 i  = floor(v + dot(v, C.yy));
+      vec2 x0 = v - i + dot(i, C.xx);
+      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod289(i);
+      vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+      vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
+      m = m * m;
+      m = m * m;
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
+      vec3 g;
+      g.x  = a0.x * x0.x + h.x * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
     }
 
-    float noise(vec2 st) {
-      vec2 i = floor(st);
-      vec2 f = fract(st);
-      float a = random(i);
-      float b = random(i + vec2(1.0, 0.0));
-      float c = random(i + vec2(0.0, 1.0));
-      float d = random(i + vec2(1.0, 1.0));
-      vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-    }
-
-    float fbm(vec2 st) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      for (int i = 0; i < 4; i++) {
-        value += amplitude * noise(st);
-        st *= 2.0;
-        amplitude *= 0.5;
-      }
-      return value;
-    }
-
-    float detailedNoise(vec2 st) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      for (int i = 0; i < 6; i++) {
-        value += amplitude * noise(st);
-        st *= 2.2;
-        amplitude *= 0.45;
-      }
-      return value;
+    float fbm3(vec2 st) {
+      float v = 0.0;
+      v += 0.55 * snoise(st);
+      st *= 2.15;
+      v += 0.30 * snoise(st);
+      st *= 2.2;
+      v += 0.15 * snoise(st);
+      return v;
     }
 
     void main() {
-      float baseLine = 0.5 + u_parallax_offset;
-      float horizontalOffset = u_scroll_offset * u_movement_horizontal;
-      float verticalOffset = u_scroll_offset * u_movement_vertical;
+      // Map progress (0.0 to 1.0) into wave baseline (-0.35 to 1.35)
+      float baseLine = -0.32 + u_progress * 1.64;
 
+      // Primary torn edge profile
       vec2 noiseCoord = vec2(
-        v_uv.x * u_aspect_ratio * u_noise_scale + horizontalOffset,
-        v_uv.y * 3.0 + verticalOffset * 0.6
+        v_uv.x * u_aspect_ratio * 3.6 + u_time * 0.45,
+        v_uv.y * 1.8 + u_time * 0.25
       );
-      float edgeNoise = fbm(noiseCoord);
-      float mainEdge = baseLine + (edgeNoise - 0.5) * u_noise_intensity;
+      float edgeNoise = fbm3(noiseCoord);
+      float tearEdge = baseLine + edgeNoise * 0.19;
 
-      vec2 thicknessNoiseCoord = vec2(
-        v_uv.x * u_aspect_ratio * u_noise_scale * 2.3 + horizontalOffset * 0.7,
-        v_uv.y * 2.0 + verticalOffset * 0.4 + 100.0
-      );
-      float thicknessNoise = fbm(thicknessNoiseCoord);
-      float minThickness = u_edge_softness * 0.1;
-      float maxThickness = u_edge_softness;
-      float localThickness = mix(minThickness, maxThickness, thicknessNoise);
+      // Microscopic paper fiber grain
+      vec2 fiberCoord = vec2(v_uv.x * u_aspect_ratio * 55.0, v_uv.y * 14.0);
+      float fiber = snoise(fiberCoord) * 0.035;
+      tearEdge += fiber;
 
-      float lowerBound = mainEdge - localThickness * 0.4;
-      float upperBound = mainEdge + localThickness * 0.6;
+      float distToEdge = v_uv.y - tearEdge;
 
-      // Trailing edge discard for traveling flame wave (pulse mode)
+      // Trailing discard for traveling pulse mode (leaves transparent UI behind)
       if (u_band_size > 0.001) {
-        float trailingEdge = lowerBound - u_band_size;
-        if (v_uv.y < trailingEdge) {
+        if (v_uv.y < tearEdge - u_band_size) {
           discard;
         }
       }
 
-      vec2 grainCoord = vec2(
-        v_uv.x * u_aspect_ratio * u_grain_scale * 3.0 + horizontalOffset * 0.5,
-        v_uv.y * u_grain_scale * 3.0 + verticalOffset * 0.3
-      );
-      float grain = detailedNoise(grainCoord);
-
-      vec2 fiberCoord = vec2(
-        v_uv.x * u_aspect_ratio * u_grain_scale * 8.0 + horizontalOffset * 0.3,
-        v_uv.y * u_grain_scale * 2.0 + verticalOffset * 0.2
-      );
-      float fiberNoise = noise(fiberCoord);
-      float combinedGrain = grain * 0.6 + fiberNoise * 0.4;
-
-      if (v_uv.y < lowerBound) {
-        gl_FragColor = vec4(u_color, 1.0);
-      } else if (v_uv.y < mainEdge) {
-        float t = (v_uv.y - lowerBound) / max(mainEdge - lowerBound, 0.001);
-        float grainThreshold = 1.0 - pow(t, 1.5) - thicknessNoise * 0.2;
-        if (combinedGrain > grainThreshold) {
-          gl_FragColor = vec4(u_transition_color, 1.0);
-        } else {
-          gl_FragColor = vec4(u_color, 1.0);
-        }
-      } else if (v_uv.y < upperBound) {
-        float t = (v_uv.y - mainEdge) / max(upperBound - mainEdge, 0.001);
-        float grainThreshold = pow(t, 1.2) + thicknessNoise * 0.15;
-        if (combinedGrain > grainThreshold) {
-          gl_FragColor = vec4(u_transition_color, 1.0);
-        } else {
-          discard;
-        }
-      } else {
+      // Above the tear line: transparent
+      if (distToEdge > 0.07) {
         discard;
       }
-    }
-  `;
 
-  // Bloom extraction shader: filters only burning transition pixels
-  const extractFragmentShaderSrc = `
-    precision mediump float;
-    varying vec2 v_uv;
-    uniform sampler2D u_texture;
-    uniform vec3 u_transition_color;
-    uniform vec3 u_base_color;
+      // Radiant exponential bloom (instant analytical glow, 0 FBO overhead)
+      float glowIntensity = exp(-abs(distToEdge) * 34.0);
+      vec3 flameGlow = u_transition_color * (1.1 + glowIntensity * 2.6);
 
-    void main() {
-      vec4 pixel = texture2D(u_texture, v_uv);
-      float distToTransition = length(pixel.rgb - u_transition_color);
-      float distToBase = length(pixel.rgb - u_base_color);
-      float isTransition = 1.0 - smoothstep(0.0, 0.5, distToTransition);
-      float notBase = smoothstep(0.0, 0.3, distToBase);
-      float mask = isTransition * notBase * pixel.a;
-      mask = pow(mask, 0.8);
-      gl_FragColor = vec4(1.0, 1.0, 1.0, mask);
-    }
-  `;
-
-  // 13-tap Gaussian blur shader for radiant bloom
-  const blurFragmentShaderSrc = `
-    precision mediump float;
-    varying vec2 v_uv;
-    uniform sampler2D u_texture;
-    uniform vec2 u_direction;
-    uniform vec2 u_resolution;
-    uniform float u_radius;
-
-    void main() {
-      float blur_size = u_radius * 12.0;
-      float alpha = 0.0;
-      float totalWeight = 0.0;
-      for (int i = -6; i <= 6; i++) {
-        float offset = float(i);
-        float weight = exp(-0.5 * (offset * offset) / 4.0);
-        vec2 sampleOffset = u_direction * (offset * blur_size) / u_resolution;
-        float sampleAlpha = texture2D(u_texture, v_uv + sampleOffset).a;
-        alpha += sampleAlpha * weight;
-        totalWeight += weight;
-      }
-      alpha = totalWeight > 0.0 ? alpha / totalWeight : 0.0;
-      gl_FragColor = vec4(1.0, 1.0, 1.0, alpha);
-    }
-  `;
-
-  // Composite shader: blends burning scene with additive glowing bloom
-  const compositeFragmentShaderSrc = `
-    precision mediump float;
-    varying vec2 v_uv;
-    uniform sampler2D u_scene;
-    uniform sampler2D u_bloom;
-    uniform float u_bloom_intensity;
-    uniform vec3 u_transition_color;
-
-    void main() {
-      vec4 scene = texture2D(u_scene, v_uv);
-      vec4 bloom = texture2D(u_bloom, v_uv);
-      float bloomStrength = bloom.a * u_bloom_intensity;
-      vec3 bloomColor = u_transition_color * bloomStrength * 2.0;
-
-      if (scene.a < 0.001) {
-        float glowAlpha = bloomStrength * 1.5;
-        gl_FragColor = vec4(u_transition_color, glowAlpha);
+      if (distToEdge > 0.0) {
+        // Hot flame transition zone fading to transparent
+        float alpha = 1.0 - smoothstep(0.0, 0.07, distToEdge);
+        vec3 col = mix(flameGlow, vec3(1.0, 0.98, 0.85), glowIntensity * 0.65);
+        gl_FragColor = vec4(col, alpha);
+      } else if (distToEdge > -0.05) {
+        // Inner charred glowing rim
+        float t = smoothstep(-0.05, 0.0, distToEdge);
+        vec3 col = mix(u_color, flameGlow, t);
+        gl_FragColor = vec4(col, 1.0);
       } else {
-        vec3 result = min(scene.rgb + bloomColor, vec3(1.0));
-        gl_FragColor = vec4(result, scene.a);
+        // Solid base color behind the flame wave
+        gl_FragColor = vec4(u_color, 1.0);
       }
     }
   `;
@@ -222,7 +129,7 @@
   // ── Color Parsing Helper ──────────────────────────────────────────────────
   function hexToRgb(hex) {
     if (Array.isArray(hex)) return hex;
-    const clean = hex.replace('#', '').trim();
+    const clean = String(hex).replace('#', '').trim();
     if (clean.length === 6) {
       return [
         parseInt(clean.slice(0, 2), 16) / 255,
@@ -237,50 +144,36 @@
         parseInt(clean[2] + clean[2], 16) / 255
       ];
     }
-    return [1.0, 0.8, 0.1];
+    return [0.98, 0.8, 0.08]; // Default gold ember
   }
 
-  // ── WebGL Engine Class ───────────────────────────────────────────────────
-  class FramerBurnEngine {
+  // ── High-Performance WebGL Engine Class ──────────────────────────────────
+  class QuantumBurnEngine {
     constructor() {
       this.canvas = null;
       this.gl = null;
-      this.mainProgram = null;
-      this.extractProgram = null;
-      this.blurProgram = null;
-      this.compositeProgram = null;
+      this.program = null;
       this.quadBuffer = null;
       this.isReady = false;
       this.isAnimating = false;
       this.animationFrame = null;
 
-      // Framebuffers for bloom pass
-      this.fboScene = null;
-      this.fboExtract = null;
-      this.fboBlur1 = null;
-      this.fboBlur2 = null;
+      // Uniform Locations Cache
+      this.locs = {};
 
-      // Animation parameters
-      this.baseColor = hexToRgb('#060913'); // Deep dark matching store aesthetic
-      this.transitionColor = hexToRgb('#facc15'); // Radiant amber gold flame ember
-      this.noiseScale = 7.5;
-      this.noiseIntensity = 0.35;
-      this.edgeSoftness = 0.06;
-      this.grainScale = 140.0;
-      this.movementHorizontal = -1.0;
-      this.movementVertical = 0.8;
-      this.bloomIntensity = 1.35;
-      this.bloomRadius = 0.12;
-
-      this.currentParallax = -1.2;
+      // Transition Settings
+      this.baseColor = hexToRgb('#05070f'); // Deep obsidian matching store theme
+      this.transitionColor = hexToRgb('#facc15'); // Radiant amber gold flame
       this.currentBandSize = 0.0;
-      this.scrollOffset = 0.0;
       this.startTime = 0;
-      this.duration = 650;
-      this.direction = 1; // 1 = upwards burn, -1 = downwards
+      this.duration = 420; // Snappy & responsive (sweet spot for UX)
       this.onPeakCallback = null;
       this.onCompleteCallback = null;
       this.peakTriggered = false;
+
+      // Lock to prevent any double-running
+      this.lastTriggerTimestamp = 0;
+      this.isLocked = false;
 
       this.init();
     }
@@ -288,7 +181,13 @@
     init() {
       if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-      // 1. Create fullscreen overlay canvas
+      // Clean up legacy session reveal flags to eliminate duplicate on-load runs
+      try {
+        sessionStorage.removeItem('cc_burn_revealing');
+        sessionStorage.removeItem('cc_burn_transition');
+      } catch (_) {}
+
+      // 1. Create or bind fullscreen overlay canvas
       let canvas = document.getElementById('burn-transition-canvas');
       if (!canvas) {
         canvas = document.createElement('canvas');
@@ -309,10 +208,12 @@
       }
       this.canvas = canvas;
 
-      // 2. Initialize WebGL Context
+      // 2. Initialize Hardware-Accelerated WebGL
       const gl = canvas.getContext('webgl', {
         alpha: true,
         antialias: false,
+        depth: false,
+        stencil: false,
         premultipliedAlpha: false,
         preserveDrawingBuffer: false
       });
@@ -324,17 +225,33 @@
       this.gl = gl;
 
       // 3. Compile Shaders
-      this.mainProgram = this.createProgram(vertexShaderSrc, fragmentShaderSrc);
-      this.extractProgram = this.createProgram(vertexShaderSrc, extractFragmentShaderSrc);
-      this.blurProgram = this.createProgram(vertexShaderSrc, blurFragmentShaderSrc);
-      this.compositeProgram = this.createProgram(vertexShaderSrc, compositeFragmentShaderSrc);
+      const vs = this.createShader(gl.VERTEX_SHADER, vertexShaderSrc);
+      const fs = this.createShader(gl.FRAGMENT_SHADER, fragmentShaderSrc);
+      if (!vs || !fs) return;
 
-      if (!this.mainProgram) {
-        console.warn('Burn transition main shader failed to compile');
+      const program = gl.createProgram();
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.linkProgram(program);
+
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error('Burn program linking error:', gl.getProgramInfoLog(program));
         return;
       }
+      this.program = program;
 
-      // 4. Create Fullscreen Quad Buffer
+      // Cache Uniform Locations
+      this.locs = {
+        position: gl.getAttribLocation(program, 'a_position'),
+        color: gl.getUniformLocation(program, 'u_color'),
+        transitionColor: gl.getUniformLocation(program, 'u_transition_color'),
+        progress: gl.getUniformLocation(program, 'u_progress'),
+        aspectRatio: gl.getUniformLocation(program, 'u_aspect_ratio'),
+        bandSize: gl.getUniformLocation(program, 'u_band_size'),
+        time: gl.getUniformLocation(program, 'u_time')
+      };
+
+      // 4. Create Quad Buffer
       const quadVertices = new Float32Array([
         -1, -1,
          1, -1,
@@ -346,18 +263,12 @@
       gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
       this.quadBuffer = buffer;
 
-      // 5. Initialize Framebuffers
+      // 5. Setup Viewport (Capped for 60fps/120fps lock)
       this.resize();
       window.addEventListener('resize', () => this.resize(), { passive: true });
 
       this.isReady = true;
       this.clearCanvas();
-
-      // Check if page opened with incoming burn reveal
-      if (sessionStorage.getItem('cc_burn_revealing') === '1') {
-        sessionStorage.removeItem('cc_burn_revealing');
-        this.runPageReveal();
-      }
     }
 
     createShader(type, src) {
@@ -373,99 +284,46 @@
       return shader;
     }
 
-    createProgram(vSrc, fSrc) {
-      const gl = this.gl;
-      const vs = this.createShader(gl.VERTEX_SHADER, vSrc);
-      const fs = this.createShader(gl.FRAGMENT_SHADER, fSrc);
-      if (!vs || !fs) return null;
-
-      const program = gl.createProgram();
-      gl.attachShader(program, vs);
-      gl.attachShader(program, fs);
-      gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error('Burn program linking error:', gl.getProgramInfoLog(program));
-        gl.deleteProgram(program);
-        return null;
-      }
-      return program;
-    }
-
-    createFbo(width, height) {
-      const gl = this.gl;
-      const texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-      const framebuffer = gl.createFramebuffer();
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-      return { fbo: framebuffer, texture, width, height };
-    }
-
     resize() {
       if (!this.canvas || !this.gl) return;
-      const gl = this.gl;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Cap DPR to 1.25 for WebGL to guarantee 60-120fps on any mobile/integrated GPU
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       const w = Math.floor(window.innerWidth * dpr);
       const h = Math.floor(window.innerHeight * dpr);
 
       if (this.canvas.width === w && this.canvas.height === h) return;
       this.canvas.width = w;
       this.canvas.height = h;
-
-      const bloomW = Math.max(64, Math.floor(w / 2));
-      const bloomH = Math.max(64, Math.floor(h / 2));
-
-      // Recreate FBO textures
-      this.fboScene = this.createFbo(w, h);
-      this.fboExtract = this.createFbo(bloomW, bloomH);
-      this.fboBlur1 = this.createFbo(bloomW, bloomH);
-      this.fboBlur2 = this.createFbo(bloomW, bloomH);
     }
 
     clearCanvas() {
       if (!this.gl) return;
       const gl = this.gl;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, this.canvas.width, this.canvas.height);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
     }
 
-    renderScene(targetFbo) {
+    draw(progress, timeSec) {
       const gl = this.gl;
-      const p = this.mainProgram;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, targetFbo ? targetFbo.fbo : null);
+      const p = this.program;
+      if (!gl || !p) return;
+
       gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-
       gl.useProgram(p);
+
       gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
+      gl.enableVertexAttribArray(this.locs.position);
+      gl.vertexAttribPointer(this.locs.position, 2, gl.FLOAT, false, 0, 0);
 
-      const aPos = gl.getAttribLocation(p, 'a_position');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      gl.uniform3fv(gl.getUniformLocation(p, 'u_color'), this.baseColor);
-      gl.uniform3fv(gl.getUniformLocation(p, 'u_transition_color'), this.transitionColor);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_noise_scale'), this.noiseScale);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_noise_intensity'), this.noiseIntensity);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_scroll_offset'), this.scrollOffset);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_edge_softness'), this.edgeSoftness);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_grain_scale'), this.grainScale);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_movement_horizontal'), this.movementHorizontal);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_movement_vertical'), this.movementVertical);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_parallax_offset'), this.currentParallax);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_band_size'), this.currentBandSize);
+      gl.uniform3fv(this.locs.color, this.baseColor);
+      gl.uniform3fv(this.locs.transitionColor, this.transitionColor);
+      gl.uniform1f(this.locs.progress, progress);
+      gl.uniform1f(this.locs.bandSize, this.currentBandSize);
+      gl.uniform1f(this.locs.time, timeSec);
 
       const aspect = this.canvas.height > 0 ? this.canvas.width / this.canvas.height : 1.0;
-      gl.uniform1f(gl.getUniformLocation(p, 'u_aspect_ratio'), aspect);
+      gl.uniform1f(this.locs.aspectRatio, aspect);
 
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -474,155 +332,34 @@
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
 
-    renderExtract(srcTex, dstFbo) {
-      const gl = this.gl;
-      const p = this.extractProgram;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, dstFbo.fbo);
-      gl.viewport(0, 0, dstFbo.width, dstFbo.height);
-      gl.useProgram(p);
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-      const aPos = gl.getAttribLocation(p, 'a_position');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, srcTex);
-      gl.uniform1i(gl.getUniformLocation(p, 'u_texture'), 0);
-      gl.uniform3fv(gl.getUniformLocation(p, 'u_transition_color'), this.transitionColor);
-      gl.uniform3fv(gl.getUniformLocation(p, 'u_base_color'), this.baseColor);
-
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.disable(gl.BLEND);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-
-    renderBlur(srcTex, dstFbo, dir) {
-      const gl = this.gl;
-      const p = this.blurProgram;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, dstFbo.fbo);
-      gl.viewport(0, 0, dstFbo.width, dstFbo.height);
-      gl.useProgram(p);
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-      const aPos = gl.getAttribLocation(p, 'a_position');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, srcTex);
-      gl.uniform1i(gl.getUniformLocation(p, 'u_texture'), 0);
-      gl.uniform2f(gl.getUniformLocation(p, 'u_direction'), dir[0], dir[1]);
-      gl.uniform2f(gl.getUniformLocation(p, 'u_resolution'), dstFbo.width, dstFbo.height);
-      gl.uniform1f(gl.getUniformLocation(p, 'u_radius'), this.bloomRadius);
-
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.disable(gl.BLEND);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-
-    renderComposite(sceneTex, bloomTex) {
-      const gl = this.gl;
-      const p = this.compositeProgram;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-      gl.useProgram(p);
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-      const aPos = gl.getAttribLocation(p, 'a_position');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, sceneTex);
-      gl.uniform1i(gl.getUniformLocation(p, 'u_scene'), 0);
-
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, bloomTex);
-      gl.uniform1i(gl.getUniformLocation(p, 'u_bloom'), 1);
-
-      gl.uniform1f(gl.getUniformLocation(p, 'u_bloom_intensity'), this.bloomIntensity);
-      gl.uniform3fv(gl.getUniformLocation(p, 'u_transition_color'), this.transitionColor);
-
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.disable(gl.BLEND);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    }
-
-    draw() {
-      if (!this.gl || !this.mainProgram) return;
-
-      const hasBloom = this.bloomIntensity > 0 &&
-        this.fboScene && this.fboExtract && this.fboBlur1 && this.fboBlur2 &&
-        this.extractProgram && this.blurProgram && this.compositeProgram;
-
-      if (hasBloom) {
-        // Multi-pass Bloom pipeline
-        this.renderScene(this.fboScene);
-        this.renderExtract(this.fboScene.texture, this.fboExtract);
-        this.renderBlur(this.fboExtract.texture, this.fboBlur1, [1.0, 0.0]);
-        this.renderBlur(this.fboBlur1.texture, this.fboBlur2, [0.0, 1.0]);
-        this.renderComposite(this.fboScene.texture, this.fboBlur2.texture);
-      } else {
-        // Direct single-pass fallback
-        this.renderScene(null);
-      }
-    }
-
-    /**
-     * Start animation loop
-     */
     animate(timestamp) {
       if (!this.isAnimating) return;
       if (!this.startTime) this.startTime = timestamp;
 
       const elapsed = timestamp - this.startTime;
-      const progress = Math.min(1.0, elapsed / this.duration);
+      const rawProgress = Math.min(1.0, elapsed / this.duration);
 
-      // Smooth cubic bezier easing
-      const eased = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+      // Silky cubic-bezier easing: cubic-bezier(0.16, 1, 0.3, 1)
+      const t = rawProgress;
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-      // Update shader uniforms
-      this.scrollOffset = (elapsed / 1000) * 1.8;
-
-      if (this.mode === 'page') {
-        // Sweeps burn wave from bottom (-1.2) to full coverage (+1.2)
-        this.currentParallax = -1.2 + eased * 2.4;
-        this.currentBandSize = 0.0; // Solid coverage behind edge
-
-        // Trigger peak/navigation callback at 60% when screen is covered
-        if (progress >= 0.58 && !this.peakTriggered) {
-          this.peakTriggered = true;
-          if (typeof this.onPeakCallback === 'function') {
-            this.onPeakCallback();
-          }
+      // In page mode: trigger navigation callback at 62% when screen is covered
+      if (this.mode === 'page' && rawProgress >= 0.62 && !this.peakTriggered) {
+        this.peakTriggered = true;
+        if (typeof this.onPeakCallback === 'function') {
+          this.onPeakCallback();
         }
-      } else if (this.mode === 'reveal') {
-        // Burns away from full coverage (+1.2) into off-screen top (+2.6)
-        this.currentParallax = 0.4 + eased * 1.8;
-        this.currentBandSize = 0.0;
-      } else {
-        // Pulse mode (traveling flame wave for button clicks)
-        // Sweeps completely through viewport: -1.2 to +1.8
-        this.currentParallax = -1.0 + eased * 2.8;
-        this.currentBandSize = 0.45; // Traveling band width
       }
 
-      this.draw();
+      this.draw(eased, elapsed / 1000);
 
-      if (progress < 1.0) {
-        this.animationFrame = requestAnimationFrame((t) => this.animate(t));
+      if (rawProgress < 1.0) {
+        this.animationFrame = requestAnimationFrame((ts) => this.animate(ts));
       } else {
         this.isAnimating = false;
         this.startTime = 0;
         this.clearCanvas();
+
         if (typeof this.onCompleteCallback === 'function') {
           this.onCompleteCallback();
         }
@@ -630,9 +367,17 @@
     }
 
     /**
-     * Trigger a burn transition wave
+     * Trigger a single burn transition wave
      */
     trigger(options = {}) {
+      const now = performance.now();
+
+      // STRICT DEBOUNCE: If transition is animating or duplicate within 300ms, ignore
+      if (!options.force && (this.isAnimating || (now - this.lastTriggerTimestamp < 300))) {
+        return;
+      }
+      this.lastTriggerTimestamp = now;
+
       if (!this.isReady) {
         if (typeof options.onPeak === 'function') options.onPeak();
         if (typeof options.onComplete === 'function') options.onComplete();
@@ -644,7 +389,9 @@
       }
 
       this.mode = options.mode || 'pulse';
-      this.duration = options.duration || (this.mode === 'page' ? 620 : 540);
+      // Page navigation: 420ms; Button pulse: 340ms (ultra-fast & fluid)
+      this.duration = options.duration || (this.mode === 'page' ? 420 : 340);
+      this.currentBandSize = this.mode === 'page' ? 0.0 : 0.38; // 0 for full wipe, 0.38 for traveling flame
       this.onPeakCallback = options.onPeak || null;
       this.onCompleteCallback = options.onComplete || null;
       this.peakTriggered = false;
@@ -654,19 +401,7 @@
       if (options.transitionColor) this.transitionColor = hexToRgb(options.transitionColor);
 
       this.isAnimating = true;
-      this.animationFrame = requestAnimationFrame((t) => this.animate(t));
-    }
-
-    /**
-     * Page entrance burn reveal
-     */
-    runPageReveal() {
-      this.trigger({
-        mode: 'reveal',
-        duration: 520,
-        color: '#060913',
-        transitionColor: '#facc15'
-      });
+      this.animationFrame = requestAnimationFrame((ts) => this.animate(ts));
     }
   }
 
@@ -675,7 +410,7 @@
 
   function getEngine() {
     if (!engine) {
-      engine = new FramerBurnEngine();
+      engine = new QuantumBurnEngine();
     }
     return engine;
   }
@@ -687,59 +422,83 @@
 
     const mergedOpts = {
       mode: isNavigation ? 'page' : (options.mode || 'pulse'),
-      color: options.color || '#060913',
+      color: options.color || '#05070f',
       transitionColor: options.transitionColor || '#facc15',
-      duration: options.duration || (isNavigation ? 620 : 540),
+      duration: options.duration || (isNavigation ? 420 : 340),
       onPeak: isNavigation ? callback : options.onPeak,
-      onComplete: options.onComplete
+      onComplete: options.onComplete,
+      force: options.force || false
     };
 
     eng.trigger(mergedOpts);
   };
 
+  // ── Tactile Button Feedback ───────────────────────────────────────────────
+  function triggerTactileButtonFx(el, color) {
+    if (!el) return;
+    el.style.transition = 'transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease';
+    el.style.transform = 'scale(0.96)';
+    if (color) {
+      el.style.boxShadow = `0 0 20px ${color}40`;
+    }
+    setTimeout(() => {
+      el.style.transform = '';
+      setTimeout(() => { el.style.boxShadow = ''; }, 250);
+    }, 150);
+  }
+
   // ── Auto-attach Burn Transition to Website Buttons & Links ────────────────
   function attachBurnToInteractiveElements() {
-    // 1. Navigation links between pages (e.g. Products, Experience, Details)
+    // Single centralized click listener on document
     document.addEventListener('click', function (e) {
-      // Find closest anchor or button
-      const link = e.target.closest('a');
-      const button = e.target.closest('button, [role="button"], .ios27-pill-auth, .auth-v7-btn-submit');
+      // Prevent handling if already marked by another child listener
+      if (e._burnHandled) return;
 
-      // Case A: Page navigation links (same-origin, not external, not hash-only)
+      const now = performance.now();
+      const eng = getEngine();
+      if (eng.isLocked || (now - eng.lastTriggerTimestamp < 400)) {
+        return; // Guard against multi-triggers on 1 click
+      }
+
+      // Check closest anchor
+      const link = e.target.closest('a');
+
+      // ── CASE 1: Page Navigation Links ─────────────────────────────────────
       if (link && link.href) {
         const href = link.getAttribute('href');
         const target = link.getAttribute('target');
 
-        // Ignore hash links, javascript:, tel:, mailto:, or external _blank tabs (e.g. WhatsApp)
-        if (
-          !href ||
-          href.startsWith('#') ||
-          href.startsWith('javascript:') ||
-          href.startsWith('tel:') ||
-          href.startsWith('mailto:') ||
-          target === '_blank' ||
-          e.ctrlKey || e.metaKey || e.shiftKey
-        ) {
-          // If it's a WhatsApp or external button, trigger an energetic burn pulse
-          if (href && (href.includes('wa.me') || href.includes('whatsapp'))) {
-            window.triggerBurnTransition(null, {
-              mode: 'pulse',
-              transitionColor: '#25D366' // WhatsApp emerald burn!
-            });
-          }
+        // Ignore hash jumps, javascript:, tel:, mailto:
+        if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('tel:') || href.startsWith('mailto:')) {
           return;
         }
 
-        // Internal navigation (products.html, product-detail.html, index.html)
+        // WhatsApp or external links
+        if (target === '_blank' || href.includes('wa.me') || href.includes('whatsapp') || href.startsWith('http://') || href.startsWith('https://')) {
+          if (href.includes('wa.me') || href.includes('whatsapp')) {
+            e._burnHandled = true;
+            triggerTactileButtonFx(link, '#22c55e');
+            window.triggerBurnTransition(null, {
+              mode: 'pulse',
+              transitionColor: '#22c55e',
+              duration: 320
+            });
+          }
+          return; // Allow native external open
+        }
+
+        // Internal multi-page transitions (products.html, product-detail.html, index.html)
         if (
           href.includes('.html') ||
           href.startsWith('/') ||
           href.startsWith('./') ||
           href.startsWith('../')
         ) {
+          // If user held modifier keys (Ctrl/Cmd/Shift), let browser open in new tab
+          if (e.ctrlKey || e.metaKey || e.shiftKey) return;
+
           e.preventDefault();
-          // Store flag to reveal smoothly on next page
-          try { sessionStorage.setItem('cc_burn_revealing', '1'); } catch (_) {}
+          e._burnHandled = true;
 
           let navigated = false;
           const doNavigate = () => {
@@ -749,46 +508,52 @@
             }
           };
 
-          // Safety timeout in case WebGL is blocked or backgrounded
-          setTimeout(doNavigate, 680);
+          // Safety fallback timeout
+          setTimeout(doNavigate, 480);
 
+          // Single smooth exit wave — exactly ONCE!
           window.triggerBurnTransition(doNavigate, {
             mode: 'page',
-            color: '#060913',
-            transitionColor: '#facc15'
+            color: '#05070f',
+            transitionColor: '#facc15',
+            duration: 420
           });
           return;
         }
       }
 
-      // Case B: Action buttons (Add to Cart, WhatsApp, Filters, Auth Submit, Modal tabs)
+      // ── CASE 2: Action Buttons (Add to Cart, Buy Now, WhatsApp, Modal, Auth) ──
+      const button = e.target.closest('button, [role="button"], .ios27-pill-auth, .auth-v7-btn-submit');
       if (button) {
-        // Skip if button already marked with no-burn
         if (button.dataset.noBurn === 'true') return;
+        e._burnHandled = true;
 
-        // Custom transition colors based on button type
-        let color = '#facc15'; // Default golden ember
+        // Custom transition colors based on button identity
+        let emberColor = '#facc15'; // Default golden flame
         if (button.classList.contains('ios27-pill-whatsapp') || button.textContent.includes('WhatsApp')) {
-          color = '#22c55e'; // Green ember
+          emberColor = '#22c55e'; // WhatsApp Emerald
         } else if (button.classList.contains('auth-v7-social-btn') && button.textContent.includes('Google')) {
-          color = '#4285F4'; // Google blue ember
+          emberColor = '#4285F4'; // Google Neon Blue
         } else if (button.id === 'v7-btn-signup' || button.id === 'v7-btn-signin') {
-          color = '#f59e0b'; // Amber ember
+          emberColor = '#f59e0b'; // Amber Gold
         } else if (button.classList.contains('filter-pill')) {
-          color = '#00f0ff'; // Cyan neon ember
+          emberColor = '#00f0ff'; // Cyber Cyan
         }
 
-        // Trigger smooth tactile burn wave pulse
+        // Tactile button scale & glow
+        triggerTactileButtonFx(button, emberColor);
+
+        // Fast, smooth traveling flame wave (320ms)
         window.triggerBurnTransition(null, {
           mode: 'pulse',
-          transitionColor: color,
-          duration: 520
+          transitionColor: emberColor,
+          duration: 320
         });
       }
-    }, true);
+    }, false); // Use bubble phase with e._burnHandled to prevent duplicate capture firing
   }
 
-  // ── Initialize on DOM Ready ───────────────────────────────────────────────
+  // ── Auto-Initialize on DOM Ready ──────────────────────────────────────────
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       getEngine();

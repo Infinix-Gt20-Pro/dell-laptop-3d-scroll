@@ -92,6 +92,8 @@ async function runTests() {
     if (pulseResult.completed) pass('Burn transition pulse completed and invoked onComplete callback');
     else fail('Burn transition pulse failed or timed out', pulseResult);
 
+    await page.waitForTimeout(300);
+
     console.log('[Test 4] Testing window.triggerBurnTransition page navigation mode...');
     const pageTransitionResult = await page.evaluate(async () => {
       return new Promise(resolve => {
@@ -101,7 +103,8 @@ async function runTests() {
           peaked = true;
         }, {
           mode: 'page',
-          duration: 400,
+          duration: 350,
+          force: true,
           onComplete: () => {
             completed = true;
             resolve({ peaked, completed });
@@ -117,8 +120,10 @@ async function runTests() {
       fail('Page mode burn wave did not trigger callbacks properly', pageTransitionResult);
     }
 
+    await page.waitForTimeout(200);
+
     console.log('[Test 5] Testing Product Button Click trigger...');
-    // Click on a product button or WhatsApp pill
+    // Click on a button
     const buttonTriggered = await page.evaluate(() => {
       let triggered = false;
       const orig = window.triggerBurnTransition;
@@ -126,8 +131,8 @@ async function runTests() {
         triggered = true;
         return orig.apply(this, arguments);
       };
-      // Find a product card link or button
-      const btn = document.querySelector('.vertical-product-card a, .auth-v7-btn-submit, .ios27-pill-auth');
+      // Find a button
+      const btn = document.querySelector('button.ios27-pill-auth') || document.querySelector('button');
       if (btn) {
         btn.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
       }
@@ -174,6 +179,76 @@ async function runTests() {
 
     if (detailHasBurn) pass('product-detail.html has working Burn Transition canvas & API');
     else fail('product-detail.html missing Burn Transition');
+
+    console.log('[Test 9] Verifying 1 CLICK triggers transition EXACTLY ONCE (never twice)...');
+    await page.goto('http://localhost:3000/index.html', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(400);
+
+    const singleClickResult = await page.evaluate(async () => {
+      let runCount = 0;
+      const origTrigger = window.triggerBurnTransition;
+      window.triggerBurnTransition = function () {
+        runCount++;
+        return origTrigger.apply(this, arguments);
+      };
+
+      // Click a single button (not a navigation link to avoid unseating the test page)
+      const testBtn = document.querySelector('button.ios27-pill-auth') || document.querySelector('button');
+      if (testBtn) {
+        testBtn.click();
+      }
+
+      await new Promise(r => setTimeout(r, 200));
+      window.triggerBurnTransition = origTrigger;
+      return { runCount };
+    });
+
+    if (singleClickResult.runCount === 1) {
+      pass('1 click executed transition EXACTLY ONCE (no double trigger!)');
+    } else {
+      fail(`Expected 1 trigger on single click, but got: ${singleClickResult.runCount}`);
+    }
+
+    await page.waitForTimeout(400);
+
+    console.log('[Test 10] Verifying rapid multi-clicks are safely debounced by engine lock...');
+    const debounceResult = await page.evaluate(async () => {
+      let executionCount = 0;
+      const orig = window.triggerBurnTransition;
+      window.triggerBurnTransition = function () {
+        executionCount++;
+        return orig.apply(this, arguments);
+      };
+
+      const testBtn = document.querySelector('button.ios27-pill-auth') || document.querySelector('button');
+      if (testBtn) {
+        // Fire 5 rapid clicks in 50ms
+        for (let i = 0; i < 5; i++) {
+          testBtn.click();
+        }
+      }
+
+      await new Promise(r => setTimeout(r, 250));
+      window.triggerBurnTransition = orig;
+      return { executionCount };
+    });
+
+    if (debounceResult.executionCount === 1) {
+      pass('Rapid multi-clicks safely debounced: executed only 1 time');
+    } else {
+      fail(`Debounce failed: got ${debounceResult.executionCount} executions on rapid multi-click`);
+    }
+
+    console.log('[Test 11] Verifying NO duplicate entrance reveal animation on new page load...');
+    const storageCheck = await page.evaluate(() => {
+      return sessionStorage.getItem('cc_burn_revealing');
+    });
+
+    if (!storageCheck) {
+      pass('No duplicate entrance reveal flag in sessionStorage (clean single transition)');
+    } else {
+      fail('Found unexpected cc_burn_revealing in sessionStorage', storageCheck);
+    }
 
     await context.close();
   } catch (err) {
