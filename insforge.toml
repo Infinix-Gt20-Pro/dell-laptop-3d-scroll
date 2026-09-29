@@ -1,0 +1,31 @@
+[auth]
+allowed_redirect_urls = ["http://localhost:3000", "http://localhost:3000/", "http://localhost:3000/index.html", "http://localhost:3000/admin.html", "http://localhost:3000/products.html", "http://localhost:3000/product-detail.html", "http://127.0.0.1:3000", "http://127.0.0.1:3000/", "http://192.168.1.10:3000", "http://192.168.1.10:3000/", "http://192.168.1.10:3000/index.html", "http://192.168.1.10:3000/products.html", "http://192.168.1.10:3000/product-detail.html", "http://192.168.1.10:3000/admin.html", "https://classiscomputer.vercel.app", "https://classiscomputer.vercel.app/", "https://classiscomputer.vercel.app/index.html", "https://classiscomputer.vercel.app/admin.html", "https://classiscomputer.vercel.app/products.html", "https://classiscomputer.vercel.app/product-detail.html", "https://classic-computers-etah.vercel.app", "https://classic-computers-etah.vercel.app/", "https://classic-computers-etah.vercel.app/index.html", "https://classic-computers-etah.vercel.app/admin.html", "https://classic-computers-etah.vercel.app/products.html", "https://classic-computers-etah.vercel.app/product-detail.html", "https://*.vercel.app", "https://*.vercel.app/"]
+require_email_verification = false
+verify_email_method = "code"
+reset_password_method = "code"
+disable_signup = false
+
+[auth.password]
+min_length = 6
+require_number = false
+require_lowercase = false
+require_uppercase = false
+require_special_char = false
+
+[auth.smtp]
+enabled = false
+host = ""
+port = 465
+username = ""
+sender_email = ""
+sender_name = ""
+min_interval_seconds = 60
+
+[storage]
+max_file_size_mb = 50
+
+[realtime]
+retention_days = 0
+
+[schedules]
+retention_days = 7

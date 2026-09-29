@@ -101,12 +101,12 @@ function setSecurityHeaders(res) {
   // Relaxed CSP — allows modern assets & InsForge backend connectivity
   res.setHeader('Content-Security-Policy',
     "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://accounts.google.com https://apis.google.com; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://accounts.google.com https://apis.google.com https://appleid.cdn-apple.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
     "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
-    "img-src 'self' data: blob: https://images.unsplash.com https://api.dicebear.com https://lh3.googleusercontent.com https://*.insforge.app; " +
-    "connect-src 'self' https://accounts.google.com https://*.insforge.app https://nsr7uvah.us-east.insforge.app; " +
-    "frame-src 'self' https://accounts.google.com;"
+    "img-src 'self' data: blob: https://images.unsplash.com https://api.dicebear.com https://lh3.googleusercontent.com https://*.insforge.app https://*.insforge.dev; " +
+    "connect-src 'self' https://accounts.google.com https://*.insforge.app https://nsr7uvah.us-east.insforge.app https://api.insforge.dev https://*.insforge.dev; " +
+    "frame-src 'self' https://accounts.google.com https://api.insforge.dev https://appleid.apple.com;"
   );
 }
 

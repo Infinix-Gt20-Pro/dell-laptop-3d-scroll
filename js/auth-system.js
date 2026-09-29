@@ -71,25 +71,25 @@
     const toast = document.createElement('div');
     toast.id = 'lucid-toast';
     const colourClass = type === 'success'
-      ? 'bg-slate-900/90 border-emerald-400/40'
+      ? 'bg-slate-900/95 border-emerald-400/50'
       : type === 'info'
-        ? 'bg-blue-900/90 border-blue-400/40'
-        : 'bg-red-950/90 border-red-400/40';
-    const dotClass = type === 'success' ? 'bg-emerald-400' : type === 'info' ? 'bg-blue-400' : 'bg-red-400';
+        ? 'bg-slate-900/95 border-amber-400/50'
+        : 'bg-red-950/95 border-red-400/50';
+    const dotClass = type === 'success' ? 'bg-emerald-400' : type === 'info' ? 'bg-amber-400' : 'bg-red-400';
 
-    toast.className = `fixed bottom-6 right-6 z-[120] px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-4 opacity-0 font-sans text-xs font-semibold text-white backdrop-blur-xl ${colourClass}`;
-    toast.innerHTML = `<span class="w-2.5 h-2.5 rounded-full animate-ping ${dotClass}"></span><span>${message}</span>`;
+    toast.className = `fixed top-6 left-1/2 -translate-x-1/2 z-[10001] px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3 transition-all duration-300 transform -translate-y-4 opacity-0 font-sans text-xs font-semibold text-white backdrop-blur-xl max-w-[92vw] text-center ${colourClass}`;
+    toast.innerHTML = `<span class="w-2.5 h-2.5 rounded-full shrink-0 animate-ping ${dotClass}"></span><span class="truncate-multiline">${message}</span>`;
     document.body.appendChild(toast);
 
     requestAnimationFrame(() => {
-      toast.classList.replace('translate-y-4', 'translate-y-0');
+      toast.classList.replace('-translate-y-4', 'translate-y-0');
       toast.classList.replace('opacity-0', 'opacity-100');
     });
     setTimeout(() => {
-      toast.classList.replace('translate-y-0', 'translate-y-4');
+      toast.classList.replace('translate-y-0', '-translate-y-4');
       toast.classList.replace('opacity-100', 'opacity-0');
       setTimeout(() => toast.remove(), 400);
-    }, 3600);
+    }, 3800);
   }
 
   // ── Modal open / close / V7 animation engine ────────────────────────────
@@ -196,11 +196,10 @@
 
   // ── Apple Sign-In Trigger ────────────────────────────────────────────────
   window.submitAppleAuth = function () {
-    showLucidToast('Connecting to Apple ID Authentication…', 'info');
+    showLucidToast('Apple ID is not configured on this server — launching Google Sign-In…', 'info');
     setTimeout(() => {
-      // In web browser environment, route to Google OAuth with PKCE
       window.submitGoogleAuth();
-    }, 500);
+    }, 450);
   };
 
   // ── Forgot Password Helper ───────────────────────────────────────────────
@@ -239,18 +238,91 @@
   };
 
   // ── PKCE Helpers for OAuth 2.0 ───────────────────────────────────────────
+  // Pure JavaScript SHA-256 fallback (RFC 6234 compliant)
+  // Ensures PKCE challenge generation works seamlessly in non-secure HTTP contexts (mobile testing on LAN IP)
+  function jsSha256Bytes(ascii) {
+    function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+    const mathPow = Math.pow; const maxWord = mathPow(2, 32); let lengthProperty = 'length';
+    let i, j; const words = []; const asciiBitLength = ascii[lengthProperty] * 8;
+    let hash = []; const k = []; let primeCounter = 0; const isComposite = {};
+    for (let candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 313; i += candidate) { isComposite[i] = candidate; }
+        hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+      }
+    }
+    hash = hash.slice(0, 8); ascii += '\x80';
+    while ((ascii[lengthProperty] % 64) - 56) ascii += '\x00';
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      words[i >> 2] |= j << (((3 - i) % 4) * 8);
+    }
+    words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+    words[words[lengthProperty]] = asciiBitLength;
+    for (j = 0; j < words[lengthProperty];) {
+      const w = words.slice(j, (j += 16)); const oldHash = hash; hash = hash.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        const w15 = w[i - 15], w2 = w[i - 2];
+        const s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+        const s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+        w[i] = i < 16 ? w[i] : (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+        const s1_maj = rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22);
+        const maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+        const t2 = (s1_maj + maj) | 0;
+        const s0_ch = rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25);
+        const ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+        const t1 = (hash[7] + s0_ch + ch + k[i] + w[i]) | 0;
+        hash = [(t1 + t2) | 0].concat(hash);
+        hash[4] = (hash[4] + t1) | 0;
+        hash.pop();
+      }
+      for (i = 0; i < 8; i++) { hash[i] = (hash[i] + oldHash[i]) | 0; }
+    }
+    const outBytes = new Uint8Array(32);
+    for (i = 0; i < 8; i++) {
+      outBytes[i * 4] = (hash[i] >>> 24) & 0xff;
+      outBytes[i * 4 + 1] = (hash[i] >>> 16) & 0xff;
+      outBytes[i * 4 + 2] = (hash[i] >>> 8) & 0xff;
+      outBytes[i * 4 + 3] = hash[i] & 0xff;
+    }
+    return outBytes;
+  }
+
   function generatePkceVerifier(length = 64) {
     const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-    const randomBytes = new Uint8Array(length);
-    (window.crypto || window.msCrypto).getRandomValues(randomBytes);
-    return Array.from(randomBytes).map(b => charset[b % charset.length]).join('');
+    try {
+      const cryptoObj = window.crypto || window.msCrypto;
+      if (cryptoObj && typeof cryptoObj.getRandomValues === 'function') {
+        const randomBytes = new Uint8Array(length);
+        cryptoObj.getRandomValues(randomBytes);
+        return Array.from(randomBytes).map(b => charset[b % charset.length]).join('');
+      }
+    } catch (_) {}
+    let res = '';
+    for (let i = 0; i < length; i++) {
+      res += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    return res;
   }
 
   async function generatePkceChallenge(verifier) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(verifier);
-    const hash = await (window.crypto || window.msCrypto).subtle.digest('SHA-256', data);
-    const bytes = new Uint8Array(hash);
+    let bytes;
+    try {
+      const cryptoObj = window.crypto || window.msCrypto;
+      if (cryptoObj && cryptoObj.subtle && typeof cryptoObj.subtle.digest === 'function') {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(verifier);
+        const hash = await cryptoObj.subtle.digest('SHA-256', data);
+        bytes = new Uint8Array(hash);
+      }
+    } catch (_) {
+      bytes = null;
+    }
+    // Fallback if crypto.subtle is unavailable (e.g. mobile non-secure HTTP context)
+    if (!bytes) {
+      bytes = jsSha256Bytes(verifier);
+    }
     let binary = '';
     for (let i = 0; i < bytes.byteLength; i++) {
       binary += String.fromCharCode(bytes[i]);
@@ -264,15 +336,20 @@
   // ── Google OAuth with PKCE ────────────────────────────────────────────────
   window.submitGoogleAuth = async function () {
     try {
-      showLucidToast('Connecting to Google…', 'info');
+      showLucidToast('Connecting to Google Auth…', 'info');
 
       // 1. Generate PKCE verifier and SHA-256 challenge
       const codeVerifier = generatePkceVerifier();
       const codeChallenge = await generatePkceChallenge(codeVerifier);
 
-      // 2. Save verifier in sessionStorage to exchange upon redirect return
-      sessionStorage.setItem('cc_oauth_verifier', codeVerifier);
-      sessionStorage.setItem('cc_oauth_return_url', window.location.href);
+      // 2. Save verifier in BOTH localStorage AND sessionStorage
+      // (ensures persistence across mobile Safari ITP, Android Chrome tabs, and redirects)
+      localStorage.setItem('cc_oauth_verifier', codeVerifier);
+      localStorage.setItem('cc_oauth_return_url', window.location.href);
+      try {
+        sessionStorage.setItem('cc_oauth_verifier', codeVerifier);
+        sessionStorage.setItem('cc_oauth_return_url', window.location.href);
+      } catch (_) {}
 
       // 3. Exact matching redirect URI
       let redirectUri = window.location.origin + window.location.pathname;
@@ -286,6 +363,18 @@
       const res = await fetch(initiateUrl);
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
+        // Fallback: If current exact URL is rejected by allowed_redirect_urls, try root origin
+        if (err.message && err.message.includes('not in the allowed redirect URLs') && redirectUri !== window.location.origin + '/') {
+          const fallbackUri = window.location.origin + '/';
+          const fallbackRes = await fetch(`${INSFORGE_HOST}/api/auth/oauth/google?redirect_uri=${encodeURIComponent(fallbackUri)}&code_challenge=${encodeURIComponent(codeChallenge)}`);
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            if (fallbackData.authUrl) {
+              window.location.href = fallbackData.authUrl;
+              return;
+            }
+          }
+        }
         throw new Error(err.message || `Failed to initiate OAuth (HTTP ${res.status})`);
       }
 
@@ -308,14 +397,14 @@
     const code = params.get('insforge_code');
     if (!code) return;
 
+    // Retrieve the saved PKCE code_verifier from localStorage OR sessionStorage
+    const codeVerifier = localStorage.getItem('cc_oauth_verifier') || sessionStorage.getItem('cc_oauth_verifier') || '';
+
     // Remove query param from browser address bar immediately
     const cleanUrl = window.location.pathname + window.location.hash;
     history.replaceState(null, '', cleanUrl);
 
     showLucidToast('Completing Google sign-in…', 'info');
-
-    // Retrieve the saved PKCE code_verifier
-    const codeVerifier = sessionStorage.getItem('cc_oauth_verifier') || '';
 
     try {
       const exchangeRes = await fetch(`${INSFORGE_HOST}/api/auth/oauth/exchange`, {
@@ -336,10 +425,21 @@
 
       const data = await exchangeRes.json();
       if (data.accessToken && data.user) {
-        sessionStorage.removeItem('cc_oauth_verifier');
+        localStorage.removeItem('cc_oauth_verifier');
+        try { sessionStorage.removeItem('cc_oauth_verifier'); } catch (_) {}
         saveSession(data.accessToken, normaliseUser(data.user, 'google'));
         window.closeLucidAuthModal();
-        showLucidToast(`✨ Signed in with Google as ${data.user.name || data.user.email}!`);
+        showLucidToast(`✨ Signed in with Google as ${data.user.name || data.user.email}!`, 'success');
+
+        // Restore saved return URL if on different page
+        const returnUrl = localStorage.getItem('cc_oauth_return_url') || sessionStorage.getItem('cc_oauth_return_url');
+        localStorage.removeItem('cc_oauth_return_url');
+        try { sessionStorage.removeItem('cc_oauth_return_url'); } catch (_) {}
+        if (returnUrl && returnUrl !== window.location.href && !returnUrl.includes('insforge_code')) {
+          setTimeout(() => {
+            window.location.href = returnUrl;
+          }, 600);
+        }
       } else {
         throw new Error('Authentication succeeded but no access token was returned.');
       }
@@ -568,7 +668,7 @@
   function normaliseUser(raw, provider) {
     return {
       id:        raw.id,
-      name:      raw.name || raw.email.split('@')[0],
+      name:      raw.profile?.name || raw.name || raw.email.split('@')[0],
       email:     raw.email,
       provider:  provider || raw.providers?.[0] || 'email',
       role:      raw.role || 'customer',

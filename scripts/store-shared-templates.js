@@ -106,7 +106,7 @@ function getLucidAuthModalHtml() {
               <!-- Options: Remember Me & Forgot Password -->
               <div class="auth-v7-row-opts">
                 <label class="auth-v7-checkbox-label">
-                  <input type="checkbox" id="v7-login-remember" checked class="hidden" onchange="this.nextElementSibling.classList.toggle('opacity-30', !this.checked)">
+                  <input type="checkbox" id="v7-login-remember" checked class="sr-only" onchange="this.nextElementSibling.classList.toggle('unchecked', !this.checked)">
                   <span class="auth-v7-custom-check">
                     <svg class="w-3 h-3 text-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -199,11 +199,11 @@ function getLucidAuthModalHtml() {
               </div>
 
               <!-- Two Column: Password & Confirm Password -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-1">
+              <div class="grid grid-cols-2 gap-2 mb-1">
                 <div class="auth-v7-field-group !mb-2 sm:!mb-3">
                   <label class="auth-v7-label" for="v7-reg-password">Password</label>
-                  <div class="auth-v7-input-box !px-3">
-                    <svg class="auth-v7-input-icon !mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="auth-v7-input-box !px-2.5 sm:!px-3">
+                    <svg class="auth-v7-input-icon !mr-1.5 sm:!mr-2 hidden xs:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                     <input type="password" id="v7-reg-password" required placeholder="••••••••" class="auth-v7-input !ml-0 text-xs sm:text-sm" autocomplete="new-password">
@@ -221,8 +221,8 @@ function getLucidAuthModalHtml() {
 
                 <div class="auth-v7-field-group !mb-2 sm:!mb-3">
                   <label class="auth-v7-label" for="v7-reg-confirm-password">Confirm Password</label>
-                  <div class="auth-v7-input-box !px-3">
-                    <svg class="auth-v7-input-icon !mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="auth-v7-input-box !px-2.5 sm:!px-3">
+                    <svg class="auth-v7-input-icon !mr-1.5 sm:!mr-2 hidden xs:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
                     <input type="password" id="v7-reg-confirm-password" required placeholder="••••••••" class="auth-v7-input !ml-0 text-xs sm:text-sm" autocomplete="new-password">
@@ -242,7 +242,7 @@ function getLucidAuthModalHtml() {
               <!-- Terms & Privacy Agreement Checkbox -->
               <div class="auth-v7-row-opts !mt-1 !mb-4">
                 <label class="auth-v7-checkbox-label">
-                  <input type="checkbox" id="v7-reg-agree" required class="hidden" onchange="this.nextElementSibling.classList.toggle('opacity-30', !this.checked)">
+                  <input type="checkbox" id="v7-reg-agree" checked class="sr-only" onchange="this.parentElement.querySelector('.auth-v7-custom-check').classList.toggle('unchecked', !this.checked)">
                   <span class="auth-v7-custom-check">
                     <svg class="w-3 h-3 text-black stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -470,6 +470,7 @@ function getSharedNav(activePage = 'home') {
 
   ${getLucidAuthModalHtml()}
   <script src="js/auth-system.js"></script>
+  <script src="js/burn-transition.js"></script>
   `;
 }
 
