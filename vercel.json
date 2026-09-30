@@ -6,7 +6,21 @@
   ],
   "framework": null,
   "outputDirectory": ".",
-  "cleanUrls": true,
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/products",
+      "destination": "/products.html"
+    },
+    {
+      "source": "/product-detail",
+      "destination": "/product-detail.html"
+    },
+    {
+      "source": "/404",
+      "destination": "/404.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/admin(.*)",
