@@ -147,6 +147,44 @@
     return [0.98, 0.8, 0.08]; // Default gold ember
   }
 
+  // ── Adaptive Device & Performance Capability Analyzer ─────────────────────
+  function checkDeviceCapabilities() {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      return { isLowEnd: false, isMobile: false, prefersReducedMotion: false, targetDpr: 1.0 };
+    }
+
+    const prefersReducedMotion = Boolean(
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '') ||
+      (typeof window.innerWidth === 'number' && window.innerWidth < 768);
+
+    const cores = navigator.hardwareConcurrency || 4;
+    const memory = navigator.deviceMemory || 4; // in GB (Chromium API)
+
+    // Flag low-end: reduced motion OR < 4GB RAM OR dual-core OR mobile quad-core
+    const isLowEnd = prefersReducedMotion || (memory < 4) || (cores <= 2) || (isMobile && cores <= 4);
+
+    // Adaptive DPR scaling:
+    // Desktop: 1.25x max (crisp & silky)
+    // Modern Mobile: 1.0x (retina smooth)
+    // Budget/Low-End Mobile: 0.75x (55% fill-rate reduction, locked 60 FPS)
+    let targetDpr = 1.25;
+    if (isLowEnd) {
+      targetDpr = 0.75;
+    } else if (isMobile) {
+      targetDpr = 1.0;
+    }
+
+    return {
+      isLowEnd,
+      isMobile,
+      prefersReducedMotion,
+      targetDpr
+    };
+  }
+
   // ── High-Performance WebGL Engine Class ──────────────────────────────────
   class QuantumBurnEngine {
     constructor() {
@@ -157,6 +195,9 @@
       this.isReady = false;
       this.isAnimating = false;
       this.animationFrame = null;
+
+      // Device Capability Profile
+      this.device = checkDeviceCapabilities();
 
       // Uniform Locations Cache
       this.locs = {};
@@ -174,6 +215,8 @@
       // Lock to prevent any double-running
       this.lastTriggerTimestamp = 0;
       this.isLocked = false;
+      this.lastFrameTs = 0;
+      this.slowFrameCount = 0;
 
       this.init();
     }
@@ -299,8 +342,9 @@
 
     resize() {
       if (!this.canvas || !this.gl) return;
-      // Cap DPR to 1.25 for WebGL to guarantee 60-120fps on any mobile/integrated GPU
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+      // Adaptive DPR: 1.25 for desktop, 1.0 for modern mobile, 0.75 for low-end devices
+      const maxDpr = this.device ? this.device.targetDpr : 1.0;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
       const w = Math.floor(window.innerWidth * dpr);
       const h = Math.floor(window.innerHeight * dpr);
 
@@ -347,7 +391,29 @@
 
     animate(timestamp) {
       if (!this.isAnimating) return;
-      if (!this.startTime) this.startTime = timestamp;
+      if (!this.startTime) {
+        this.startTime = timestamp;
+        this.lastFrameTs = timestamp;
+      }
+
+      // Adaptive runtime frame-drop watchdog
+      if (this.lastFrameTs) {
+        const frameDelta = timestamp - this.lastFrameTs;
+        // Frame time > 50ms means < 20 FPS (heavy CPU/GPU lag on budget mobile)
+        if (frameDelta > 50) {
+          this.slowFrameCount = (this.slowFrameCount || 0) + 1;
+          // If frame lag happens 2 frames in a row, fast-forward to peak
+          if (this.slowFrameCount >= 2 && this.mode === 'page' && !this.peakTriggered) {
+            this.peakTriggered = true;
+            if (typeof this.onPeakCallback === 'function') {
+              this.onPeakCallback();
+            }
+          }
+        } else {
+          this.slowFrameCount = 0;
+        }
+      }
+      this.lastFrameTs = timestamp;
 
       const elapsed = timestamp - this.startTime;
       const rawProgress = Math.min(1.0, elapsed / this.duration);
@@ -371,6 +437,8 @@
       } else {
         this.isAnimating = false;
         this.startTime = 0;
+        this.lastFrameTs = 0;
+        this.slowFrameCount = 0;
         this.clearCanvas();
 
         if (typeof this.onCompleteCallback === 'function') {
@@ -391,6 +459,13 @@
       }
       this.lastTriggerTimestamp = now;
 
+      // Reduced-motion user preference: Instant transition without WebGL churn
+      if (this.device && this.device.prefersReducedMotion) {
+        if (typeof options.onPeak === 'function') setTimeout(options.onPeak, 40);
+        if (typeof options.onComplete === 'function') setTimeout(options.onComplete, 80);
+        return;
+      }
+
       if (!this.isReady) {
         if (typeof options.onPeak === 'function') options.onPeak();
         if (typeof options.onComplete === 'function') options.onComplete();
@@ -409,6 +484,8 @@
       this.onCompleteCallback = options.onComplete || null;
       this.peakTriggered = false;
       this.startTime = 0;
+      this.lastFrameTs = 0;
+      this.slowFrameCount = 0;
 
       if (options.color) this.baseColor = hexToRgb(options.color);
       if (options.transitionColor) this.transitionColor = hexToRgb(options.transitionColor);
@@ -553,10 +630,16 @@
           emberColor = '#00f0ff'; // Cyber Cyan
         }
 
-        // Tactile button scale & glow
+        // Tactile button scale & glow (100% GPU compositor, zero CPU overhead)
         triggerTactileButtonFx(button, emberColor);
 
-        // Fast, smooth traveling flame wave (320ms)
+        // On mobile or low-end devices, skip full-screen WebGL redraw for in-page button taps
+        // Tactile CSS feedback is already instantaneous and prevents GPU churn.
+        if (eng.device && (eng.device.isMobile || eng.device.isLowEnd)) {
+          return;
+        }
+
+        // Fast, smooth traveling flame wave on desktop (320ms)
         window.triggerBurnTransition(null, {
           mode: 'pulse',
           transitionColor: emberColor,
