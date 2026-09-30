@@ -870,32 +870,124 @@
     tableHtml += '</tbody></table>';
     tableContainer.innerHTML = tableHtml;
 
-    // Configurator Logic
+    // Dynamic Configurator Logic
     const ramSel = document.getElementById('detail-ram-select');
     const ssdSel = document.getElementById('detail-ssd-select');
     const priceDisplay = document.getElementById('detail-price-display');
     const waBtn = document.getElementById('detail-whatsapp-btn');
 
+    // Populate RAM options dynamically based on product specs
+    if (ramSel) {
+      ramSel.innerHTML = '';
+      const ramText = (product.specs.ram || '').toLowerCase();
+      if (ramText.includes('onboard')) {
+        ramSel.innerHTML = '<option value="0" selected>' + product.specs.ram + ' (Factory Onboard)</option>';
+        ramSel.disabled = true;
+      } else if (ramText.includes('8gb')) {
+        ramSel.innerHTML = `
+          <option value="0" selected>8GB DDR4 High-Speed (Included)</option>
+          <option value="2200">16GB DDR4 High-Speed (+₹2,200)</option>
+          <option value="5500">32GB DDR4 High-Speed (+₹5,500)</option>
+        `;
+      } else if (ramText.includes('32gb')) {
+        ramSel.innerHTML = `
+          <option value="0" selected>32GB DDR4 High-Speed (Included)</option>
+          <option value="6000">64GB DDR4 High-Speed (+₹6,000)</option>
+          <option value="14000">128GB DDR4 Enterprise (+₹14,000)</option>
+        `;
+      } else {
+        // Standard 16GB base
+        ramSel.innerHTML = `
+          <option value="0" selected>16GB DDR4 High-Speed (Included)</option>
+          <option value="3500">32GB DDR4 High-Speed (+₹3,500)</option>
+          <option value="7500">64GB DDR4 Dual-Channel (+₹7,500)</option>
+        `;
+      }
+    }
+
+    // Populate SSD options dynamically based on product specs
+    if (ssdSel) {
+      ssdSel.innerHTML = '';
+      const storageText = (product.specs.storage || '').toLowerCase();
+      if (storageText.includes('256gb')) {
+        ssdSel.innerHTML = `
+          <option value="0" selected>256GB Fast NVMe SSD (Included)</option>
+          <option value="1800">512GB Fast NVMe SSD (+₹1,800)</option>
+          <option value="4200">1TB (1024GB) Ultra NVMe SSD (+₹4,200)</option>
+          <option value="7800">2TB (2048GB) Enterprise NVMe SSD (+₹7,800)</option>
+        `;
+      } else if (storageText.includes('1tb')) {
+        ssdSel.innerHTML = `
+          <option value="0" selected>1TB Ultra NVMe SSD (Included)</option>
+          <option value="5000">2TB Enterprise NVMe SSD (+₹5,000)</option>
+          <option value="12000">4TB Enterprise NVMe SSD (+₹12,000)</option>
+        `;
+      } else {
+        // Standard 512GB base
+        ssdSel.innerHTML = `
+          <option value="0" selected>512GB Fast NVMe SSD (Included)</option>
+          <option value="3000">1TB (1024GB) Ultra NVMe SSD (+₹3,000)</option>
+          <option value="6500">2TB (2048GB) Enterprise NVMe SSD (+₹6,500)</option>
+        `;
+      }
+    }
+
     function updatePrice() {
       let currentPrice = product.price;
-      const ramVal = ramSel.value;
-      const ssdVal = ssdSel.value;
+      const ramExtra = ramSel ? parseInt(ramSel.value, 10) || 0 : 0;
+      const ssdExtra = ssdSel ? parseInt(ssdSel.value, 10) || 0 : 0;
 
-      if (ramVal === '32') currentPrice += 3500;
-      if (ramVal === '64') currentPrice += 7500;
+      currentPrice += ramExtra + ssdExtra;
 
-      if (ssdVal === '1024') currentPrice += 3000;
-      if (ssdVal === '2048') currentPrice += 6500;
+      if (priceDisplay) {
+        priceDisplay.textContent = '₹' + currentPrice.toLocaleString('en-IN');
+      }
 
-      priceDisplay.textContent = '₹' + currentPrice.toLocaleString('en-IN');
+      const selectedRamText = ramSel && ramSel.selectedIndex >= 0 ? ramSel.options[ramSel.selectedIndex].text.split('(')[0].trim() : product.specs.ram;
+      const selectedSsdText = ssdSel && ssdSel.selectedIndex >= 0 ? ssdSel.options[ssdSel.selectedIndex].text.split('(')[0].trim() : product.specs.storage;
 
-      const waText = 'Hi Classic Computers, I would like to order the ' + product.name + ' with ' + ramVal + 'GB RAM and ' + (ssdVal >= 1024 ? (ssdVal/1024) + 'TB' : ssdVal + 'GB') + ' SSD for Rs ' + currentPrice.toLocaleString('en-IN') + '. Please confirm stock and delivery to my address: ...';
-      waBtn.href = 'https://wa.me/919412182786?text=' + encodeURIComponent(waText);
+      // Build rich WhatsApp inquiry URL
+      let waUrl = '';
+      if (typeof STORE_CONFIG !== 'undefined' && typeof STORE_CONFIG.buildWhatsAppUrl === 'function') {
+        waUrl = STORE_CONFIG.buildWhatsAppUrl(product, {
+          ram: selectedRamText,
+          ssd: selectedSsdText,
+          price: currentPrice
+        });
+      } else {
+        const text = `Hi Classic Computers, I want to order ${product.name} (${selectedRamText} / ${selectedSsdText}) for Rs ${currentPrice.toLocaleString('en-IN')}. Please confirm stock!`;
+        waUrl = `https://wa.me/919412182786?text=${encodeURIComponent(text)}`;
+      }
+
+      // Update main CTA button
+      if (waBtn) {
+        waBtn.href = waUrl;
+      }
+
+      // Synchronize top navigation capsule & footer WhatsApp links
+      const topPillWa = document.querySelector('.ios27-pill-whatsapp');
+      if (topPillWa) {
+        topPillWa.href = waUrl;
+        topPillWa.setAttribute('title', `Order ${product.shortName} via WhatsApp`);
+      }
+
+      const footerWaLinks = document.querySelectorAll('footer a[href*="wa.me"]');
+      footerWaLinks.forEach(l => {
+        l.href = waUrl;
+      });
     }
 
     if (ramSel) ramSel.addEventListener('change', updatePrice);
     if (ssdSel) ssdSel.addEventListener('change', updatePrice);
     updatePrice();
+
+    if (waBtn) {
+      waBtn.addEventListener('click', () => {
+        if (window.classicAuth && typeof window.classicAuth.showLucidToast === 'function') {
+          window.classicAuth.showLucidToast('💬 Connecting to WhatsApp with your custom specs...', 'success');
+        }
+      });
+    }
   </script>
 </body>
 </html>

@@ -615,7 +615,7 @@ function generateTickerCardsHtml() {
           <a href="product-detail.html?id=${p.id}" class="py-2 px-2 rounded-xl bg-white/80 hover:bg-white text-slate-800 text-[11px] font-mono font-bold text-center border border-white/90 shadow-sm transition-all">
             View Details
           </a>
-          <a href="https://wa.me/${STORE_CONFIG.whatsappNumber}?text=Hi%20Classic%20Computers%2C%20I%20want%20to%20order%20${encodeURIComponent(p.shortName)}%20(Rs%20${p.price})" 
+          <a href="${STORE_CONFIG.buildWhatsAppUrl(p)}" 
              target="_blank" 
              class="py-2 px-2 rounded-xl ios27-pill-whatsapp text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1 shadow-sm">
             <span>WhatsApp</span>

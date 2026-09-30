@@ -20,6 +20,39 @@ const STORE_CONFIG = {
     replacementDays: 7,
     inspectionPoints: 30,
     freeDelivery: true
+  },
+  buildWhatsAppUrl: function (product, config = {}) {
+    if (!product) return `https://wa.me/${this.whatsappNumber}`;
+    const ram = config.ram || (product.specs && product.specs.ram) || 'Standard Enterprise RAM';
+    const ssd = config.ssd || (product.specs && product.specs.storage) || 'Fast NVMe SSD';
+    const price = config.price || product.price || 0;
+    const grade = product.grade || 'Grade A+ (Pristine Condition)';
+    const processor = (product.specs && product.specs.processor) || 'Enterprise CPU';
+    const gpu = (product.specs && product.specs.gpu) || 'Integrated Graphics';
+    const display = (product.specs && product.specs.display) || 'Standard Screen';
+
+    const lines = [
+      `*ORDER INQUIRY — Classic Computers* 💻`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `*Device:* ${product.name}`,
+      `*Grade:* ${grade}`,
+      `*CPU:* ${processor}`,
+      `*RAM Selected:* ${ram}`,
+      `*Storage Selected:* ${ssd}`,
+      `*Graphics:* ${gpu}`,
+      `*Display:* ${display}`,
+      `*Warranty:* 6 Months Warranty + 7-Day Replacement`,
+      `*Shipping:* Free & Insured Pan-India Delivery 🚚`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `*Total Price:* ₹${Number(price).toLocaleString('en-IN')} (GST Included)`,
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━`,
+      `*My Delivery Address / City:* `,
+      `[Type your address & pincode here]`,
+      ``,
+      `Please confirm stock availability and send payment / dispatch details!`
+    ];
+
+    return `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
   }
 };
 
@@ -417,6 +450,14 @@ const CUSTOMER_REVIEWS = [
   }
 ];
 
+if (typeof window !== 'undefined') {
+  window.STORE_CONFIG = STORE_CONFIG;
+  window.PRODUCTS = PRODUCTS;
+  window.CUSTOMER_REVIEWS = CUSTOMER_REVIEWS;
+  window.buildProductWhatsAppUrl = STORE_CONFIG.buildWhatsAppUrl.bind(STORE_CONFIG);
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { STORE_CONFIG, PRODUCTS, CUSTOMER_REVIEWS };
 }
+

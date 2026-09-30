@@ -448,14 +448,39 @@ document.addEventListener('DOMContentLoaded', () => {
     closeQuickView();
   };
 
-  window.buyOnWhatsApp = function(productId) {
+  window.buyOnWhatsApp = function(productId, config = {}) {
     const product = PRODUCTS.find(p => p.id === productId);
     if (!product) return;
 
-    const message = `Hello Classic Computer Team!\n\nI want to purchase the certified refurbished laptop:\n*${product.name}*\nPrice: ₹${product.price.toLocaleString('en-IN')}\nSpecs: ${product.specs.processor} | ${product.specs.ram} | ${product.specs.storage} | ${product.specs.gpu}\n\nPlease share delivery details and payment options!`;
+    let url;
+    if (typeof STORE_CONFIG !== 'undefined' && typeof STORE_CONFIG.buildWhatsAppUrl === 'function') {
+      url = STORE_CONFIG.buildWhatsAppUrl(product, config);
+    } else {
+      const ram = config.ram || product.specs.ram;
+      const ssd = config.ssd || product.specs.storage;
+      const price = config.price || product.price;
+      const message = `*ORDER INQUIRY — Classic Computers* 💻\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n*Device:* ${product.name}\n*Grade:* ${product.grade || 'Grade A+'}\n*Processor:* ${product.specs.processor}\n*RAM:* ${ram}\n*Storage:* ${ssd}\n*Graphics:* ${product.specs.gpu}\n*Warranty:* 6 Months Warranty + 7-Day Replacement\n*Offer Price:* ₹${Number(price).toLocaleString('en-IN')} (GST & Courier Included)\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n*My Delivery City / Address:*\n[Please type here]\n\nPlease confirm stock availability!`;
+      const num = (typeof STORE_CONFIG !== 'undefined' && STORE_CONFIG.whatsappNumber) || '919412182786';
+      url = `https://wa.me/${num}?text=${encodeURIComponent(message)}`;
+    }
     
-    const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    if (window.classicAuth && typeof window.classicAuth.showLucidToast === 'function') {
+      window.classicAuth.showLucidToast(`💬 Connecting to WhatsApp with ${product.shortName} specs...`, 'success');
+    }
     window.open(url, '_blank');
+  };
+
+  window.orderQvOnWhatsApp = function() {
+    if (!currentModalProduct) return;
+    const ramExtra = selectedModalRam ? selectedModalRam.extraPrice : 0;
+    const ssdExtra = selectedModalSsd ? selectedModalSsd.extraPrice : 0;
+    const finalPrice = currentModalProduct.price + ramExtra + ssdExtra;
+
+    window.buyOnWhatsApp(currentModalProduct.id, {
+      ram: selectedModalRam ? selectedModalRam.size : currentModalProduct.specs.ram,
+      ssd: selectedModalSsd ? selectedModalSsd.size : currentModalProduct.specs.storage,
+      price: finalPrice
+    });
   };
 
   // Check URL query parameters (e.g., ?category=workstation or ?search=dell)
