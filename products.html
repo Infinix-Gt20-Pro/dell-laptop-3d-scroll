@@ -184,6 +184,18 @@
             <span class="hidden sm:inline">Order on WhatsApp</span>
             <span class="sm:hidden text-[11px]">Chat</span>
           </a>
+          <!-- Shopping Bag Glass Pill -->
+          <button type="button" data-action="open-cart" 
+                  class="ios27-pill-cart relative inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 text-slate-800 text-xs font-mono font-bold hover:text-cyan-700 rounded-2xl bg-white/70 hover:bg-white border border-white/80 shadow-sm transition-all" 
+                  aria-label="Open Shopping Bag">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span class="hidden sm:inline">Bag</span>
+            <span class="cart-badge px-1.5 py-0.5 rounded-full bg-cyan-600 text-white text-[9px] sm:text-[10px] font-mono font-bold flex items-center justify-center border-2 border-white shadow-xs ml-0.5" style="display:none;">0</span>
+          </button>
+
+
 
           <!-- Mobile Glass Drawer Toggle Button -->
           <button id="mobile-menu-toggle" type="button" class="lg:hidden p-1.5 sm:p-2 rounded-2xl text-slate-800 bg-white/70 hover:bg-white border border-white/80 shadow-sm focus:outline-none transition-all" aria-label="Toggle Navigation">
@@ -216,6 +228,14 @@
           <button onclick="window.openLucidAuthModal('google')" class="w-full text-left px-4 py-2.5 rounded-2xl bg-cyan-50 border border-cyan-200 text-cyan-900 text-xs font-bold flex items-center justify-between">
             <span>🔐 Google / Account Sign In</span>
             <span class="text-[10px] bg-cyan-200/60 px-2 py-0.5 rounded-full font-mono">Fast Access</span>
+          </button>
+
+          <button type="button" data-action="open-cart" onclick="document.getElementById('mobile-drawer').classList.add('hidden')" class="w-full text-left px-4 py-2.5 rounded-2xl bg-white/80 border border-slate-200 text-slate-800 text-xs font-bold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+              <span>Shopping Bag</span>
+            </span>
+            <span class="cart-badge text-[10px] bg-cyan-600 text-white px-2 py-0.5 rounded-full font-mono font-bold" style="display:none;">0</span>
           </button>
           <a href="index.html" class="px-4 py-2 rounded-2xl text-slate-700 text-xs font-semibold">
             Home
@@ -459,6 +479,173 @@
                 </div>
               </div>
 
+
+  <!-- =========================================================================
+       iOS 27 LIQUID GLASS SHOPPING BAG DRAWER
+       ========================================================================= -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 hidden items-center justify-end bg-slate-950/60 backdrop-blur-md transition-opacity duration-300">
+    <!-- Click backdrop to close -->
+    <div class="absolute inset-0 cursor-pointer" data-action="close-cart"></div>
+
+    <!-- Slide-over Drawer Panel -->
+    <div class="relative w-full max-w-md h-full bg-white/95 backdrop-blur-2xl border-l border-slate-200/80 shadow-2xl flex flex-col z-10 overflow-hidden">
+      
+      <!-- Drawer Header -->
+      <div class="p-5 border-b border-slate-200/80 flex items-center justify-between bg-slate-50/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 shadow-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <span>Shopping Bag</span>
+              <span class="cart-badge px-2 py-0.5 rounded-full bg-cyan-600 text-white text-[10px] font-mono font-bold" style="display:none;">0</span>
+            </h3>
+            <p class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Classic Computers Certified</p>
+          </div>
+        </div>
+        <button type="button" data-action="close-cart" class="p-2 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-200/60 transition-colors" aria-label="Close Shopping Bag">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Drawer Body: Cart Items List -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-3.5" id="cart-drawer-body">
+        
+        <!-- Empty Cart State -->
+        <div id="cart-empty-state" class="hidden flex flex-col items-center justify-center py-16 px-4 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 mb-4 shadow-inner">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <h4 class="text-base font-bold text-slate-900 mb-1">Your bag is empty</h4>
+          <p class="text-xs text-slate-500 max-w-xs mb-6 font-mono">Explore certified refurbished enterprise laptops & workstations with 6-12 months warranty.</p>
+          <a href="products.html" data-action="close-cart" class="py-2.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-mono font-bold transition-all shadow-md">
+            Browse Catalog →
+          </a>
+        </div>
+
+        <!-- Populated Cart Items Container -->
+        <div id="cart-items-container" class="space-y-3"></div>
+
+      </div>
+
+      <!-- Drawer Footer: Subtotal, Coupon & Checkout Actions -->
+      <div id="cart-footer" class="p-5 border-t border-slate-200/80 bg-slate-50/90 space-y-3.5">
+        
+        <!-- Promo Coupon Code Row -->
+        <form id="coupon-form" class="space-y-1">
+          <div class="flex gap-2">
+            <input type="text" id="coupon-input" placeholder="Coupon Code (e.g. CLASSIC1000)" class="flex-1 px-3 py-2 text-xs font-mono rounded-xl bg-white border border-slate-300 focus:border-cyan-500 outline-none uppercase placeholder:text-slate-400">
+            <button type="submit" class="px-3.5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-mono text-xs font-bold transition-colors">Apply</button>
+          </div>
+          <span id="coupon-message" class="text-xs font-medium hidden"></span>
+        </form>
+
+        <!-- Subtotal / Discount / Total Rows -->
+        <div class="space-y-1.5 pt-2 border-t border-slate-200/60 text-xs font-mono">
+          <div class="flex items-center justify-between text-slate-600">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal" class="font-bold text-slate-900 font-mono">₹0</span>
+          </div>
+          <div id="cart-discount-row" class="hidden flex items-center justify-between text-emerald-600 font-bold">
+            <span>Coupon Discount:</span>
+            <span id="cart-discount" class="font-mono">-₹0</span>
+          </div>
+          <div class="flex items-center justify-between text-sm font-bold text-slate-900 pt-1.5 border-t border-slate-200">
+            <span class="font-sans font-black">Total Payable:</span>
+            <span id="cart-total" class="font-mono text-base text-cyan-700">₹0</span>
+          </div>
+        </div>
+
+        <!-- Checkout Buttons Grid -->
+        <div class="grid grid-cols-1 gap-2 pt-1">
+          <button type="button" id="cart-whatsapp-btn" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xs text-center transition-all shadow-md flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span>Order Entire Bag on WhatsApp</span>
+          </button>
+          
+          <button type="button" data-action="open-checkout" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono font-bold text-xs text-center transition-all flex items-center justify-center gap-2">
+            <span>Place Order Online (InsForge RLS) →</span>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
+          <span>🛡️ 6-12M Warranty</span>
+          <span>•</span>
+          <span>🚚 Pan-India Courier</span>
+          <span>•</span>
+          <span>🏬 Store Pickup</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       ONLINE CHECKOUT MODAL
+       ========================================================================= -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4">
+    <div class="relative w-full max-w-lg bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 overflow-hidden">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div>
+          <h3 class="text-lg font-black text-slate-900">Complete Your Order</h3>
+          <p class="text-xs font-mono text-slate-500">Certified Refurbished Hardware • Pan-India Delivery</p>
+        </div>
+        <button type="button" data-action="close-checkout" class="p-2 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="checkout-form" class="space-y-4 pt-4">
+        <div>
+          <label class="block text-xs font-mono text-slate-600 mb-1">Full Name</label>
+          <input type="text" id="checkout-name" required class="w-full px-3.5 py-2 text-xs font-mono rounded-xl bg-slate-50 border border-slate-300 focus:border-cyan-500 outline-none">
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-mono text-slate-600 mb-1">Phone Number (WhatsApp)</label>
+            <input type="tel" id="checkout-phone" required class="w-full px-3.5 py-2 text-xs font-mono rounded-xl bg-slate-50 border border-slate-300 focus:border-cyan-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-mono text-slate-600 mb-1">Delivery City & Pincode</label>
+            <input type="text" id="checkout-address" required class="w-full px-3.5 py-2 text-xs font-mono rounded-xl bg-slate-50 border border-slate-300 focus:border-cyan-500 outline-none">
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-cyan-50 border border-cyan-200/80 flex items-center justify-between">
+          <span class="text-xs font-mono text-cyan-900 font-bold">Total Amount to Pay:</span>
+          <span id="checkout-order-total" class="text-base font-black text-cyan-900 font-mono">₹0</span>
+        </div>
+
+        <div class="pt-2 flex gap-3">
+          <button type="button" data-action="close-checkout" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-mono font-bold">Cancel</button>
+          <button type="submit" class="flex-1 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold shadow-md">Confirm Order →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Success Modal -->
+  <div id="order-success-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-md p-4">
+    <div class="relative w-full max-w-md bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 text-center space-y-4">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div>
+        <h3 class="text-lg font-black text-slate-900">Order Confirmed!</h3>
+        <p class="text-xs font-mono text-slate-500 mt-1">Order ID: <span id="success-order-id" class="text-cyan-700 font-bold"></span></p>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl text-left text-xs font-mono space-y-1">
+        <div><strong>Total Paid:</strong> <span id="success-order-total" class="text-slate-900 font-bold"></span></div>
+        <div><strong>Warranty Valid Till:</strong> <span id="success-warranty-date" class="text-emerald-700 font-bold"></span></div>
+        <ul id="success-items-list" class="list-disc list-inside text-slate-600 pt-1"></ul>
+      </div>
+      <button type="button" onclick="if(window.storeEngine) storeEngine.closeOrderConfirmation()" class="w-full py-2.5 rounded-xl bg-slate-900 text-white text-xs font-mono font-bold">Close & Return to Store</button>
+    </div>
+  </div>
+  
+
               <!-- Terms & Privacy Agreement Checkbox -->
               <div class="auth-v7-row-opts !mt-1 !mb-3">
                 <label class="auth-v7-checkbox-label">
@@ -521,6 +708,7 @@
     </div>
   </div>
   
+  <script src="js/cart-auth.js"></script>
   <script src="js/auth-system.js"></script>
   <script src="js/storage-system.js"></script>
   <script src="js/burn-transition.js"></script>
@@ -702,7 +890,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=dell-5530-flagship" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -711,7 +899,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='dell-5530-flagship'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -789,7 +983,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=thinkpad-t480-classic" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -798,7 +992,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='thinkpad-t480-classic'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -876,7 +1076,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=hp-elitebook-840-g6" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -885,7 +1085,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='hp-elitebook-840-g6'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -963,7 +1169,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=dell-optiplex-7070-micro" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -972,7 +1178,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='dell-optiplex-7070-micro'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -1050,7 +1262,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=hp-elitedesk-800-tower" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -1059,7 +1271,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='hp-elitedesk-800-tower'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -1137,7 +1355,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=hp-zbook-15-g5" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -1146,7 +1364,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='hp-zbook-15-g5'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -1224,7 +1448,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=lenovo-legion-5-gaming" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -1233,7 +1457,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='lenovo-legion-5-gaming'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>
@@ -1311,7 +1541,7 @@
           </span>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 gap-2 mb-2"><div class="grid grid-cols-2 gap-2">
           <a href="product-detail.html?id=macbook-pro-15-retina" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-mono font-bold text-center transition-colors">
             Full Specs & 3D →
           </a>
@@ -1320,7 +1550,13 @@
              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
             <span>WhatsApp</span>
           </a>
-        </div>
+        </div></div>
+        <button type="button" 
+                onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='macbook-pro-15-retina'))" 
+                class="w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Shopping Bag</span>
+        </button>
       </div>
 
     </div>

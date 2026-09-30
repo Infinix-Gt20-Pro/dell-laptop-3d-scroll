@@ -50,9 +50,36 @@ class ClassicStoreEngine {
   }
 
   init() {
-    this.renderCartUI();
-    this.updateBadges();
-    this.setupListeners();
+    const runInit = () => {
+      this.renderCartUI();
+      this.updateBadges();
+      this.setupListeners();
+    };
+
+    if (typeof document !== 'undefined') {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runInit);
+      } else {
+        runInit();
+      }
+    }
+
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'cc_cart') {
+          this.cart = this.loadFromStorage('cc_cart', []);
+          this.updateBadges();
+          this.renderCartUI();
+        }
+      });
+    }
+  }
+
+  getVariantKey(productId, specs) {
+    const ram = specs && specs.ram ? specs.ram : 'default';
+    const storage = specs && specs.storage ? specs.storage : 'default';
+    const warranty = specs && specs.warranty ? specs.warranty : 'default';
+    return `${productId}__${ram}__${storage}__${warranty}`.replace(/\s+/g, '-').toLowerCase();
   }
 
   setupListeners() {
@@ -108,34 +135,58 @@ class ClassicStoreEngine {
 
   // --- CART OPERATIONS ---
   addToCart(product, customSpecs = null) {
-    const finalPrice = product.customPrice || product.price;
-    const cartItem = {
-      cartId: `${product.id}-${Date.now()}`,
-      id: product.id,
-      name: product.name,
-      shortName: product.shortName,
-      price: finalPrice,
-      originalPrice: product.originalPrice,
-      thumbnail: product.thumbnail,
-      grade: product.grade,
-      quantity: 1,
-      customSpecs: customSpecs || {
-        ram: product.customRam || (product.specs && product.specs.ram ? product.specs.ram.split(' ')[0] : '8GB'),
-        storage: product.customSsd || (product.specs && product.specs.storage ? product.specs.storage.split(' ')[0] : '256GB SSD'),
-        warranty: product.customWarranty || '6 Months Free Warranty'
-      }
+    if (!product) return;
+
+    let finalPrice = Number(product.customPrice || product.price || 0);
+    const resolvedSpecs = customSpecs || {
+      ram: product.customRam || (product.specs && product.specs.ram ? product.specs.ram.split(' ')[0] : '8GB'),
+      storage: product.customSsd || (product.specs && product.specs.storage ? product.specs.storage.split(' ')[0] : '256GB SSD'),
+      warranty: product.customWarranty || '6 Months Free Store Warranty'
     };
 
     if (customSpecs && customSpecs.extraPrice) {
-      cartItem.price += customSpecs.extraPrice;
+      finalPrice += Number(customSpecs.extraPrice);
     }
+
+    const variantKey = this.getVariantKey(product.id, resolvedSpecs);
+
+    // Check if identical product configuration already exists in cart
+    const existingIndex = this.cart.findIndex(i => 
+      (i.variantKey && i.variantKey === variantKey) || i.cartId === variantKey
+    );
+
+    if (existingIndex > -1) {
+      this.cart[existingIndex].quantity += 1;
+      this.saveToStorage('cc_cart', this.cart);
+      this.updateBadges();
+      this.renderCartUI();
+      if (typeof window !== 'undefined' && window.soundFX && window.soundFX.playSuccess) window.soundFX.playSuccess();
+      this.showToast(`Updated "${this.cart[existingIndex].shortName}" quantity (x${this.cart[existingIndex].quantity})`);
+      this.openCart();
+      return;
+    }
+
+    // Otherwise add as new distinct line item
+    const cartItem = {
+      cartId: variantKey,
+      variantKey: variantKey,
+      id: product.id,
+      name: product.name,
+      shortName: product.shortName || product.name,
+      price: finalPrice,
+      originalPrice: product.originalPrice || finalPrice,
+      thumbnail: product.thumbnail || 'assets/images/logo.png',
+      grade: product.grade || 'Grade A+',
+      quantity: 1,
+      customSpecs: resolvedSpecs
+    };
 
     this.cart.push(cartItem);
     this.saveToStorage('cc_cart', this.cart);
     this.updateBadges();
     this.renderCartUI();
-    if (window.soundFX && window.soundFX.playSuccess) window.soundFX.playSuccess();
-    this.showToast(`Added "${product.shortName}" to Cart!`);
+    if (typeof window !== 'undefined' && window.soundFX && window.soundFX.playSuccess) window.soundFX.playSuccess();
+    this.showToast(`Added "${cartItem.shortName}" to Shopping Bag!`);
     this.openCart();
   }
 
@@ -378,17 +429,38 @@ class ClassicStoreEngine {
   checkoutViaWhatsApp(customItem = null) {
     let orderText = "";
     if (customItem) {
-      orderText = `Hello *Classic Computer*! 💻%0A%0AI want to order this Certified Refurbished Device:%0A*Model:* ${customItem.name}%0A*Price:* ₹${customItem.price.toLocaleString('en-IN')}%0A*Configuration:* ${customItem.customSpecs.ram} RAM | ${customItem.customSpecs.storage} SSD%0A%0A*Customer:* ${this.user.name}%0A*Phone:* ${this.user.phone}%0A*Delivery City:* ${this.user.address}`;
-    } else if (this.cart.length > 0) {
-      const itemsList = this.cart.map(i => `- ${i.shortName} (${i.customSpecs.ram}/${i.customSpecs.storage}) x${i.quantity} = ₹${(i.price * i.quantity).toLocaleString('en-IN')}`).join('%0A');
-      orderText = `Hello *Classic Computer*! 💻%0A%0AI would like to place an order from your website:%0A%0A*ITEMS:*%0A${itemsList}%0A%0A*Total Bill:* ₹${this.getCartTotal().toLocaleString('en-IN')}%0A*Customer Name:* ${this.user.name}%0A*Phone:* ${this.user.phone}%0A*Address:* ${this.user.address}%0A%0APlease confirm availability & dispatch tracking!`;
+      orderText = `Hello *Classic Computers*! 💻%0A%0AI want to order this Certified Refurbished Device:%0A*Model:* ${encodeURIComponent(customItem.name)}%0A*Price:* ₹${customItem.price.toLocaleString('en-IN')}%0A*Configuration:* ${encodeURIComponent(customItem.customSpecs.ram)} RAM | ${encodeURIComponent(customItem.customSpecs.storage)} SSD%0A%0A*Customer:* ${encodeURIComponent(this.user.name)}%0A*Phone:* ${encodeURIComponent(this.user.phone)}%0A*Delivery City:* ${encodeURIComponent(this.user.address)}`;
+    } else if (this.cart && this.cart.length > 0) {
+      const itemsList = this.cart.map((item, idx) => {
+        const lineTotal = item.price * item.quantity;
+        return `${idx + 1}. *${encodeURIComponent(item.shortName || item.name)}* (Qty: ${item.quantity})%0A   ⚙️ Specs: ${encodeURIComponent(item.customSpecs.ram)} RAM | ${encodeURIComponent(item.customSpecs.storage)} SSD%0A   💵 Rate: ₹${item.price.toLocaleString('en-IN')} x ${item.quantity} = ₹${lineTotal.toLocaleString('en-IN')}`;
+      }).join('%0A%0A');
+
+      const totalQty = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+      const subtotal = this.getCartSubtotal();
+      const discount = this.activeCoupon ? this.activeCoupon.discount : 0;
+      const finalTotal = this.getCartTotal();
+
+      let financialBreakdown = `*Items Subtotal (${totalQty} units):* ₹${subtotal.toLocaleString('en-IN')}`;
+      if (discount > 0) {
+        financialBreakdown += `%0A*Coupon (${this.activeCoupon.code}):* -₹${discount.toLocaleString('en-IN')}`;
+      }
+      financialBreakdown += `%0A*Total Payable Amount:* ₹${finalTotal.toLocaleString('en-IN')}`;
+
+      orderText = `Hello *Classic Computers*! 💻%0A%0AI would like to place an order for the following items from your website:%0A%0A*📦 ORDER MANIFEST:*%0A${itemsList}%0A%0A------------------------%0A${financialBreakdown}%0A------------------------%0A*👤 Customer Name:* ${encodeURIComponent(this.user.name)}%0A*📞 Phone Number:* ${encodeURIComponent(this.user.phone)}%0A*📍 Shipping Address:* ${encodeURIComponent(this.user.address)}%0A%0APlease verify stock availability and share dispatch tracking details!`;
     } else {
       this.showToast('Please add items to cart first!');
       return;
     }
 
-    const waUrl = `https://api.whatsapp.com/send?phone=${STORE_CONFIG.whatsappNumber}&text=${orderText}`;
-    window.open(waUrl, '_blank');
+    const waNum = (typeof window !== 'undefined' && window.STORE_CONFIG && window.STORE_CONFIG.whatsappNumber) 
+      ? window.STORE_CONFIG.whatsappNumber 
+      : '919412182786';
+    const waUrl = `https://wa.me/${waNum}?text=${orderText}`;
+    if (typeof window !== 'undefined') {
+      window.open(waUrl, '_blank');
+    }
+    return waUrl;
   }
 
   // --- ONLINE ORDER PROCESSING ---
@@ -528,6 +600,7 @@ class ClassicStoreEngine {
   }
 
   showToast(message) {
+    if (typeof document === 'undefined' || typeof document.createElement !== 'function') return;
     const toast = document.createElement('div');
     toast.className = "fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl border border-cyan-500/40 shadow-2xl flex items-center gap-3 animate-fade-in";
     toast.innerHTML = `
@@ -543,5 +616,12 @@ class ClassicStoreEngine {
   }
 }
 
-// Global store engine instance
-window.storeEngine = new ClassicStoreEngine();
+// Global store engine instance & module exports
+if (typeof window !== 'undefined') {
+  window.ClassicStoreEngine = ClassicStoreEngine;
+  window.storeEngine = new ClassicStoreEngine();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ClassicStoreEngine };
+}
