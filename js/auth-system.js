@@ -803,9 +803,27 @@
 
           <!-- Menu links -->
           <div class="py-1">
+            <button type="button" onclick="window.openMyOrders()" class="w-full text-left flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-cyan-50/70 hover:text-cyan-800 transition-colors">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <span>My Orders & Tracking</span>
+              </span>
+              <span class="orders-badge px-1.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[10px] font-mono font-bold" style="display:none;">0</span>
+            </button>
+            <button type="button" onclick="window.openShoppingBag()" class="w-full text-left flex items-center justify-between px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-cyan-50/70 hover:text-cyan-800 transition-colors">
+              <span class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                <span>Shopping Bag</span>
+              </span>
+              <span class="cart-badge px-1.5 py-0.5 rounded-full bg-cyan-600 text-white text-[10px] font-mono font-bold" style="display:none;">0</span>
+            </button>
             <a href="products.html" class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-cyan-50/70 hover:text-cyan-800 transition-colors">
               <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
               <span>Browse Laptops & Desktops</span>
             </a>

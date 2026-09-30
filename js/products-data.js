@@ -3,7 +3,7 @@
  * Catalog of certified refurbished enterprise laptops, workstations, and desktops
  */
 
-const STORE_CONFIG = {
+var STORE_CONFIG = (typeof window !== 'undefined' && window.STORE_CONFIG) ? window.STORE_CONFIG : {
   storeName: "Classic Computers",
   tagline: "India's Premier Certified Refurbished Enterprise Laptops & Computers Hub",
   whatsappNumber: "919412182786",
@@ -56,7 +56,7 @@ const STORE_CONFIG = {
   }
 };
 
-const PRODUCTS = [
+var PRODUCTS = (typeof window !== 'undefined' && window.PRODUCTS) ? window.PRODUCTS : [
   {
     id: "dell-5530-flagship",
     name: "Dell Precision 5530 4K UHD Mobile Workstation",
@@ -417,7 +417,7 @@ const PRODUCTS = [
   }
 ];
 
-const CUSTOMER_REVIEWS = [
+var CUSTOMER_REVIEWS = (typeof window !== 'undefined' && window.CUSTOMER_REVIEWS) ? window.CUSTOMER_REVIEWS : [
   {
     id: 1,
     name: "Vikram Malhotra",

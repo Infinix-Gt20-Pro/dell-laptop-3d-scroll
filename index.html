@@ -135,10 +135,10 @@
       </div>
 
       <!-- Main iOS 27 Floating Glass Island Dock -->
-      <header class="ios27-glass-dock w-full flex items-center justify-between gap-4">
+      <header class="ios27-glass-dock w-full flex items-center justify-between gap-2 sm:gap-4">
         
         <!-- Brand Monogram & Squircle Logo -->
-        <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0">
+        <a href="index.html" class="flex items-center gap-2 sm:gap-3 group min-w-0">
           <div class="relative w-8 h-8 sm:w-11 sm:h-11 rounded-[12px] sm:rounded-[16px] p-0.5 bg-gradient-to-tr from-white via-cyan-100 to-white shadow-md border border-white/90 transition-transform duration-300 group-hover:scale-105 overflow-hidden flex items-center justify-center shrink-0">
             <img src="assets/images/logo.png" alt="Classic Computers Logo" class="w-full h-full object-cover brand-logo-img">
             <div class="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent pointer-events-none"></div>
@@ -171,7 +171,7 @@
         </nav>
 
         <!-- Right: Apple Liquid Glass Action Capsules -->
-        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
           
           <!-- Dynamic User Auth Pill (Google / DB Session) -->
           <div id="navbar-auth-container" class="shrink-0">
@@ -197,7 +197,7 @@
           <!-- WhatsApp Emerald Liquid Glass Capsule -->
           <a href="https://wa.me/919412182786?text=Hi%20Classic%20Computers%2C%20I%20am%20interested%20in%20buying%20a%20certified%20laptop%2Fdesktop." 
              target="_blank" rel="noopener noreferrer"
-             class="ios27-pill-whatsapp inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-white text-xs font-mono font-bold shadow-md shrink-0">
+             class="ios27-pill-whatsapp inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-white text-xs font-mono font-bold shadow-md">
             <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current shrink-0" viewBox="0 0 24 24">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
             </svg>
@@ -259,6 +259,13 @@
               <span>Shopping Bag</span>
             </span>
             <span class="cart-badge text-[10px] bg-cyan-600 text-white px-2 py-0.5 rounded-full font-mono font-bold" style="display:none;">0</span>
+          </button>
+          <button type="button" data-action="open-orders" onclick="document.getElementById('mobile-drawer').classList.add('hidden')" class="w-full text-left px-4 py-2.5 rounded-2xl bg-white/80 border border-slate-200 text-slate-800 text-xs font-bold flex items-center justify-between">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              <span>My Orders & Tracking</span>
+            </span>
+            <span class="orders-badge text-[10px] bg-cyan-100 text-cyan-800 px-2 py-0.5 rounded-full font-mono font-bold" style="display:none;">0</span>
           </button>
           <a href="index.html" class="px-4 py-2 rounded-2xl bg-cyan-500/15 text-cyan-800 font-bold border border-cyan-400/30 text-xs font-semibold">
             Home
@@ -502,6 +509,58 @@
                 </div>
               </div>
 
+              <!-- Submit Create Account Button -->
+              <button type="submit" class="auth-v7-submit-btn">
+                Create Account
+                <svg class="w-4 h-4 ml-1 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+
+              <!-- Divider -->
+              <div class="auth-v7-divider">
+                <div class="auth-v7-divider-line"></div>
+                <span class="auth-v7-divider-text">OR SIGN UP WITH</span>
+                <div class="auth-v7-divider-line"></div>
+              </div>
+
+              <!-- Social Signup Grid -->
+              <div class="auth-v7-social-grid">
+                <button type="button" onclick="window.submitGoogleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                  </svg>
+                  <span>Google</span>
+                </button>
+                <button type="button" onclick="window.submitAppleAuth()" class="auth-v7-social-btn">
+                  <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.06 1.72-.93 2.74 1 .08 2.02-.49 2.64-1.24z"/>
+                  </svg>
+                  <span>Apple</span>
+                </button>
+              </div>
+
+              <!-- Switch to Login -->
+              <div class="auth-v7-switch-footer">
+                <span>Already have an account?</span>
+                <button type="button" onclick="window.switchAuthV7Mode('login')" class="auth-v7-switch-btn">Sign In</button>
+              </div>
+
+            </form>
+          </div>
+          <!-- end: auth-v7-pane-register -->
+
+        </div>
+        <!-- end: auth-v7-card-inner -->
+      </div>
+      <!-- end: auth-v7-card-border -->
+    </div>
+    <!-- end: auth-v7-container -->
+  </div>
+  <!-- end: lucid-auth-overlay -->
 
   <!-- =========================================================================
        iOS 27 LIQUID GLASS SHOPPING BAG DRAWER
@@ -589,6 +648,11 @@
           
           <button type="button" data-action="open-checkout" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono font-bold text-xs text-center transition-all flex items-center justify-center gap-2">
             <span>Place Order Online (InsForge RLS) →</span>
+          </button>
+
+          <button type="button" data-action="open-orders" class="w-full py-2 px-3 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 font-mono font-bold text-xs text-center transition-all flex items-center justify-center gap-1.5">
+            <span>📦 View Previous Orders & Tracking</span>
+            <span class="orders-badge text-[10px] bg-cyan-200/80 text-cyan-900 px-1.5 py-0.2 rounded-full font-mono font-bold" style="display:none;">0</span>
           </button>
         </div>
 
@@ -731,6 +795,8 @@
     </div>
   </div>
   
+  <script src="js/products-data.js"></script>
+  <script src="js/adaptive-perf.js"></script>
   <script src="js/cart-auth.js"></script>
   <script src="js/auth-system.js"></script>
   <script src="js/storage-system.js"></script>
@@ -1277,6 +1343,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('lenovo-legion-5-gaming')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1338,6 +1410,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('macbook-pro-15-retina')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1399,6 +1477,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('dell-5530-flagship')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1460,6 +1544,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('thinkpad-t480-classic')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1521,6 +1611,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('hp-elitebook-840-g6')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1582,6 +1678,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('dell-optiplex-7070-micro')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1643,6 +1745,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('hp-elitedesk-800-tower')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1704,6 +1812,12 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('hp-zbook-15-g5')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -1765,6 +1879,79 @@
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('lenovo-legion-5-gaming')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
+      </div>
+    </div>
+  
+
+    <div class="ios27-glass-card vertical-product-card p-4 flex flex-col justify-between group">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-cyan-50/80 text-cyan-800 text-[10px] font-mono font-bold border border-cyan-200/60 backdrop-blur-md">
+            Grade A+
+          </span>
+          <span class="px-2.5 py-0.5 rounded-full bg-emerald-50/80 text-emerald-800 text-[10px] font-mono font-bold border border-emerald-200/60 backdrop-blur-md">
+            Save 77%
+          </span>
+        </div>
+        
+        <div class="relative w-full h-44 rounded-2xl bg-white/70 overflow-hidden flex items-center justify-center p-2 mb-3 border border-white/80 shadow-inner group-hover:bg-white transition-colors">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80" alt="MacBook Pro 15 Retina" class="max-h-full max-w-full object-contain card-img-zoom transition-transform duration-300">
+          <div class="absolute bottom-1 right-1 px-1.5 py-0.5 rounded-md bg-black/60 text-white text-[9px] font-mono backdrop-blur-md">
+            Apple
+          </div>
+        </div>
+
+        <h3 class="text-sm font-bold text-slate-900 group-hover:text-cyan-600 transition-colors line-clamp-1">
+          MacBook Pro 15 Retina
+        </h3>
+        <p class="text-[11px] text-slate-500 font-mono line-clamp-1 mt-0.5">
+          Intel 6-Core i7 
+        </p>
+
+        <div class="grid grid-cols-2 gap-1.5 my-3 text-[10px] font-mono">
+          <div class="px-2 py-1 rounded-xl bg-white/60 text-slate-700 border border-white/80 backdrop-blur-sm truncate">
+            ⚡ 16GB 2400MHz DDR4 onboard
+          </div>
+          <div class="px-2 py-1 rounded-xl bg-white/60 text-slate-700 border border-white/80 backdrop-blur-sm truncate">
+            💾 512GB SSD
+          </div>
+          <div class="px-2 py-1 rounded-xl bg-white/60 text-slate-700 border border-white/80 backdrop-blur-sm truncate col-span-2">
+            🖥️ 15.4-inch Retina LED-backlit (
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-200/50">
+        <div class="flex items-baseline justify-between mb-2">
+          <div>
+            <span class="text-base font-black text-slate-950 font-mono">₹48,999</span>
+            <span class="text-[10px] text-slate-400 line-through font-mono ml-1">₹2,20,000</span>
+          </div>
+          <span class="text-[10px] font-mono text-emerald-600 font-bold">In Stock</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <a href="product-detail.html?id=macbook-pro-15-retina" class="py-2 px-2 rounded-xl bg-white/80 hover:bg-white text-slate-800 text-[11px] font-mono font-bold text-center border border-white/90 shadow-sm transition-all">
+            View Details
+          </a>
+          <a href="https://wa.me/919412182786?text=*ORDER%20INQUIRY%20%E2%80%94%20Classic%20Computers*%20%F0%9F%92%BB%0A%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%0A*Device%3A*%20Apple%20MacBook%20Pro%2015-inch%20Touch%20Bar%20(Space%20Grey)%0A*Grade%3A*%20Grade%20A%2B%20(Refurbished%20Certified)%0A*CPU%3A*%20Intel%206-Core%20i7%20(8th%20Gen%2C%202.2%20GHz%20up%20to%204.1%20GHz)%0A*RAM%20Selected%3A*%2016GB%202400MHz%20DDR4%20onboard%0A*Storage%20Selected%3A*%20512GB%20PCIe-based%20SSD%0A*Graphics%3A*%20Radeon%20Pro%20555X%20with%204GB%20GDDR5%20%2B%20Intel%20UHD%20630%0A*Display%3A*%2015.4-inch%20Retina%20LED-backlit%20(2880%20x%201800)%2C%20500%20nits%0A*Warranty%3A*%206%20Months%20Warranty%20%2B%207-Day%20Replacement%0A*Shipping%3A*%20Free%20%26%20Insured%20Pan-India%20Delivery%20%F0%9F%9A%9A%0A%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%0A*Total%20Price%3A*%20%E2%82%B948%2C999%20(GST%20Included)%0A%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%E2%94%81%0A*My%20Delivery%20Address%20%2F%20City%3A*%20%0A%5BType%20your%20address%20%26%20pincode%20here%5D%0A%0APlease%20confirm%20stock%20availability%20and%20send%20payment%20%2F%20dispatch%20details!" 
+             target="_blank" 
+             class="py-2 px-2 rounded-xl ios27-pill-whatsapp text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1 shadow-sm">
+            <span>WhatsApp</span>
+          </a>
+        </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('macbook-pro-15-retina')" 
+                class="mt-2 w-full py-2 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-[11px] font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
     </div>
   
@@ -2450,7 +2637,6 @@
   
 
   <!-- Interactive JavaScript for Showcase & Receipt -->
-  <script src="js/products-data.js"></script>
   <script>
     // Flagship 8K Angle Switcher Logic
     const showcaseImg = document.getElementById('hero-showcase-img');

@@ -260,8 +260,28 @@ const handler = async (req, res) => {
 
   fs.stat(filePath, (err, stats) => {
     if (err) {
-      res.statusCode = err.code === 'ENOENT' ? 404 : 500;
-      return res.end(err.code === 'ENOENT' ? 'Not Found' : 'Internal Server Error');
+      if (err.code === 'ENOENT') {
+        // Try appending .html for clean URLs (e.g. /products -> /products.html)
+        const htmlPath = filePath + '.html';
+        fs.stat(htmlPath, (htmlErr, htmlStats) => {
+          if (!htmlErr && htmlStats.isFile()) {
+            return serveFile(htmlPath, htmlStats, req, res);
+          }
+          // Serve custom 404.html if available
+          const custom404 = path.join(BASE_DIR, '404.html');
+          fs.stat(custom404, (e404, s404) => {
+            if (!e404 && s404.isFile()) {
+              res.statusCode = 404;
+              return serveFile(custom404, s404, req, res);
+            }
+            res.statusCode = 404;
+            return res.end('Not Found');
+          });
+        });
+        return;
+      }
+      res.statusCode = 500;
+      return res.end('Internal Server Error');
     }
     if (stats.isDirectory()) {
       const idx = path.join(filePath, 'index.html');

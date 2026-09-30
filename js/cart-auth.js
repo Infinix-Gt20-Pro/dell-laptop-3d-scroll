@@ -83,28 +83,81 @@ class ClassicStoreEngine {
   }
 
   setupListeners() {
-    // Cart drawer toggles
-    document.querySelectorAll('[data-action="open-cart"]').forEach(btn => {
-      btn.addEventListener('click', () => this.openCart());
-    });
-    document.querySelectorAll('[data-action="close-cart"]').forEach(btn => {
-      btn.addEventListener('click', () => this.closeCart());
-    });
+    // Universal Document-Level Event Delegation (Guarantees reactivity on all pages & dynamic elements)
+    document.addEventListener('click', (e) => {
+      // Cart drawer toggles
+      if (e.target.closest('[data-action="open-cart"]')) {
+        e.preventDefault();
+        this.openCart();
+        return;
+      }
+      if (e.target.closest('[data-action="close-cart"]')) {
+        e.preventDefault();
+        this.closeCart();
+        return;
+      }
 
-    // Auth modal toggles
-    document.querySelectorAll('[data-action="open-auth"]').forEach(btn => {
-      btn.addEventListener('click', () => this.openAuthModal());
-    });
-    document.querySelectorAll('[data-action="close-auth"]').forEach(btn => {
-      btn.addEventListener('click', () => this.closeAuthModal());
-    });
+      // Orders modal toggles
+      if (e.target.closest('[data-action="open-orders"]') || e.target.closest('.open-orders-btn')) {
+        e.preventDefault();
+        this.openOrders();
+        return;
+      }
+      if (e.target.closest('[data-action="close-orders"]')) {
+        e.preventDefault();
+        this.closeOrders();
+        return;
+      }
 
-    // Checkout modal toggles
-    document.querySelectorAll('[data-action="open-checkout"]').forEach(btn => {
-      btn.addEventListener('click', () => this.openCheckout());
-    });
-    document.querySelectorAll('[data-action="close-checkout"]').forEach(btn => {
-      btn.addEventListener('click', () => this.closeCheckout());
+      // Mobile Menu Toggle
+      const mobileToggle = e.target.closest('#mobile-menu-toggle, #products-mobile-menu-btn, .mobile-menu-toggle-btn');
+      if (mobileToggle) {
+        e.preventDefault();
+        const drawer = document.getElementById('mobile-drawer') || document.getElementById('products-mobile-nav-drawer');
+        if (drawer) {
+          drawer.classList.toggle('hidden');
+        }
+        return;
+      }
+
+      // Mobile Drawer Close on link click
+      if (e.target.closest('#mobile-drawer a, #mobile-drawer button[data-action]')) {
+        const drawer = document.getElementById('mobile-drawer');
+        if (drawer) drawer.classList.add('hidden');
+      }
+
+      // Quick Add-To-Bag Buttons with data-add-cart-id
+      const addBagBtn = e.target.closest('[data-add-cart-id]');
+      if (addBagBtn) {
+        e.preventDefault();
+        const pid = addBagBtn.getAttribute('data-add-cart-id');
+        this.addToCart(pid);
+        return;
+      }
+
+      // Auth modal toggles
+      if (e.target.closest('[data-action="open-auth"]')) {
+        e.preventDefault();
+        this.openAuthModal();
+        return;
+      }
+      if (e.target.closest('[data-action="close-auth"]')) {
+        e.preventDefault();
+        this.closeAuthModal();
+        return;
+      }
+
+      // Checkout modal toggles
+      if (e.target.closest('[data-action="open-checkout"]')) {
+        e.preventDefault();
+        this.openCheckout();
+        return;
+      }
+      if (e.target.closest('[data-action="close-checkout"]')) {
+        e.preventDefault();
+        this.closeCheckout();
+        return;
+      }
     });
 
     // Apply Coupon form
@@ -136,6 +189,37 @@ class ClassicStoreEngine {
   // --- CART OPERATIONS ---
   addToCart(product, customSpecs = null) {
     if (!product) return;
+
+    // Support string product ID resolution with catalog fallback
+    if (typeof product === 'string') {
+      const pid = product;
+      const allProds = (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS))
+        ? PRODUCTS
+        : (window.PRODUCTS && Array.isArray(window.PRODUCTS) ? window.PRODUCTS : null);
+
+      if (allProds) {
+        product = allProds.find(p => p.id === pid) || null;
+      }
+
+      if (!product) {
+        const catalogFallback = {
+          'dell-5530-flagship': { id: 'dell-5530-flagship', name: 'Dell Precision / Latitude 5530 4K Workstation', shortName: 'Dell Precision 5530', price: 34999, originalPrice: 185000, thumbnail: 'assets/images/dell-5530/front.png', grade: 'Grade A+ Corporate Refurbished', specs: { ram: '8GB DDR4', storage: '256GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'thinkpad-t480-classic': { id: 'thinkpad-t480-classic', name: 'Lenovo ThinkPad T480 Dual-Battery Laptop', shortName: 'ThinkPad T480', price: 23499, originalPrice: 110000, thumbnail: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Corporate Certified', specs: { ram: '16GB DDR4', storage: '512GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'hp-elitebook-840-g6': { id: 'hp-elitebook-840-g6', name: 'HP EliteBook 840 G6 Aluminum Ultrabook', shortName: 'HP EliteBook 840 G6', price: 25999, originalPrice: 115000, thumbnail: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Corporate Certified', specs: { ram: '16GB DDR4', storage: '512GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'dell-optiplex-7070-micro': { id: 'dell-optiplex-7070-micro', name: 'Dell OptiPlex 7070 Micro PC', shortName: 'OptiPlex 7070 Micro', price: 18499, originalPrice: 65000, thumbnail: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Corporate Certified', specs: { ram: '16GB DDR4', storage: '512GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'hp-elitedesk-800-tower': { id: 'hp-elitedesk-800-tower', name: 'HP EliteDesk 800 G4 Tower Workstation', shortName: 'EliteDesk 800 G4', price: 27999, originalPrice: 95000, thumbnail: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Corporate Certified', specs: { ram: '32GB DDR4', storage: '512GB SSD + 1TB HDD', warranty: '6 Months Store Replacement' } },
+          'hp-zbook-15-g5': { id: 'hp-zbook-15-g5', name: 'HP ZBook 15 G5 Mobile Workstation', shortName: 'HP ZBook 15 G5', price: 38999, originalPrice: 195000, thumbnail: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ ISV Certified', specs: { ram: '32GB DDR4', storage: '512GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'lenovo-legion-5-gaming': { id: 'lenovo-legion-5-gaming', name: 'Lenovo Legion 5 AMD Ryzen 7 RTX Gaming Rig', shortName: 'Legion 5 RTX', price: 49999, originalPrice: 92000, thumbnail: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Like New', specs: { ram: '16GB DDR4', storage: '512GB NVMe SSD', warranty: '6 Months Store Replacement' } },
+          'macbook-pro-15-retina': { id: 'macbook-pro-15-retina', name: 'Apple MacBook Pro 15-inch Touch Bar', shortName: 'MacBook Pro 15"', price: 48999, originalPrice: 220000, thumbnail: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80', grade: 'Grade A+ Refurbished', specs: { ram: '16GB DDR4', storage: '512GB PCIe SSD', warranty: '6 Months Store Replacement' } }
+        };
+        product = catalogFallback[pid] || null;
+      }
+    }
+
+    if (!product) {
+      console.warn('addToCart: Product not found:', product);
+      return;
+    }
 
     let finalPrice = Number(product.customPrice || product.price || 0);
     const resolvedSpecs = customSpecs || {
@@ -273,6 +357,12 @@ class ClassicStoreEngine {
       badge.textContent = wishCount;
       badge.style.display = wishCount > 0 ? 'flex' : 'none';
     });
+
+    const orderCount = (this.user && this.user.orders) ? this.user.orders.length : 0;
+    document.querySelectorAll('.orders-badge').forEach(badge => {
+      badge.textContent = orderCount;
+      badge.style.display = orderCount > 0 ? 'inline-flex' : 'none';
+    });
   }
 
   renderCartUI() {
@@ -391,6 +481,146 @@ class ClassicStoreEngine {
       modal.classList.add('hidden');
       document.body.style.overflow = '';
     }
+  }
+
+  // --- ORDERS MANAGEMENT & TRACKING ---
+  ensureOrdersModalExists() {
+    let modal = document.getElementById('orders-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'orders-modal';
+      modal.className = 'fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-md transition-opacity duration-300';
+      modal.innerHTML = `
+        <div class="absolute inset-0 cursor-pointer" data-action="close-orders"></div>
+        <div class="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-white rounded-3xl border border-slate-200/90 shadow-2xl overflow-hidden z-10 animate-fade-in">
+          <!-- Orders Modal Header -->
+          <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-cyan-50/40">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-cyan-600 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-cyan-600/20">
+                📦
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
+                  <span>My Orders & Live Tracking</span>
+                  <span class="orders-badge px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[10px] font-mono font-bold" style="display:none;">0</span>
+                </h3>
+                <p class="text-[11px] font-mono text-slate-500">Etah Hub Verified Invoices & 6-12M Warranty</p>
+              </div>
+            </div>
+            <button type="button" data-action="close-orders" class="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-200/60 transition-colors" aria-label="Close Orders">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <!-- Orders Modal Content Body -->
+          <div id="orders-modal-body" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
+            <!-- Dynamic order cards rendered here -->
+          </div>
+
+          <!-- Orders Modal Footer -->
+          <div class="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2 text-slate-500 font-mono text-[11px]">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>All orders backed by GST: 09AKZPA9666PZZT</span>
+            </div>
+            <a href="https://wa.me/919412182786?text=Hi%20Classic%20Computers%2C%20I%20have%20an%20order%20query." target="_blank" rel="noopener noreferrer" class="font-mono font-bold text-cyan-700 hover:text-cyan-800 flex items-center gap-1.5 text-xs">
+              <span>Order Support on WhatsApp →</span>
+            </a>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    return modal;
+  }
+
+  openOrders() {
+    const modal = this.ensureOrdersModalExists();
+    this.renderOrdersUI();
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeOrders() {
+    const modal = document.getElementById('orders-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
+
+  renderOrdersUI() {
+    this.ensureOrdersModalExists();
+    const container = document.getElementById('orders-modal-body');
+    if (!container) return;
+
+    const orders = (this.user && Array.isArray(this.user.orders)) ? this.user.orders : [];
+
+    if (orders.length === 0) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-3xl mb-4">
+            📦
+          </div>
+          <h4 class="text-base font-bold text-slate-900 mb-1">No Orders Placed Yet</h4>
+          <p class="text-xs text-slate-500 max-w-sm mb-5 font-mono">You haven't placed any refurbished laptop or desktop orders yet. Every machine includes our 32-point test & 6-12 months replacement warranty.</p>
+          <a href="products.html" data-action="close-orders" class="py-2.5 px-5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold transition-all shadow-md">
+            Explore 8 Certified Machines →
+          </a>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = orders.map(ord => {
+      const isConfirmed = (ord.status || '').toLowerCase().includes('confirm');
+      const isDelivered = (ord.status || '').toLowerCase().includes('deliver');
+      const statusColor = isDelivered 
+        ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+        : (isConfirmed ? 'bg-cyan-50 text-cyan-800 border-cyan-200' : 'bg-blue-50 text-blue-800 border-blue-200');
+      const statusDot = isDelivered ? 'bg-emerald-500' : 'bg-cyan-500 animate-pulse';
+
+      const itemsText = Array.isArray(ord.items) ? ord.items.join(', ') : (ord.items || 'Classic Computers Order');
+      const waTrackText = encodeURIComponent(`Hi Classic Computers! 📦%0A%0AI want to check tracking status for my Order *#${ord.orderId}*:%0A*Items:* ${itemsText}%0A*Total:* ₹${Number(ord.total).toLocaleString('en-IN')}%0A%0APlease share courier dispatch details!`);
+
+      return `
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 hover:bg-white border border-slate-200 transition-all shadow-xs space-y-3">
+          <!-- Top Row: Order Code, Date & Status -->
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold text-slate-400">ORDER</span>
+              <span class="text-sm font-bold text-slate-900 font-mono tracking-tight">${ord.orderId}</span>
+              <span class="text-[11px] font-mono text-slate-500 ml-1">• ${ord.date}</span>
+            </div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${statusColor}">
+              <span class="w-1.5 h-1.5 rounded-full ${statusDot}"></span>
+              <span>${ord.status || 'Confirmed'}</span>
+            </div>
+          </div>
+
+          <!-- Product Details -->
+          <div class="p-3 rounded-xl bg-white border border-slate-200/70 text-xs">
+            <div class="font-bold text-slate-900 line-clamp-2">${itemsText}</div>
+            <div class="flex flex-wrap items-center justify-between mt-2 pt-2 border-t border-slate-100 text-[11px] font-mono">
+              <span class="text-slate-500">🛡️ Warranty Valid Till: <strong class="text-slate-800">${ord.warrantyValidTill || '6 Months'}</strong></span>
+              <span class="text-sm font-bold text-slate-950 font-mono">₹${Number(ord.total).toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button onclick="window.print()" type="button" class="py-1.5 px-3 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-mono font-bold border border-slate-200 transition-all">
+              🧾 Print Receipt
+            </button>
+            <a href="https://wa.me/919412182786?text=${waTrackText}" target="_blank" rel="noopener noreferrer" class="py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold transition-all shadow-xs flex items-center gap-1">
+              <span>💬 Track on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   openCheckout() {
@@ -630,6 +860,17 @@ class ClassicStoreEngine {
 if (typeof window !== 'undefined') {
   window.ClassicStoreEngine = ClassicStoreEngine;
   window.storeEngine = new ClassicStoreEngine();
+
+  // Bulletproof global convenience functions
+  window.openShoppingBag = () => window.storeEngine && window.storeEngine.openCart();
+  window.closeShoppingBag = () => window.storeEngine && window.storeEngine.closeCart();
+  window.openMyOrders = () => window.storeEngine && window.storeEngine.openOrders();
+  window.closeMyOrders = () => window.storeEngine && window.storeEngine.closeOrders();
+  window.addToBag = (prod, specs) => window.storeEngine && window.storeEngine.addToCart(prod, specs);
+  window.toggleMobileNav = () => {
+    const drawer = document.getElementById('mobile-drawer') || document.getElementById('products-mobile-nav-drawer');
+    if (drawer) drawer.classList.toggle('hidden');
+  };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

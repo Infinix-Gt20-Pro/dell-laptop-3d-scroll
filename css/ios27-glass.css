@@ -48,6 +48,8 @@
   box-shadow: var(--ios27-shadow-floating), var(--ios27-specular-top), var(--ios27-specular-bottom);
   padding: 0.625rem 1.25rem;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 100%;
+  overflow: hidden;
 }
 
 @media (max-width: 640px) {

@@ -86,6 +86,12 @@ function renderProductGridCard(p) {
             <span>WhatsApp</span>
           </a>
         </div>
+        <button type="button" 
+                onclick="window.storeEngine.addToCart('${p.id}')" 
+                class="mt-2 w-full py-2.5 px-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span>Add to Bag</span>
+        </button>
       </div>
 
     </div>

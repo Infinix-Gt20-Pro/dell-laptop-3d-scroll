@@ -60,7 +60,7 @@ function renderRecommendationCard(p) {
             Specs & 3D →
           </a>
           <button type="button" 
-                  onclick="if(window.storeEngine) window.storeEngine.addToCart(PRODUCTS.find(x=>x.id==='${p.id}'))" 
+                  onclick="if(window.storeEngine) window.storeEngine.addToCart('${p.id}')" 
                   class="py-2 px-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold text-center transition-all flex items-center justify-center gap-1 shadow-sm">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
             <span>Add to Bag</span>

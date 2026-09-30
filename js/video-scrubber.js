@@ -211,11 +211,36 @@ class HeroVideoScrubber {
       });
     });
 
-    // 9. 120 FPS High-Precision RAF loop with delta-time exponential damping
+    // 9. Adaptive Refresh Rate & Intersection-Observer Loop
+    this.isCanvasVisible = true;
+    this.isRafRunning = false;
+    this.renderedProgress = -1;
+    this.lastDrawTime = 0;
     this.rafLoop = this.tick.bind(this);
-    requestAnimationFrame(this.rafLoop);
 
+    if (typeof IntersectionObserver !== 'undefined' && this.container) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          this.isCanvasVisible = entry.isIntersecting;
+          if (this.isCanvasVisible) {
+            this.wakeUp();
+          }
+        });
+      }, { threshold: 0.05 });
+      this.observer.observe(this.container);
+    }
+
+    this.wakeUp();
     this.onScroll();
+  }
+
+  wakeUp() {
+    if (!this.isCanvasVisible) return;
+    if (!this.isRafRunning) {
+      this.isRafRunning = true;
+      this.lastTime = performance.now();
+      requestAnimationFrame(this.rafLoop);
+    }
   }
 
   preloadKeyframes() {
@@ -472,6 +497,7 @@ class HeroVideoScrubber {
       this.glassEdgeGlow.classList.add('active');
     }
     clearTimeout(this.scrollTimeout);
+    this.wakeUp();
     this.scrollTimeout = setTimeout(() => {
       this.isScrolling = false;
       document.body.classList.remove('is-scrolling');
@@ -488,7 +514,20 @@ class HeroVideoScrubber {
   }
 
   tick(timestamp) {
+    if (!this.isCanvasVisible) {
+      this.isRafRunning = false;
+      return;
+    }
+
     const now = timestamp || performance.now();
+
+    // Adaptive Frame-Rate Throttling according to device refresh rate (144Hz vs 60Hz vs lite)
+    const minFrameInterval = (window.ClassicPerf && window.ClassicPerf.frameIntervalMs) ? window.ClassicPerf.frameIntervalMs : 16.66;
+    if (this.lastDrawTime && (now - this.lastDrawTime < minFrameInterval - 1.5)) {
+      requestAnimationFrame(this.rafLoop);
+      return;
+    }
+
     const dt = Math.min((now - (this.lastTime || now)) / 1000, 0.05);
     this.lastTime = now;
 
@@ -499,8 +538,10 @@ class HeroVideoScrubber {
       this.touchVelocity *= Math.pow(0.86, dt * 60); // Buttery smooth friction
     }
 
-    // High-Precision 120 FPS Frame-Rate Independent Exponential Damping
+    // High-Precision Frame-Rate Independent Exponential Damping
     const diff = this.targetProgress - this.currentProgress;
+    const isMoving = Math.abs(diff) > 0.00003 || this.isDragging || Math.abs(this.touchVelocity) > 0.0001 || this.isPlaying;
+
     if (Math.abs(diff) > 0.00002) {
       const rate = this.isDragging ? 18 : 11.5;
       const smoothingFactor = 1 - Math.exp(-rate * dt);
@@ -509,7 +550,15 @@ class HeroVideoScrubber {
       this.currentProgress = this.targetProgress;
     }
 
+    // If completely idle and already rendered, put RAF to sleep to save 100% CPU/battery!
+    if (!isMoving && Math.abs(this.renderedProgress - this.currentProgress) < 0.0001) {
+      this.isRafRunning = false;
+      return;
+    }
+
     this.render();
+    this.renderedProgress = this.currentProgress;
+    this.lastDrawTime = now;
     this.updateHUD(this.currentProgress);
 
     requestAnimationFrame(this.rafLoop);
