@@ -704,6 +704,38 @@
   function updateNavbarAuthState() {
     const user = window.classicAuth._currentUser || getStoredUser();
     const container = document.getElementById('navbar-auth-container');
+    const mobileContainer = document.getElementById('mobile-auth-container');
+
+    // Update Mobile Drawer Auth state if element exists
+    if (mobileContainer) {
+      if (!user) {
+        mobileContainer.innerHTML = `
+          <button onclick="window.openLucidAuthModal('google')" class="w-full text-left px-4 py-2.5 rounded-2xl bg-cyan-50 border border-cyan-200 text-cyan-900 text-xs font-bold flex items-center justify-between">
+            <span>🔐 Google / Account Sign In</span>
+            <span class="text-[10px] bg-cyan-200/60 px-2 py-0.5 rounded-full font-mono">Fast Access</span>
+          </button>`;
+      } else {
+        const mInitial = (user.name || user.email).charAt(0).toUpperCase();
+        mobileContainer.innerHTML = `
+          <div class="w-full p-3 rounded-2xl bg-gradient-to-r from-cyan-50 to-blue-50/70 border border-cyan-200/80 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-full overflow-hidden border border-cyan-400 bg-cyan-100 flex items-center justify-center shrink-0 shadow-sm">
+                ${user.avatar
+                  ? `<img src="${user.avatar}" class="w-full h-full object-cover" alt="${user.name}" onerror="this.parentElement.innerHTML='<span class=\\'text-xs font-bold text-cyan-800\\'>${mInitial}</span>'">`
+                  : `<span class="text-xs font-bold text-cyan-800">${mInitial}</span>`}
+              </div>
+              <div class="min-w-0">
+                <div class="font-bold text-xs text-slate-900 truncate">${user.name || user.email}</div>
+                <div class="text-[10px] text-slate-500 font-mono truncate">${user.email}</div>
+              </div>
+            </div>
+            <button onclick="window.lucidSignOut()" class="px-3 py-1.5 rounded-xl bg-red-100/80 hover:bg-red-200 text-red-700 text-[11px] font-bold shrink-0 transition-colors shadow-xs">
+              Sign Out
+            </button>
+          </div>`;
+      }
+    }
+
     if (!container) return;
 
     if (!user) {
@@ -729,22 +761,23 @@
       ? `<span class="text-[10px] text-blue-500 font-bold hidden sm:inline">G</span>` : '';
 
     container.innerHTML = `
-      <div class="relative group">
-        <button class="ios27-pill-auth inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 text-slate-900 text-xs font-sans font-bold">
+      <div class="relative group inline-flex items-center">
+        <button class="ios27-pill-auth inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 text-slate-900 text-xs font-sans font-bold shrink-0">
           <div class="w-6 h-6 rounded-full overflow-hidden border border-cyan-400 bg-cyan-100 flex items-center justify-center shrink-0">
             ${user.avatar
               ? `<img src="${user.avatar}" class="w-full h-full object-cover" alt="${user.name}" onerror="this.parentElement.innerHTML='<span class=\\'text-xs font-bold text-cyan-800\\'>${initial}</span>'">`
               : `<span class="text-xs font-bold text-cyan-800">${initial}</span>`}
           </div>
-          <span class="truncate max-w-[85px] sm:max-w-[120px]">${(user.name || user.email).split(' ')[0]}</span>
+          <span class="truncate max-w-[70px] sm:max-w-[110px] hidden xs:inline sm:inline">${(user.name || user.email).split(' ')[0]}</span>
           ${providerDot}
-          <svg class="w-3 h-3 text-slate-500 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-3 h-3 text-slate-500 transition-transform group-hover:rotate-180 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
 
-        <!-- Dropdown Glass Menu -->
-        <div class="absolute right-0 top-full mt-2 w-64 py-2 ios27-glass-card shadow-2xl border border-white/90 rounded-2xl
+        <!-- Dropdown Glass Menu (Fixed Absolute Positioning) -->
+        <div style="position: absolute !important; top: 100% !important; right: 0 !important;"
+             class="ios27-glass-dropdown w-64 py-2 shadow-2xl rounded-2xl
                     opacity-0 translate-y-2 pointer-events-none
                     group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto
                     transition-all duration-200 z-50">
@@ -753,7 +786,7 @@
           <div class="px-4 py-2 border-b border-slate-100 flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl overflow-hidden border border-cyan-400 bg-cyan-50 shrink-0">
               <img src="${user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.email)}`}"
-                   class="w-full h-full object-cover">
+                   class="w-full h-full object-cover" alt="${user.name || 'User'}">
             </div>
             <div class="min-w-0">
               <div class="flex items-center gap-1.5">

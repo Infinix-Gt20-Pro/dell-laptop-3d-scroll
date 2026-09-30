@@ -404,15 +404,25 @@ class ClassicStoreEngine {
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
 
-      // Pre-fill user data
+      // Pre-fill user data (supports live InsForge logged-in user or stored user)
+      const liveAuthUser = (window.classicAuth && typeof window.classicAuth.getCurrentUser === 'function')
+        ? window.classicAuth.getCurrentUser()
+        : this.loadFromStorage('cc_insforge_user', null);
+
+      const activeName = (liveAuthUser && (liveAuthUser.name || liveAuthUser.email)) || this.user.name;
+      const activeEmail = (liveAuthUser && liveAuthUser.email) || this.user.email;
+      const activePhone = (liveAuthUser && liveAuthUser.phone) || this.user.phone;
+
       const nameInput = document.getElementById('checkout-name');
+      const emailInput = document.getElementById('checkout-email');
       const phoneInput = document.getElementById('checkout-phone');
       const addressInput = document.getElementById('checkout-address');
       const orderTotalEl = document.getElementById('checkout-order-total');
 
-      if (nameInput) nameInput.value = this.user.name;
-      if (phoneInput) phoneInput.value = this.user.phone;
-      if (addressInput) addressInput.value = this.user.address;
+      if (nameInput) nameInput.value = activeName || '';
+      if (emailInput) emailInput.value = activeEmail || '';
+      if (phoneInput) phoneInput.value = activePhone || '';
+      if (addressInput && !addressInput.value) addressInput.value = this.user.address || '';
       if (orderTotalEl) orderTotalEl.textContent = `₹${this.getCartTotal().toLocaleString('en-IN')}`;
     }
   }
