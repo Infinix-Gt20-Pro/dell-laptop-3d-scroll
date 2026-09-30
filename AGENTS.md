@@ -20,3 +20,7 @@ Key patterns:
 - Reference users with `auth.users(id)`; use `auth.uid()` in RLS policies.
 - For storage uploads, persist both the returned `url` and `key`.
 <!-- INSFORGE:END -->
+
+## User Preferences & Interaction Rules
+- **Language Preference:** All responses MUST be in **Hinglish** (Hindi in Roman script mixed with clear English technical terms) at all times as requested by the user. Har response hamesha Hinglish mein hi deliver hoga.
+
