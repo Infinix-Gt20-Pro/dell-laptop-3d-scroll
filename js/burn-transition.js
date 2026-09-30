@@ -208,8 +208,23 @@
       }
       this.canvas = canvas;
 
-      // 2. Initialize Hardware-Accelerated WebGL
-      const gl = canvas.getContext('webgl', {
+      // 2. Add WebGL Context Recovery Listeners
+      canvas.addEventListener('webglcontextlost', (e) => {
+        e.preventDefault();
+        this.isReady = false;
+        if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+      }, false);
+
+      canvas.addEventListener('webglcontextrestored', () => {
+        this.setupGL();
+      }, false);
+
+      this.setupGL();
+      window.addEventListener('resize', () => this.resize(), { passive: true });
+    }
+
+    setupGL() {
+      const gl = this.canvas.getContext('webgl', {
         alpha: true,
         antialias: false,
         depth: false,
@@ -265,8 +280,6 @@
 
       // 5. Setup Viewport (Capped for 60fps/120fps lock)
       this.resize();
-      window.addEventListener('resize', () => this.resize(), { passive: true });
-
       this.isReady = true;
       this.clearCanvas();
     }
